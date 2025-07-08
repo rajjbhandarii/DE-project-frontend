@@ -1,1 +1,43 @@
-<p>admin works!</p>
+<ng-container *ngIf="isLogin; else signuptemplete">
+	<div class="main">
+		<div class=" form-container">
+			<p class="title">Welcome back Admin</p>
+			<form class="form">
+				<input type="text" class="input" placeholder="Admin Username">
+				<input type="password" class="input" placeholder="Password">
+				<p class="page-link">
+					<span class="forgot-password-link">Forgot Password?</span>
+				</p>
+				<button class="form-btn">Log in</button>
+			</form>
+			<p class="sign-up-label">
+				Don't have an account? <span class="sign-up-link" (click)="isLogin=false">Sign-up</span>
+			</p>
+			<div [routerLink]="['/userpage']" class="page-change-button">
+				<button>I am an user</button>
+			</div>
+		</div>
+	</div>
+</ng-container>
+
+<ng-template #signuptemplete>
+	<div class="main">
+		<div class=" form-container">
+			<p class="title">Create account</p>
+			<form class="form">
+				<input type="text" class="input" placeholder=" Admin Username">
+				<input type="password" class="input" placeholder="Password">
+				<p class="page-link">
+					<span class="forgot-password-link">Forgot Password?</span>
+				</p>
+				<button class="form-btn">Go</button>
+			</form>
+			<p class="sign-up-label">
+				Have an account? <span class="sign-up-link" (click)="isLogin=true">Login</span>
+			</p>
+			<div [routerLink]="['/userpage']" class="page-change-button">
+				<button>I am an user</button>
+			</div>
+		</div>
+	</div>
+</ng-template>
