@@ -3,9 +3,9 @@
         <div class=" form-container">
             <p class="title">Welcome back User</p>
             <form class="form">
-                <input type="text" class="input" placeholder="Username">
+                <input type="text" class="input" name="logininput" placeholder="Username">
                 <div class="password-container">
-                    <input [type]="inputType" class="password-input" placeholder="Password">
+                    <input [type]="inputType" name="logininput" class="password-input" placeholder="Password">
                     <span class="show-password-icon" (click)="togglePasswordVisibility()">
                         <i [ngClass]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
                     </span>
@@ -18,7 +18,7 @@
             <p class="sign-up-label">
                 Don't have an account? <span class="sign-up-link" (click)="isLogin=false">Sign-up</span>
             </p>
-            <div [routerLink]="['/adminpage']" class="page-change-button">
+            <div routerLink="/adminpage" class="page-change-button">
                 <button>I am an Admin</button>
             </div>
         </div>
@@ -30,17 +30,17 @@
         <div class=" form-container">
             <p class="title">Create account</p>
             <form class="form">
-                <input type="text" class="input" placeholder="Username">
-                <input type="password" class="input" placeholder="Password">
+                <input type="text" class="input" name="signupinput" [(ngModel)]="username " placeholder="Username">
+                <input type="password" class="input" name="signupinput" [(ngModel)]="password" placeholder="Password">
                 <p class="page-link">
                     <span class="forgot-password-link">Forgot Password?</span>
                 </p>
-                <button class="form-btn">Go</button>
+                <button class="form-btn" (click)="saveuser()">Go</button>
             </form>
             <p class="sign-up-label">
                 Have an account? <span class="sign-up-link" (click)="isLogin=true">Login</span>
             </p>
-            <div [routerLink]="['/adminpage']" class="page-change-button">
+            <div routerLink="/adminpage" class="page-change-button">
                 <button>I am an Admin</button>
             </div>
         </div>
