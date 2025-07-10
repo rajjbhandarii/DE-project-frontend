@@ -4,7 +4,12 @@
 			<p class="title">Welcome back Admin</p>
 			<form class="form">
 				<input type="text" class="input" placeholder="Admin Username">
-				<input type="password" class="input" placeholder="Password">
+				<div class="password-container">
+					<input [type]="inputType" class="password-input" placeholder="Password">
+					<span class="show-password-icon" (click)="togglePasswordVisibility()">
+						<i [ngClass]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+					</span>
+				</div>
 				<p class="page-link">
 					<span class="forgot-password-link">Forgot Password?</span>
 				</p>

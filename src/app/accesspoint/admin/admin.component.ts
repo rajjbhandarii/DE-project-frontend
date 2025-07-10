@@ -12,5 +12,12 @@ import { RouterLink } from '@angular/router';
 })
 export class AdminComponent {
   isLogin: boolean = true;
+  showPassword: boolean = false;
+  inputType: string = 'password';
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+    this.inputType = this.showPassword ? 'text' : 'password';
+  }
 
 }

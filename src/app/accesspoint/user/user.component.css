@@ -44,10 +44,31 @@ html {
 .input {
   border-radius: 20px;
   border: 1px solid #c0c0c0;
-  outline: 0 !important;
   box-sizing: border-box;
   padding: 12px 15px;
-  background: #000;
+}
+.password-container {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+}
+
+.password-input {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid #c0c0c0;
+  box-sizing: border-box;
+  padding: 12px 15px;
+  background: #ffffff;
+}
+
+.show-password-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #747474;
 }
 
 .page-link {
