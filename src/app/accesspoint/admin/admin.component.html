@@ -3,9 +3,11 @@
 		<div class=" form-container">
 			<p class="title">Welcome back Admin</p>
 			<form class="form">
-				<input type="text" class="input" name="logininput" placeholder="Admin Username">
+				<input type="text" class="input" [(ngModel)]="adminname" name="logininput"
+					placeholder="Admin adminname">
 				<div class="password-container">
-					<input [type]="inputType" name="logininput" class="password-input" placeholder="Password">
+					<input [type]="inputType" name="logininput" [(ngModel)]="password" class="password-input"
+						placeholder="Password">
 					<span class="show-password-icon" (click)="togglePasswordVisibility()">
 						<i [ngClass]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
 					</span>
@@ -13,7 +15,7 @@
 				<p class="page-link">
 					<span class="forgot-password-link">Forgot Password?</span>
 				</p>
-				<button class="form-btn">Log in</button>
+				<button class="form-btn" (click)="loginAdmin()">Log in</button>
 			</form>
 			<p class="sign-up-label">
 				Don't have an account? <span class="sign-up-link" (click)="isLogin=false">Sign-up</span>
@@ -30,12 +32,13 @@
 		<div class=" form-container">
 			<p class="title">Create account</p>
 			<form class="form">
-				<input type="text" class="input" name="signupinput" placeholder=" Admin Username">
-				<input type="password" class="input" name="signupinput" placeholder="Password">
+				<input type="text" class="input" [(ngModel)]="adminname" name="signupinput"
+					placeholder=" Admin adminname">
+				<input type="password" class="input" [(ngModel)]="password" name="signupinput" placeholder="Password">
 				<p class="page-link">
 					<span class="forgot-password-link">Forgot Password?</span>
 				</p>
-				<button class="form-btn" (click)="saveuser()">Go</button>
+				<button class="form-btn" (click)="signupAdmin()">Go</button>
 			</form>
 			<p class="sign-up-label">
 				Have an account? <span class="sign-up-link" (click)="isLogin=true">Login</span>
