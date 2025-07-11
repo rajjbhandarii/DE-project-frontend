@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class UserComponent {
   isLogin: boolean = true;
-  username: string = '';
+  userName: string = '';
   password: string = '';
   showPassword: boolean = false;
   inputType: string = 'password';
@@ -25,25 +25,69 @@ export class UserComponent {
     this.inputType = this.showPassword ? 'text' : 'password';
   }
 
-  saveuser() {
-    const user = {
-      username: this.username,
-      password: this.password
+  signupUser() {
+    const User = {
+      userName: this.userName,
+      password: this.password,
     };
-    if (this.username === '' || this.password === '') {
+    if (this.userName === '' || this.password === '') {
       alert('Please fill in all fields');
       return;
     } else {
-      this.http.post('http://localhost:3000/add-user', user).subscribe((response: any) => {
-        console.log(response);
-
-        alert(response.message);
-        this.router.navigate(['dashboard'], { queryParams: { roomname: this.username } });
-        this.isLogin = true;
-        this.username = '';
-        this.password = '';
-
+      this.http.post('http://localhost:3000/signup-user', User).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          if (response.message === 'User registered successfully') {
+            alert(response.message);
+            this.router.navigate(['dashboard'], { queryParams: { roomname: this.userName } });
+          }
+        },
+        error: (error) => {
+          if (error.status === 409 && error.error.message) {
+            alert(error.error.message);
+            this.userName = '';
+            this.password = '';
+          } else if (error.status === 500) {
+            alert('An error occurred while registering the user. Please try again later.');
+            this.userName = '';
+            this.password = '';
+          }
+        }
       });
     }
   }
+
+  loginUser() {
+    const User = {
+      userName: this.userName,
+      password: this.password,
+    };
+    if (this.userName === '' || this.password === '') {
+      alert('Please fill in all fields');
+      return;
+    } else {
+      this.http.post('http://localhost:3000/login-user', User).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          if (response.message === 'Login successful') {
+            this.router.navigate(['dashboard'], { queryParams: { roomname: this.userName } });
+          } else {
+            alert(response.message);
+          }
+        },
+        error: (error) => {
+          if (error.status === 401 && error.error.message) {
+            alert(error.error.message);
+            this.userName = '';
+            this.password = '';
+          } else if (error.status === 500) {
+            alert('An error occurred while logging in. Please try again later.');
+            this.userName = '';
+            this.password = '';
+          }
+        }
+      });
+    }
+  }
+
 }

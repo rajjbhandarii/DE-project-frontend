@@ -15,7 +15,7 @@ export class AdminComponent {
   isLogin: boolean = false;
   showPassword: boolean = false;
   inputType: string = 'password';
-  adminname: string = '';
+  adminName: string = '';
   password: string = '';
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -24,58 +24,74 @@ export class AdminComponent {
     this.inputType = this.showPassword ? 'text' : 'password';
   }
 
-  signupAdmin() {
-    const admin = {
-      adminName: this.adminname,
-      password: this.password,
-    };
-    if (this.adminname === '' || this.password === '') {
+  vilidateAdmin() {
+    if (this.adminName === '' || this.password === '') {
       alert('Please fill in all fields');
       return;
     } else {
-      this.http.post('http://localhost:3000/add-admin', admin).subscribe((response: any) => {
-        console.log(response);
-        if (response.message === 'Admin already exists') {
-          alert(response.message);
-          this.adminname = '';
-          this.password = '';
-        } else if (response.message === 'Server error') {
-          alert('An error occurred while registering the admin. Please try again later.');
-          this.adminname = '';
-          this.password = '';
-        }
-        else if (response.message === 'Admin registered successfully') {
-          alert(response.message);
-          this.router.navigate(['dashboard'], { queryParams: { roomname: this.adminname } });
+      return true; // Proceed with login if fields are filled
+    }
+  }
+
+  signupAdmin() {
+    if (!this.vilidateAdmin()) {
+      return; // Exit if validation fails
+    } else {
+      const admin = {
+        adminName: this.adminName,
+        password: this.password,
+      };
+      this.http.post('http://localhost:3000/signup-admin', admin).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          if (response.message === 'Admin registered successfully') {
+            alert(response.message);
+            this.router.navigate(['dashboard'], { queryParams: { roomname: this.adminName } });
+          }
+        },
+        error: (error) => {
+          if (error.status === 409 && error.error.message) {
+            alert(error.error.message);
+            this.adminName = '';
+            this.password = '';
+          } else if (error.status === 500) {
+            alert('An error occurred while registering the admin. Please try again later.');
+            this.adminName = '';
+            this.password = '';
+          }
         }
       });
     }
   }
 
+
   loginAdmin() {
-    // const admin = {
-    //   adminName: this.adminname,
-    //   password: this.password,
-    // };
-    // if (this.adminname === '' || this.password === '') {
-    //   alert('Please fill in all fields');
-    //   return;
-    // } else {
-    //   this.http.post('http://localhost:3000/login-admin', admin).subscribe((response: any) => {
-    //     console.error(response);
-    //     if (response.message === 'Invalid adminName or password') {
-    //       alert(response.message);
-    //       this.adminname = '';
-    //       this.password = '';
-    //     } else if (response.message === 'Server error') {
-    //       alert('An error occurred while logging in. Please try again later.');
-    //       this.adminname = '';
-    //       this.password = '';
-    //     } else if (response.message === 'Login successful') {
-    //       alert(response.message);
-    //       this.router.navigate(['dashboard'], { queryParams: { roomname: this.adminname } });
-    //     }
-    //   });
-    // }
+    if (!this.vilidateAdmin()) {
+      return; // Exit if validation fails
+    } else {
+      const admin = {
+        adminName: this.adminName,
+        password: this.password,
+      };
+      this.http.post('http://localhost:3000/login-admin', admin).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          if (response.message === 'Login successful') {
+            this.router.navigate(['dashboard'], { queryParams: { roomname: this.adminName } });
+          }
+        },
+        error: (error) => {
+          if (error.status === 401 && error.error.message) {
+            alert(error.error.message);
+            this.adminName = '';
+            this.password = '';
+          } else if (error.status === 500) {
+            alert('An error occurred while logging in. Please try again later.');
+            this.adminName = '';
+            this.password = '';
+          }
+        }
+      });
+    }
   }
 }

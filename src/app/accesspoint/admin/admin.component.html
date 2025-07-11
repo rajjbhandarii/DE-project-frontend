@@ -3,8 +3,7 @@
 		<div class=" form-container">
 			<p class="title">Welcome back Admin</p>
 			<form class="form">
-				<input type="text" class="input" [(ngModel)]="adminname" name="logininput"
-					placeholder="Admin adminname">
+				<input type="text" class="input" [(ngModel)]="adminName" name="logininput" placeholder="Admin Name">
 				<div class="password-container">
 					<input [type]="inputType" name="logininput" [(ngModel)]="password" class="password-input"
 						placeholder="Password">
@@ -30,10 +29,9 @@
 <ng-template #signuptemplete>
 	<div class="main">
 		<div class=" form-container">
-			<p class="title">Create account</p>
+			<p class="title">Create Admin account</p>
 			<form class="form">
-				<input type="text" class="input" [(ngModel)]="adminname" name="signupinput"
-					placeholder=" Admin adminname">
+				<input type="text" class="input" [(ngModel)]="adminName" name="signupinput" placeholder=" Admin Name">
 				<input type="password" class="input" [(ngModel)]="password" name="signupinput" placeholder="Password">
 				<p class="page-link">
 					<span class="forgot-password-link">Forgot Password?</span>
