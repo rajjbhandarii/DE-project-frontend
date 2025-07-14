@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { AccesspointService } from '../accesspoint.service';
 
 @Component({
   selector: 'app-user',
@@ -13,37 +14,47 @@ import { Router } from '@angular/router';
 })
 export class UserComponent {
   isLogin: boolean = true;
-  username: string = '';
+  userName: string = '';
   password: string = '';
   showPassword: boolean = false;
   inputType: string = 'password';
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private access: AccesspointService) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     this.inputType = this.showPassword ? 'text' : 'password';
   }
-
-  saveuser() {
-    const user = {
-      username: this.username,
-      password: this.password
-    };
-    if (this.username === '' || this.password === '') {
+  vilidateAdmin() {
+    if (this.userName === '' || this.password === '') {
       alert('Please fill in all fields');
       return;
     } else {
-      this.http.post('http://localhost:3000/add-user', user).subscribe((response: any) => {
-        console.log(response);
-
-        alert(response.message);
-        this.router.navigate(['dashboard'], { queryParams: { roomname: this.username } });
-        this.isLogin = true;
-        this.username = '';
-        this.password = '';
-
-      });
+      return true; // Proceed with login if fields are filled
     }
   }
+
+  signupUser() {
+    if (!this.vilidateAdmin()) {
+      return; // Exit if validation fails
+    } else {
+      this.access.signup(this.userName, this.password, 'user');
+      this.userName = '';
+      this.password = '';
+      this.isLogin = false;
+    }
+  }
+
+  loginUser() {
+    if (!this.vilidateAdmin()) {
+      return; // Exit if validation fails
+    }
+    else {
+      this.access.login(this.userName, this.password, 'user');
+      this.userName = '';
+      this.password = '';
+      this.isLogin = true;
+    }
+  }
+
 }

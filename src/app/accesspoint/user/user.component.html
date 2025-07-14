@@ -3,9 +3,10 @@
         <div class=" form-container">
             <p class="title">Welcome back User</p>
             <form class="form">
-                <input type="text" class="input" name="logininput" placeholder="Username">
+                <input type="text" class="input" [(ngModel)]="userName " name="logininput" placeholder="Username">
                 <div class="password-container">
-                    <input [type]="inputType" name="logininput" class="password-input" placeholder="Password">
+                    <input [type]="inputType" [(ngModel)]="password" name="logininput" class="password-input"
+                        placeholder="Password">
                     <span class="show-password-icon" (click)="togglePasswordVisibility()">
                         <i [ngClass]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
                     </span>
@@ -13,13 +14,15 @@
                 <p class="page-link">
                     <span class="forgot-password-link">Forgot Password?</span>
                 </p>
-                <button class="form-btn">Log in</button>
+                <div>
+                    <button class="form-btn" (click)="loginUser()">Log in</button>
+                </div>
             </form>
             <p class="sign-up-label">
                 Don't have an account? <span class="sign-up-link" (click)="isLogin=false">Sign-up</span>
             </p>
-            <div routerLink="/adminpage" class="page-change-button">
-                <button>I am an Admin</button>
+            <div routerLink="/adminpage" class="page-change-container">
+                <button class="page-change-button">I am an Admin</button>
             </div>
         </div>
     </div>
@@ -30,18 +33,20 @@
         <div class=" form-container">
             <p class="title">Create account</p>
             <form class="form">
-                <input type="text" class="input" name="signupinput" [(ngModel)]="username " placeholder="Username">
+                <input type="text" class="input" name="signupinput" [(ngModel)]="userName" placeholder="Username">
                 <input type="password" class="input" name="signupinput" [(ngModel)]="password" placeholder="Password">
                 <p class="page-link">
                     <span class="forgot-password-link">Forgot Password?</span>
                 </p>
-                <button class="form-btn" (click)="saveuser()">Go</button>
+                <div>
+                    <button class="form-btn" (click)="signupUser()">Go</button>
+                </div>
             </form>
             <p class="sign-up-label">
                 Have an account? <span class="sign-up-link" (click)="isLogin=true">Login</span>
             </p>
-            <div routerLink="/adminpage" class="page-change-button">
-                <button>I am an Admin</button>
+            <div routerLink="/adminpage" class="page-change-container">
+                <button class=" page-change-button">I am an Admin</button>
             </div>
         </div>
     </div>
