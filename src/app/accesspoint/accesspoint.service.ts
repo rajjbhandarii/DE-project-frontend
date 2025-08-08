@@ -2,13 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject } from 'rxjs';
+
+export interface User {
+  name: string;
+  type: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccesspointService {
 
-  constructor(private router: Router, private http: HttpClient) { }
+export class AccesspointService {
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
+  constructor(private router: Router, private http: HttpClient) {
+    this.loadUserFromStorage();
+  }
+  private loadUserFromStorage() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.currentUserSubject.next(JSON.parse(user));
+    }
+  }
+
+  public get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
+  }
 
   signup(name: string, password: string, type: string) {
     const credentials = type === 'admin' ? { adminName: name, password } : { userName: name, password };
@@ -19,21 +40,17 @@ export class AccesspointService {
         console.log(response);
 
         if (response.token) {
-          // Save token and user
+          // Save token and user `
+          const user: User = { name, type };
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify({
-            name: name,
-            type: type
-          }));
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSubject.next(user);
 
           alert(`${type.charAt(0).toUpperCase() + type.slice(1)} registered & logged in`);
 
           // Redirect to dashboard with query param
-          this.router.navigate(['dashboard'], {
-            queryParams: {
-              roomname: name
-            }
-          });
+          this.router.navigate(['/dashboard']);
+
         } else if (response.message) {
           alert(response.message);
         }
@@ -58,18 +75,16 @@ export class AccesspointService {
       next: (response: any) => {
         if (response.token) {
           // Store token and user info
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify({
+          const user: User = {
             name: name,
             type: type
-          }));
-
+          };
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSubject.next(user);
           // Redirect after login
-          this.router.navigate(['dashboard'], {
-            queryParams: {
-              roomname: name
-            }
-          });
+          this.router.navigate(['/dashboard']);
+
         } else {
           alert('Login failed: No token received');
         }
@@ -85,8 +100,8 @@ export class AccesspointService {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.clear();
+    this.currentUserSubject.next(null);
     this.router.navigate(['adminpage']);
   }
 

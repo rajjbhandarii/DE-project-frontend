@@ -1,0 +1,64 @@
+<ng-container *ngIf="currentUser$ | async as currentUser; else adminTemplate">
+    <div class="services-container">
+        <h2>Available Services</h2>
+
+        <div class="services-grid">
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fa-solid fa-tire"></i>
+                </div>
+                <h3>Flat Tire Change</h3>
+                <p>Quick and safe tire replacement or repair to get you back on the road without delay.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fa-solid fa-car-battery"></i>
+                </div>
+                <h3>Battery Jump Start</h3>
+                <p>Dead battery? We'll give you a quick jump start to power up your vehicle.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fa-solid fa-truck-pickup"></i>
+                </div>
+                <h3>Emergency Towing</h3>
+                <p>Reliable towing services for breakdowns, accidents, or vehicle transport.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fa-solid fa-gas-pump"></i>
+                </div>
+                <h3>Fuel Delivery</h3>
+                <p>Ran out of gas? We'll bring fuel directly to your location, fast.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <h3>Vehicle Lockout</h3>
+                <p>Locked your keys in your car? Our experts will get you back inside safely.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fa-solid fa-anchor"></i>
+                </div>
+                <h3>Winching & Recovery</h3>
+                <p>Stuck in a ditch or mud? We provide professional winching and recovery.</p>
+            </div>
+
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #adminTemplate>
+    <div class="services-container">
+        <h2>Admin Services</h2>
+        <p>Admin services are not available for users.</p>
+    </div>
+</ng-template>

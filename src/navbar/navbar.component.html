@@ -1,10 +1,14 @@
-<div class="container">
-    <nav>
-        <div class="logo"></div>
-        <a></a>
+<header class="navbar">
+    <h1>Road Rescue</h1>
+    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+    <nav [class.show]="menuActive">
+        <button class="close-menu" (click)="toggleMenu()">✖</button>
+        <a (click)="toggleMenu()" routerLink="/dashboard">Home</a>
+        <a (click)="toggleMenu()" routerLink="/services">Service</a>
+        <a (click)="toggleMenu()" routerLink="/about">About</a>
+        <a (click)="toggleMenu()" routerLink="/contact">Contact</a>
+        <a (click)="toggleMenu()" routerLink="/userpage">Logout</a>
     </nav>
-</div>
+</header>
 
-<div class="main-container">
-    <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>
