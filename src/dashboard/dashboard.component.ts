@@ -19,6 +19,7 @@ export class DashboardComponent {
 
   constructor(private accesspointService: AccesspointService) {
     this.currentUser$ = this.accesspointService.currentUser$;
+    console.log('Current User:', this.currentUser$);
   }
 
   toggleMobileMenu(): void {

@@ -16,6 +16,4 @@ export class ServicesComponent {
     this.currentUser$ = this.accesspointService.currentUser$;
   }
 
-
-
 }

@@ -20,6 +20,7 @@ export class AccesspointService {
   constructor(private router: Router, private http: HttpClient) {
     this.loadUserFromStorage();
   }
+
   private loadUserFromStorage() {
     const user = localStorage.getItem('user');
     if (user) {
@@ -28,6 +29,7 @@ export class AccesspointService {
   }
 
   public get currentUserValue(): User | null {
+
     return this.currentUserSubject.value;
   }
 

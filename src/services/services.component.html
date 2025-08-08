@@ -1,4 +1,4 @@
-<ng-container *ngIf="currentUser$ | async as currentUser; else adminTemplate">
+<ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else adminTemplate">
     <div class="services-container">
         <h2>Available Services</h2>
 

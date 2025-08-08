@@ -1,6 +1,6 @@
 <body>
 
-  <ng-container *ngIf="currentUser$ | async as currentUser; else adminTemplate">
+  <ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else adminTemplate">
 
     <!-- Header -->
     <!-- <header class="header">
