@@ -49,10 +49,12 @@ export class AccesspointService {
     if (name === this.dummyCredentials.userName && password === this.dummyCredentials.password) {
       const roleBasedUser: User = { name, type: roleType };
       localStorage.setItem('user', JSON.stringify(roleBasedUser));
+      localStorage.setItem('token', 'dummy-token');
+
       this.currentUserSubject.next(roleBasedUser);
       this.router.navigate(['/dashboard']);
     } else {
-      alert('Enter "username-raj" and "password-raj"');
+      alert('Enter "username-r" and "password-r"');
     }
 
 
@@ -95,10 +97,12 @@ export class AccesspointService {
     if (name === this.dummyCredentials.userName && password === this.dummyCredentials.password) {
       const roleBasedUser: User = { name, type: roleType };
       localStorage.setItem('user', JSON.stringify(roleBasedUser));
+      localStorage.setItem('token', 'dummy-token');
+
       this.currentUserSubject.next(roleBasedUser);
       this.router.navigate(['/dashboard']);
     } else {
-      alert('Enter "username-raj" and "password-raj"');
+      alert('Enter "username-r" and "password-r"');
     }
 
     // this.http.post<AuthResponse>(endpoint, credentials).subscribe({

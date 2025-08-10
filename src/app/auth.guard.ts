@@ -20,14 +20,14 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const decoded: any = jwtDecode(token);
-      const now = Date.now().valueOf() / 1000;
+      // const decoded: any = jwtDecode(token);
+      // const now = Date.now().valueOf() / 1000;
 
-      if (decoded.exp < now) {
-        localStorage.clear();
-        alert("Session expired. Please log in again.");
-        return this.router.parseUrl('/userpage');
-      }
+      // if (decoded.exp < now) {
+      //   localStorage.clear();
+      //   alert("Session expired. Please log in again.");
+      //   return this.router.parseUrl('/userpage');
+      // }
 
       return true; // Valid token
     } catch (err) {
