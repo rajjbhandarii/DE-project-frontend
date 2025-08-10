@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
 import { AccesspointService } from '../accesspoint.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -19,7 +17,7 @@ export class UserComponent {
   showPassword: boolean = false;
   inputType: string = 'password';
 
-  constructor(private http: HttpClient, private router: Router, private access: AccesspointService) { }
+  constructor(private access: AccesspointService) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;

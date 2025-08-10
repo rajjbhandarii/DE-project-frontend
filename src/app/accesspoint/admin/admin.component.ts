@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { AccesspointService } from '../accesspoint.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, FormsModule, RouterLink,],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css',]
 })
@@ -19,7 +17,7 @@ export class AdminComponent {
   adminName: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient, private router: Router, private access: AccesspointService) { }
+  constructor(private access: AccesspointService) { }
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     this.inputType = this.showPassword ? 'text' : 'password';

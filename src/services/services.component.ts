@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { AccesspointService, User } from '../app/accesspoint/accesspoint.service';
 import { Observable } from 'rxjs';
 @Component({
@@ -12,7 +11,7 @@ import { Observable } from 'rxjs';
 export class ServicesComponent {
   currentUser$: Observable<User | null>;
 
-  constructor(private route: ActivatedRoute, private accesspointService: AccesspointService) {
+  constructor(private accesspointService: AccesspointService) {
     this.currentUser$ = this.accesspointService.currentUser$;
   }
 
