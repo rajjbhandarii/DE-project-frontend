@@ -1,16 +1,14 @@
-/* /* .maincontain {
-  max-height: 90vh;
-} */
-
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #674e4e;
+  background: #000000;
   color: white;
   padding: 0.7rem;
   font-family: Arial, sans-serif;
-  max-width: 100vw;
+  max-width: 100%;
+
+  z-index: 1000;
   .close-menu {
     display: none;
   }

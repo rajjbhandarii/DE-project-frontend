@@ -1,85 +1,28 @@
-<body>
+<ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else adminTemplate">
 
-  <ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else adminTemplate">
-
-    <!-- Header -->
-    <!-- <header class="header">
-    <nav class="navbar">
-      <a href="#" class="logo-link">
-        <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8">
-          </path>
-        </svg>
-        <span class="logo-text">{{ title }}</span>
-      </a>
-      <div class="nav-links-desktop">
-        <a href="#" class="nav-link">Home</a>
-        <a href="#services" class="nav-link">Services</a>
-        <a href="#about" class="nav-link">About Us</a>
-        <a href="#contact" class="nav-link">Contact</a>
-        <button (click)="toggleDarkMode()" class="dark-mode-toggle" aria-label="Toggle dark mode">
-          <svg *ngIf="!isDarkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 3v1m0 16v1m9-9h1M3 12h1m15.325-4.707l-.708-.707M4.373 19.373l-.707-.707m10.607.707l.707-.707M4.373 4.373l.707.707M12 18a6 6 0 100-12 6 6 0 000 12z">
-            </path>
-          </svg>
-          <svg *ngIf="isDarkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-          </svg>
-        </button>
-      </div>
-      <button (click)="toggleMobileMenu()" class="mobile-menu-button" aria-label="Toggle mobile menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
-    </nav>
-    <div [class.open]="isMobileMenuOpen" class="mobile-menu">
-      <a href="#" class="mobile-nav-link" (click)="closeMobileMenu()">Home</a>
-      <a href="#services" class="mobile-nav-link" (click)="closeMobileMenu()">Services</a>
-      <a href="#about" class="mobile-nav-link" (click)="closeMobileMenu()">About Us</a>
-      <a href="#contact" class="mobile-nav-link" (click)="closeMobileMenu()">Contact</a>
-      <button (click)="toggleDarkMode()" class="dark-mode-toggle-mobile" aria-label="Toggle dark mode">
-        <svg *ngIf="!isDarkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 3v1m0 16v1m9-9h1M3 12h1m15.325-4.707l-.708-.707M4.373 19.373l-.707-.707m10.607.707l.707-.707M4.373 4.373l.707.707M12 18a6 6 0 100-12 6 6 0 000 12z">
-          </path>
-        </svg>
-        <svg *ngIf="isDarkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-        </svg>
-        <span class="ml-2">{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
-      </button>
-    </div>
-  </header> -->
+  <body>
     <section class="hero-section">
       <div class="hero-content-container">
         <div class="hero-text-content">
           <h1 class="hero-title">
-            Stuck on the Road? <br class="hidden-sm"> We're Here to Help!
+            Stuck on the Road? <br> We're Here to Help!
           </h1>
           <p class="hero-subtitle">
-            Fast, reliable, and professional roadside assistance available 24/7. Get back on track quickly and safely.
+            Fast, reliable, and professional roadside assistance available 24/7. Get back on track quickly and
+            safely.
           </p>
           <a href="#contact" class="hero-button">
             Get Immediate Help
           </a>
         </div>
-        <div class="hero-image-container">
-          <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Road+Rescue+Hero" alt="Roadside Assistance Vehicle"
-            class="hero-image">
+        <div class="hero-image-container hidden-sm">
+          <img src="" alt=" Road rescue image" class="hero-image">
         </div>
       </div>
 
     </section>
 
-    <section id="services" class="services-section">
+    <section id=" services" class="services-section">
       <div class="section-container">
         <h2 class="section-title">Our Comprehensive Services</h2>
         <div class="services-grid">
@@ -93,7 +36,8 @@
               </svg>
             </div>
             <h3 class="service-card-title">Flat Tire Change</h3>
-            <p class="service-card-description">Quick and safe tire replacement or repair to get you back on the road
+            <p class="service-card-description">Quick and safe tire replacement or repair to get you back on the
+              road
               without delay.</p>
           </div>
           <div class="service-card">
@@ -133,7 +77,8 @@
               </svg>
             </div>
             <h3 class="service-card-title">Fuel Delivery</h3>
-            <p class="service-card-description">Ran out of gas? We'll bring fuel directly to your location, fast.</p>
+            <p class="service-card-description">Ran out of gas? We'll bring fuel directly to your location, fast.
+            </p>
           </div>
           <div class="service-card">
             <div class="service-icon-wrapper">
@@ -158,7 +103,8 @@
               </svg>
             </div>
             <h3 class="service-card-title">Winching & Recovery</h3>
-            <p class="service-card-description">Stuck in a ditch or mud? We provide professional winching and recovery
+            <p class="service-card-description">Stuck in a ditch or mud? We provide professional winching and
+              recovery
               services.</p>
           </div>
         </div>
@@ -167,8 +113,8 @@
 
     <section id="about" class="about-section">
       <div class="section-container about-content-container">
-        <div class="about-image-container">
-          <img src="https://placehold.co/600x400/e2e8f0/334155?text=About+Us" alt="About Us Image" class="about-image">
+        <div class="about-image-container hidden-sm">
+          <img src="about.png" alt="About Us Image" class="about-image">
         </div>
         <div class="about-text-content">
           <h2 class="section-title">About Road Rescue</h2>
@@ -256,24 +202,26 @@
         </a>
         <p class="contact-form-intro">Or fill out our quick contact form below:</p>
         <div class="contact-form-wrapper">
-          <form class="contact-form">
-            <div class="form-group">
-              <label for="name" class="form-label">Your Name</label>
-              <input type="text" id="name" name="name" class="form-input" placeholder="John Doe">
-            </div>
-            <div class="form-group">
-              <label for="email" class="form-label">Your Email</label>
-              <input type="email" id="email" name="email" class="form-input" placeholder="john.doe@example.com">
-            </div>
-            <div class="form-group">
-              <label for="message" class="form-label">Message</label>
-              <textarea id="message" name="message" rows="5" class="form-textarea"
-                placeholder="Describe your issue..."></textarea>
-            </div>
-            <button type="submit" class="submit-button">
-              Send Message
-            </button>
-          </form>
+          <div class="contact-form-container">
+            <form class="contact-form">
+              <div class="form-group">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" id="name" name="name" class="form-input" placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Your Email</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="john.doe@example.com">
+              </div>
+              <div class="form-group">
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" name="message" rows="5" class="form-textarea"
+                  placeholder="Describe your issue..."></textarea>
+              </div>
+              <button type="submit" class="submit-button">
+                Send Message
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
@@ -290,13 +238,67 @@
       </div>
     </footer>
 
-  </ng-container>
+  </body>
+</ng-container>
 
-  <ng-template #adminTemplate>
-    <div class="dashboard-container">
-      <h1>Welcome to the Road Rescue Dashboard</h1>
-      <p>Your one-stop solution for all roadside assistance needs.</p>
-      <!-- Additional dashboard content can go here -->
+<ng-template #adminTemplate>
+
+  <body id="admin-body">
+    <div class="admin-dashboard-container">
+      <header class=" admin-header">
+        <h1>Operations Dashboard</h1>
+      </header>
+
+      <main class="admin-dashboard-grid">
+        <!-- Live Requests Column -->
+        <div class="card">
+          <h2 class="admin-card-header">Live Requests</h2>
+          <div class="admin-card-content">
+            <div *ngFor="let req of liveRequests; let i = index" class="item">
+              <div class="admin-item-details">
+                <h4>{{ req.name }} - {{ req.service }}</h4>
+                <p>{{ req.location }}</p>
+              </div>
+              <button (click)="dispatch(i)" class="admin-dispatch-button">Dispatch</button>
+            </div>
+            <p *ngIf="liveRequests.length === 0" style="color: #718096;">No new requests.</p>
+          </div>
+        </div>
+
+        <!-- Active Jobs Column -->
+        <div class="admin-card">
+          <h2 class="admin-card-header">Active Jobs</h2>
+          <div class="admin-card-content">
+            <div *ngFor="let job of activeJobs" class="admin-item">
+              <div class="admin-item-details">
+                <h4>{{ job.name }} - {{ job.service }}</h4>
+                <p>Assigned to: {{ job.team }}</p>
+              </div>
+            </div>
+            <p *ngIf="activeJobs.length === 0" style="color: #718096;">No active jobs.</p>
+          </div>
+        </div>
+
+        <!-- Team Status Column -->
+        <div class="admin-card">
+          <h2 class="admin-card-header">Team Status</h2>
+          <div class="admin-card-content">
+            <div *ngFor="let team of teams" class="admin-item">
+              <div class="admin-item-details">
+                <h4>{{ team.name }}</h4>
+              </div>
+              <div class="admin-team-status">
+                <div class="admin-status-dot" [ngClass]="{
+                                            'status-available': team.status === 'Available',
+                                            'status-on-job': team.status === 'On Job',
+                                            'status-offline': team.status === 'Offline'
+                                        }"></div>
+                <p>{{ team.status }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
-  </ng-template>
-</body>
+  </body>
+</ng-template>

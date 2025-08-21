@@ -1,48 +1,173 @@
-.services-container {
-  color: white;
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-  text-align: center;
+/* General Body Styles */
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000000;
+  margin: 0;
+  padding: 16px;
 }
 
-.services-container h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
+/* Main container for the content */
+.container {
+  max-width: 896px;
+  margin: 0 auto;
 }
 
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.service-card {
+/* The main white card holding all services */
+.services-card {
+  background-color: #000000;
   border-radius: 12px;
-  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 32px;
+}
+
+/* Main heading "Available Services" */
+.main-title {
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e9ecef;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fcfdff;
+  margin-top: 0;
+  margin-bottom: 24px;
 }
 
-.service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+/* --- NEW STYLES FOR LOCATION INPUT --- */
+.location-input-section {
+  margin-bottom: 32px;
+  text-align: left;
 }
 
-.service-icon {
-  font-size: 2.5rem;
-  color: #007bff;
-  margin-bottom: 1.5rem;
+.location-label {
+  display: block;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
-.service-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
+.input-group {
+  display: flex;
 }
 
-.service-card p {
-  font-size: 1rem;
-  line-height: 1.6;
+.location-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px 0 0 6px; /* Rounded on the left */
+  border: 1px solid #000000;
+  border-right: none;
+  font-size: 16px;
+}
+.location-input:focus {
+  outline: none;
+  border-color: #3b82f6; /* blue-500 */
+}
+
+.location-button {
+  background-color: #3b82f6; /* blue-500 */
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 0 24px;
+  border-radius: 0 6px 6px 0; /* Rounded on the right */
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.location-button:hover {
+  background-color: #2563eb; /* blue-600 */
+}
+/* --- END OF NEW STYLES --- */
+
+/* Spacing between service category blocks */
+.service-categories > * + * {
+  margin-top: 32px;
+}
+
+/* A single service category block (e.g., Towing, Fuel) */
+.service-category {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+/* Header for a category (icon + title) */
+.category-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.category-header .icon {
+  margin-right: 12px;
+}
+
+.category-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Spacing between provider items */
+.providers-list > * + * {
+  margin-top: 16px;
+}
+
+/* A single provider row */
+.provider-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border: 1px solid #f1f5f9;
+  border-radius: 6px;
+}
+
+.provider-details {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.provider-name {
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.provider-rating {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #718096;
+  display: inline-flex;
+  align-items: center;
+}
+
+.provider-rating svg {
+  width: 16px;
+  height: 16px;
+  color: #facc15; /* yellow-400 */
+  margin-right: 4px;
+}
+
+.provider-price {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #718096;
+}
+
+/* The "Request" button */
+.request-button {
+  background-color: #f59e0b; /* yellow-500 */
+  color: #ffffff;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.request-button:hover {
+  background-color: #d97706; /* yellow-600 */
 }
