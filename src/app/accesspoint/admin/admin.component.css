@@ -193,7 +193,6 @@ html {
     z-index: 1;
     font-weight: 300;
     font-size: 17px;
-    font-family: cursive;
     text-transform: uppercase;
     color: var(--color);
   }
