@@ -3,7 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment.development';
+import { environment } from '../environments/environment';
 
 interface liveRequests {
   userName: string;
