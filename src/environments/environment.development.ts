@@ -1,4 +1,5 @@
 export const environment = {
+    production: false,
     userSignup: 'http://localhost:3000/signup-user',
     userLogin: 'http://localhost:3000/login-user',
     serviceProviderSignup: 'http://localhost:3000/signup-serviceProvider',
