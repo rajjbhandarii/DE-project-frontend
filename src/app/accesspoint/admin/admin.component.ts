@@ -14,42 +14,51 @@ export class AdminComponent {
   isLogin: boolean = false;
   showPassword: boolean = false;
   inputType: string = 'password';
-  adminName: string = '';
+  serviceProviderName: string = '';
+  email: string = '';
   password: string = '';
 
   constructor(private access: AccesspointService) { }
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     this.inputType = this.showPassword ? 'text' : 'password';
   }
 
-  vilidateAdmin() {
-    if (this.adminName === '' || this.password === '') {
-      alert('Please fill in all fields');
-      return;
+  validateserviceProvider() {
+    if (this.isLogin) {
+      if (this.email === '' || this.password === '') {
+        alert('Please fill in all fields');
+        return false;
+      }
     } else {
-      return true; // Proceed with login if fields are filled
+      if (this.serviceProviderName === '' || this.email === '' || this.password === '') {
+        alert('Please fill in all fields');
+        return false;
+      }
     }
+    return true; // Proceed with login if fields are filled
   }
 
-  signupAdmin() {
-    if (!this.vilidateAdmin()) {
+  signupserviceProvider() {
+    if (!this.validateserviceProvider()) {
       return; // Exit if validation fails
     } else {
-      this.access.signup(this.adminName, this.password, 'admin');
-      this.adminName = '';
+      this.access.signup(this.serviceProviderName, this.email, this.password, 'serviceProvider');
+      this.serviceProviderName = '';
+      this.email = '';
       this.password = '';
       this.isLogin = false;
     }
   }
 
 
-  loginAdmin() {
-    if (!this.vilidateAdmin()) {
+  loginserviceProvider() {
+    if (!this.validateserviceProvider()) {
       return; // Exit if validation fails
     } else {
-      this.access.login(this.adminName, this.password, 'admin');
-      this.adminName = '';
+      this.access.login(this.email, this.password, 'serviceProvider');
+      this.email = '';
       this.password = '';
       this.isLogin = true;
     }

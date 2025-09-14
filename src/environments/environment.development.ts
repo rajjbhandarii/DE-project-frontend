@@ -1,7 +1,10 @@
 export const environment = {
     userSignup: 'http://localhost:3000/signup-user',
     userLogin: 'http://localhost:3000/login-user',
-    adminSignup: 'http://localhost:3000/signup-admin',
-    adminLogin: 'http://localhost:3000/login-admin',
-    requestServices: 'http://localhost:3000/request-services'
+    serviceProviderSignup: 'http://localhost:3000/signup-serviceProvider',
+    serviceProviderLogin: 'http://localhost:3000/login-serviceProvider',
+    requestServices: 'http://localhost:3000/request-services',
+    fetchServicesRequests: 'http://localhost:3000/fetch-servicesRequests',
+    fetchServicesProvider: 'http://localhost:3000/fetch-serviceProvider',
+
 };

@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 export class UserComponent {
   isLogin: boolean = true;
   userName: string = '';
+  email: string = '';
   password: string = '';
   showPassword: boolean = false;
   inputType: string = 'password';
@@ -23,20 +24,28 @@ export class UserComponent {
     this.showPassword = !this.showPassword;
     this.inputType = this.showPassword ? 'text' : 'password';
   }
-  vilidateAdmin() {
-    if (this.userName === '' || this.password === '') {
-      alert('Please fill in all fields');
-      return;
+
+  validateUser() {
+    if (this.isLogin) {
+      if (this.email === '' || this.password === '') {
+        alert('Please fill in all fields');
+        return false;
+      }
     } else {
-      return true; // Proceed with login if fields are filled
+      if (this.userName === '' || this.email === '' || this.password === '') {
+        alert('Please fill in all fields');
+        return false;
+      }
     }
+    return true; // Proceed with login or signup if fields are filled
   }
 
   signupUser() {
-    if (!this.vilidateAdmin()) {
+    if (!this.validateUser()) {
       return; // Exit if validation fails
     } else {
-      this.access.signup(this.userName, this.password, 'user');
+      this.access.signup(this.userName, this.email, this.password, 'user');
+      this.email = '';
       this.userName = '';
       this.password = '';
       this.isLogin = false;
@@ -44,12 +53,12 @@ export class UserComponent {
   }
 
   loginUser() {
-    if (!this.vilidateAdmin()) {
+    if (!this.validateUser()) {
       return; // Exit if validation fails
     }
     else {
-      this.access.login(this.userName, this.password, 'user');
-      this.userName = '';
+      this.access.login(this.email, this.password, 'user');
+      this.email = '';
       this.password = '';
       this.isLogin = true;
     }

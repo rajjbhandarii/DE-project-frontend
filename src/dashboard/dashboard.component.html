@@ -1,4 +1,4 @@
-<ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else adminTemplate">
+<ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else serviceProviderTemplate">
 
   <body>
     <section class="hero-section">
@@ -241,12 +241,12 @@
   </body>
 </ng-container>
 
-<ng-template #adminTemplate>
+<ng-template #serviceProviderTemplate>
 
   <body id="admin-body">
     <div class="admin-dashboard-container">
       <header class=" admin-header">
-        <h1>Operations Dashboard</h1>
+        <h1>Operations Dashboard:{{ currentUserName }}</h1>
       </header>
 
       <main class="admin-dashboard-grid">
@@ -254,9 +254,10 @@
         <div class="card">
           <h2 class="admin-card-header">Live Requests</h2>
           <div class="admin-card-content">
+
             <div *ngFor="let req of liveRequests; let i = index" class="item">
               <div class="admin-item-details">
-                <h4>{{ req.name }} - {{ req.service }}</h4>
+                <h4>{{ req.userName }} - {{ req.category }}</h4>
                 <p>{{ req.location }}</p>
               </div>
               <button (click)="dispatch(i)" class="admin-dispatch-button">Dispatch</button>

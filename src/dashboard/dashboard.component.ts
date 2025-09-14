@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AccesspointService, User } from '../app/accesspoint/accesspoint.service';
+import { Component, OnDestroy } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment.development';
+
+interface liveRequests {
+  userName: string;
+  location: string;
+  category: string;
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -11,31 +19,60 @@ import { AccesspointService, User } from '../app/accesspoint/accesspoint.service
   styleUrl: './dashboard.component.css'
 })
 
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
   title = 'Road Rescue';
   isMobileMenuOpen = false;
   isDarkMode = true;
-  currentUser$: Observable<User | null>;
+  currentUser$: Observable<AppUser | null>;
+  userEmail: any = '';
+  currentUser: any = '';
+  currentUserName: any = '';
+  liveRequests: liveRequests[] = [];
+  private destroy$ = new Subject<void>();
 
-  constructor(
-    private accesspointService: AccesspointService,
-  ) {
+  constructor(private accesspointService: AccesspointService, private http: HttpClient) {
     this.currentUser$ = this.accesspointService.currentUser$;
-    console.log('Current User:', this.currentUser$);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
+  ngOnInit(): void {
+    this.currentUser$.pipe(takeUntil(this.destroy$))
+      .subscribe(Appuser => {
+        if (Appuser) {
+          console.log('User Data:', Appuser.type, Appuser.email, Appuser.name);
+          // Check if Appuser type is 'serviceProvider'
+          if (Appuser.type === 'serviceProvider') {
+            this.userEmail = Appuser.email;
+            this.currentUser = Appuser.type;
+            this.currentUserName = Appuser.name;
+            console.log('Current User:', this.userEmail, this.currentUser);
+          }
+        } else {
+          this.userEmail = '';
+        }
+      });
 
-
-  // Initial data for the dashboard
-  liveRequests = [
-    { name: 'Priya Sharma', service: 'Flat Tire', location: 'Koramangala, Bangalore' },
-    { name: 'Amit Kumar', service: 'Battery Jump', location: 'Andheri, Mumbai' },
-    { name: 'Sunita Rao', service: 'Fuel Delivery', location: 'Jubilee Hills, Hyderabad' }
-  ];
+    if (this.currentUser === 'serviceProvider') {
+      setInterval(() => {
+        this.http.post<liveRequests[]>(environment.fetchServicesRequests, { serviceProviderEmail: this.userEmail }).subscribe({
+          next: (data) => {
+            this.liveRequests = data || [];
+          },
+          error: (error: unknown) => {
+            console.error('Failed to fetch services:', error);
+          }
+        });
+      }, 3000);
+    }
+  }
 
   activeJobs = [
     { name: 'Rohan Singh', service: 'Towing', location: 'HSR Layout, Bangalore', team: 'Team Alpha' }
@@ -63,7 +100,10 @@ export class DashboardComponent {
     // Add the request to active jobs
     this.activeJobs.unshift({
       ...requestToDispatch,
-      team: availableTeam.name
+      team: availableTeam.name,
+      name: '',
+      service: '',
+      location: ''
     });
 
     // Remove the request from the live queue

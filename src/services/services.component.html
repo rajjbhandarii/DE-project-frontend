@@ -6,7 +6,7 @@
         <div class="location-input-section">
             <label for="location-input" class="location-label">Your Current Location</label>
             <div class="input-group">
-                <input #locationInput type="text" id="location-input" class="location-input"
+                <input #locationInput type="text" id="location-input" class="location-input" [value]="userLocation"
                     placeholder="e.g., Koramangala, Bangalore">
                 <button (click)="setLocation(locationInput.value)" class="location-button">Set</button>
             </div>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="providers-list">
-                    <div *ngFor="let provider of service.providers" class="provider-item">
+                    <div *ngFor="let provider of serviceProvidersData" class="provider-item">
                         <div class="provider-details">
                             <span class="provider-name">{{ provider.name }}</span>
                             <span class="provider-rating">
@@ -30,11 +30,11 @@
                                         d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                                     </path>
                                 </svg>
-                                {{ provider.rating }}
+                                4.5{{ provider.rating }}
                             </span>
-                            <span class="provider-price">- ₹{{ provider.price }}</span>
+                            <span class="provider-price">- 500₹{{ provider.price }}</span>
                         </div>
-                        <button (click)="requestService(provider.name)" class="request-button">
+                        <button (click)="requestService(provider.email, service.category)" class="request-button">
                             Request
                         </button>
                     </div>

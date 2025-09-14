@@ -1,14 +1,27 @@
-<header class="navbar">
-    <h1>Road Rescue</h1>
-    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
-    <nav [class.show]="menuActive">
-        <button class="close-menu" (click)="toggleMenu()">✖</button>
-        <a (click)="toggleMenu()" routerLink="/dashboard">Home</a>
-        <a (click)="toggleMenu()" routerLink="/services">Service</a>
-        <a (click)="toggleMenu()" routerLink="/about">About</a>
-        <a (click)="toggleMenu()" routerLink="/contact">Contact</a>
-        <a (click)="toggleMenu()" routerLink="/userpage">Logout</a>
-    </nav>
-</header>
-
+<ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else serviceProviderTemplate">
+    <header class="navbar">
+        <h1>Road Rescue</h1>
+        <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+        <nav [class.show]="menuActive">
+            <button class="close-menu" (click)="toggleMenu()">✖</button>
+            <a (click)="toggleMenu()" routerLink="/dashboard">Home</a>
+            <a (click)="toggleMenu()" routerLink="/services">Service</a>
+            <a (click)="toggleMenu()" routerLink="/about">About</a>
+            <a (click)="toggleMenu()" routerLink="/contact">Contact</a>
+            <a (click)="toggleMenu()" routerLink="/userpage">Logout</a>
+        </nav>
+    </header>
+</ng-container>
+<ng-template #serviceProviderTemplate>
+    <header class="navbar">
+        <h1>Road Rescue</h1>
+        <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+        <nav [class.show]="menuActive">
+            <button class="close-menu" (click)="toggleMenu()">✖</button>
+            <a (click)="toggleMenu()" routerLink="/dashboard">Home</a>
+            <a (click)="toggleMenu()" routerLink="/adminservices">Service Management</a>
+            <a (click)="toggleMenu()" routerLink="/adminpage">Logout</a>
+        </nav>
+    </header>
+</ng-template>
 <router-outlet></router-outlet>

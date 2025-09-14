@@ -19,7 +19,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // This guard protects all children
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'services', component: ServicesComponent }
+      { path: 'services', component: ServicesComponent },
     ]
   },
 
