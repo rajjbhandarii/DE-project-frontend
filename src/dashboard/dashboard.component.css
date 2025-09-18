@@ -602,6 +602,7 @@ body {
     text-align: left;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    padding-top: 30px;
   }
   .hero-subtitle {
     font-size: 0.875rem;
@@ -640,6 +641,7 @@ body {
   background-color: #000000;
   margin: 0;
   padding: 16px;
+  min-height: 100vh;
 }
 
 /* Main container for the dashboard */
@@ -661,7 +663,6 @@ body {
   font-weight: 700;
   color: #f0f5ff;
   margin: 0;
-  padding-top: 50px;
 }
 
 /* Grid layout for the cards */
