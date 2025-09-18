@@ -7,7 +7,8 @@
   padding: 0.7rem;
   font-family: Arial, sans-serif;
   max-width: 100%;
-
+  position: fixed;
+  width: -webkit-fill-available;
   z-index: 1000;
   .close-menu {
     display: none;

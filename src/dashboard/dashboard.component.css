@@ -661,6 +661,7 @@ body {
   font-weight: 700;
   color: #f0f5ff;
   margin: 0;
+  padding-top: 50px;
 }
 
 /* Grid layout for the cards */

@@ -18,8 +18,10 @@ export const routes: Routes = [
     component: NavbarComponent,
     canActivate: [AuthGuard], // This guard protects all children
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: DashboardComponent, data: { scrollToSection: 'hero' } },
       { path: 'services', component: ServicesComponent },
+      { path: 'about', component: DashboardComponent, data: { scrollToSection: 'about' } },
+      { path: 'contact', component: DashboardComponent, data: { scrollToSection: 'contact' } }
     ]
   },
 
