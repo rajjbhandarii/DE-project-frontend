@@ -642,6 +642,7 @@ body {
   margin: 0;
   padding: 16px;
   min-height: 100vh;
+  padding-top: 60px;
 }
 
 /* Main container for the dashboard */
@@ -674,7 +675,7 @@ body {
 
 /* Individual card styling */
 .admin-card {
-  background-color: #000000;
+  background-color: #1e1d1d;
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -694,6 +695,13 @@ body {
 /* Spacing for items within cards */
 .admin-card-content > * + * {
   margin-top: 12px;
+}
+
+.admin-card-content {
+  background-color: #1e1d1d;
+
+  border-radius: 8px;
+  padding: 12px;
 }
 
 /* Styling for a single request or job item */

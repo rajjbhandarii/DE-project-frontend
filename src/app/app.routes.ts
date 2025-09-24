@@ -6,6 +6,7 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { UserComponent } from './accesspoint/user/user.component';
 import { ServicesComponent } from '../services/services.component';
+import { ServiceManagementComponent } from '../service-management/service-management.component';
 
 export const routes: Routes = [
   { path: 'adminpage', component: AdminComponent },
@@ -21,7 +22,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, data: { scrollToSection: 'hero' } },
       { path: 'services', component: ServicesComponent },
       { path: 'about', component: DashboardComponent, data: { scrollToSection: 'about' } },
-      { path: 'contact', component: DashboardComponent, data: { scrollToSection: 'contact' } }
+      { path: 'contact', component: DashboardComponent, data: { scrollToSection: 'contact' } },
+      { path: 'serviceManagement', component: ServiceManagementComponent }
     ]
   },
 

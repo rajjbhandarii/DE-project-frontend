@@ -1,0 +1,166 @@
+/* src/app/manage-services/manage-services.component.css */
+
+/* Re-using the same theme variables for a consistent look */
+:host {
+  --background-color: #000000;
+  --card-background: #2d3748;
+  --text-primary: #edf2f7;
+  --text-secondary: #a0aec0;
+  --border-color: #4a5568;
+  --primary-accent: #38b2ac;
+  --primary-accent-hover: #319795;
+  --danger-color: #e53e3e;
+  --danger-color-hover: #c53030;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --border-radius: 0.75rem;
+}
+
+.main-container {
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: "Inter", sans-serif;
+}
+
+.main-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Card Styles (same as dashboard) */
+.card {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.card-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+/* Form Styles */
+.service-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.3);
+}
+
+.submit-button {
+  background-color: var(--primary-accent);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  align-self: flex-start;
+}
+
+.submit-button:hover {
+  background-color: var(--primary-accent-hover);
+}
+
+/* Current Services List Styles */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.list-item:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.item-title {
+  font-weight: 600;
+}
+.item-category {
+  color: var(--primary-accent);
+  font-weight: 400;
+}
+.item-subtitle {
+  color: var(--text-secondary);
+  margin: 0.25rem 0;
+}
+.item-price {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.delete-button:hover {
+  color: var(--danger-color);
+}
+
+.empty-state {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
