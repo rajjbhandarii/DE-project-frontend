@@ -1,45 +1,62 @@
-<div class="main-container">
-    <header class="main-header">
+<div class="main-container" [ngStyle]="{'background-color':!isDarkMode?'white':''}">
+    <header class="main-header" [ngStyle]="{'color':isDarkMode?'white':'black'}">
         <h1>Manage Your Services</h1>
     </header>
 
     <div class="content-grid">
-        <div class="card">
-            <h2 class="card-header">Add a New Service</h2>
+        <div class="card" [ngStyle]="{'background-color':!isDarkMode?'white
+        ':'',
+            'box-shadow':!isDarkMode?'0 4px 6px -1px white,
+    0 2px 4px -1px white;':''
+        }">
+            <h2 class="card-header" [ngStyle]="{'color':!isDarkMode?'black':''}">Add a New Service</h2>
             <div class="card-content">
-                <form (ngSubmit)="addService()" class="service-form">
+                <form (ngSubmit)="addService()" class="service-form"
+                    [ngStyle]="{'background-color':!isDarkMode?'white':''}">
                     <div class="form-group">
                         <label for="serviceName">Service Name</label>
                         <input id="serviceName" type="text" [(ngModel)]="newService.name" name="serviceName"
+                            [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
                             placeholder="e.g., Leaky Faucet Repair" required>
                     </div>
 
                     <div class="form-group">
                         <label for="serviceCategory">Category</label>
-                        <select id="serviceCategory" [(ngModel)]="newService.category" name="serviceCategory">
-                            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                        <select id="serviceCategory" [(ngModel)]="newService.category" name="serviceCategory"
+                            [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}">
+                            <option [ngStyle]="{'background-color':!isDarkMode?'white':''}"
+                                *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="servicePrice">Base Price ($)</label>
                         <input id="servicePrice" type="number" [(ngModel)]="newService.price" name="servicePrice"
+                            [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
                             placeholder="e.g., 99.99" required>
                     </div>
 
                     <div class="form-group">
                         <label for="serviceDescription">Description</label>
-                        <textarea id="serviceDescription" [(ngModel)]="newService.description" name="serviceDescription"
+                        <textarea [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
+                            id="serviceDescription" [(ngModel)]="newService.description" name="serviceDescription"
                             rows="4" placeholder="Briefly describe what this service includes..."></textarea>
                     </div>
 
-                    <button type="submit" class="submit-button">Add Service</button>
+                    <button type="submit" class="submit-button"
+                        [ngStyle]="{'background-color':!isDarkMode?'black':'','color':!isDarkMode?'white':''}">Add
+                        Service</button>
                 </form>
             </div>
         </div>
 
-        <div class="card">
-            <h2 class="card-header">Current Services ({{ currentServices.length }})</h2>
+        <div class="card" [ngStyle]="{'background-color':!isDarkMode?'white
+        ':'',
+            'box-shadow':!isDarkMode?'0 4px 6px -1px white,
+    0 2px 4px -1px white;':''
+        }">
+            <h2 class="card-header " [ngStyle]="{'color':!isDarkMode?'black':''}">Current Services ({{
+                currentServices.length }})</h2>
             <div class="card-content">
                 <div *ngIf="currentServices.length > 0; else noServices">
                     <div *ngFor="let service of currentServices" class="list-item">

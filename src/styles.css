@@ -1,7 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  /* Default Light Theme Variables */
+  --color-blue-primary: #3b82f6;
+  --color-blue-primary-t: rgba(59, 130, 246, 0.8);
+  --color-blue-medium: #3b82f6;
+  --color-blue-dark: #2563eb;
+  --color-purple: #8b5cf6;
+  --color-red: #ef4444;
+  --color-yellow: #f59e0b;
+  --color-green-bright: #22c55e;
+
+  /* Text & Background Colors */
+  --color-text-primary: #1f2937; /* Dark gray for text */
+  --color-text-secondary: #6b7280; /* Lighter gray */
+  --color-background-primary: #ffffff; /* White background */
+  --color-background-secondary: #f9fafb; /* Off-white */
+  --color-card-background: #ffffff;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Neutral & Grayscale Colors */
+  --color-border-light: #e5e7eb;
+  --color-border-lighter: #f3f4f6;
+
+  /* Status Colors */
+  --status-color-available: #22c55e;
+  --status-color-on-job: #f59e0b;
+  --status-color-offline: #64748b;
+
+  /* Shadow Colors */
+  --shadow-color-t: rgba(0, 0, 0, 0.1);
+  --shadow-color-green-t: rgba(34, 197, 94, 0.3);
+}
+
+body.dark-mode {
+  /* Dark Theme Variable Overrides */
+  --color-blue-primary: #60a5fa; /* Lighter blue for dark mode */
+  --color-blue-primary-t: rgba(96, 165, 250, 0.6);
+
+  /* Text & Background Colors */
+  --color-text-primary: #f9fafb; /* Off-white for text */
+  --color-text-secondary: #9ca3af; /* Lighter gray */
+  --color-background-primary: #111827; /* Dark blue-gray background */
+  --color-background-secondary: #1f2937;
+  --color-card-background: #1f2937;
+
+  /* Neutral & Grayscale Colors */
+  --color-border-light: #374151;
+  --color-border-lighter: #4b5563;
+
+  /* Shadow Colors */
+  --shadow-color-t: rgba(255, 255, 255, 0.1);
+}
+
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: #000;
+  font-family: "Arial", sans-serif;
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

@@ -15,6 +15,10 @@ body {
   margin: 0 auto;
 }
 
+.services-section {
+  padding: 1rem;
+  padding-top: 3.5rem;
+}
 /* The main white card holding all services */
 .services-card {
   background-color: #000000;
@@ -90,12 +94,11 @@ body {
 
 /* A single service category block (e.g., Towing, Fuel) */
 .service-category {
-  border: 1px solid #e2e8f0;
+  border: 3px solid #000000;
   border-radius: 8px;
   padding: 24px;
-  background-color: #1e1d1d;
+  background-color: #e3dbdb;
 }
-
 /* Header for a category (icon + title) */
 .category-header {
   display: flex;
@@ -124,7 +127,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--border-color, #000000);
   border-radius: 6px;
 }
 
@@ -136,13 +139,11 @@ body {
 
 .provider-name {
   font-weight: 500;
-  color: #4a5568;
 }
 
 .provider-rating {
   margin-left: 8px;
   font-size: 14px;
-  color: #718096;
   display: inline-flex;
   align-items: center;
 }
@@ -157,7 +158,6 @@ body {
 .provider-price {
   margin-left: 8px;
   font-size: 14px;
-  color: #718096;
 }
 
 /* The "Request" button */

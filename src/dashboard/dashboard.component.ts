@@ -4,7 +4,8 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TheamServiceService } from '../app/theam-service.service';
 
 interface LiveRequest {
   userName: string;
@@ -31,18 +32,19 @@ interface ActiveJob {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
   title = 'Road Rescue';
   isMobileMenuOpen = false;
-  isDarkMode = true;
-  currentUser$: Observable<AppUser | null>;
+  isDarkMode: boolean = false; // Default to light mode
+  State$: Observable<AppUser | null>;
   userEmail = '';
   currentUser = '';
   currentUserName = '';
   liveRequests: LiveRequest[] = [];
   private destroy$ = new Subject<void>();
+  aboutImage = 'assets/about.png';
+  heroImage = 'assets/hero.png';
 
-  // Define teams and activeJobs
   activeJobs: ActiveJob[] = [
     { name: 'Rohan Singh', service: 'Towing', location: 'HSR Layout, Bangalore', team: 'Team Alpha' }
   ];
@@ -57,46 +59,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private accesspointService: AccesspointService,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private themeService: TheamServiceService // Inject the theme service
   ) {
-    this.currentUser$ = this.accesspointService.currentUser$;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.destroy$.unsubscribe();
+    this.State$ = this.accesspointService.currentState$;
   }
 
   ngOnInit(): void {
-    // Subscribe to current user
-    this.currentUser$.pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        if (user) {
-          console.log('User Data:', user.type, user.email, user.name);
 
+    console.log(this.State$);
+    this.State$.pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        // user?.visual === 'dark' ? this.isDarkMode = true : this.isDarkMode = false;
+        if (user) {
           if (user.type === 'serviceProvider') {
             this.userEmail = user.email;
             this.currentUser = user.type;
             this.currentUserName = user.name;
-            console.log('Current User:', this.userEmail, this.currentUser);
-
-            // Set interval for service provider
+            this.isDarkMode = user.visual === 'dark' ? true : false;
+            // Apply theme immediately
+            this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
             this.setupServiceProviderInterval();
+          } else {
+            this.userEmail = user.email;
+            this.currentUser = user.type;
+            this.currentUserName = user.name;
+            this.isDarkMode = user.visual === 'dark' ? true : false;
+            // Apply theme immediately
+            this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
           }
         } else {
-          this.userEmail = '';
-          this.currentUser = '';
-          this.currentUserName = '';
+          alert('User not found');
+          this.router.navigate(['/userpage']);
         }
       });
 
-    // Check if we need to scroll to a specific section
+    // Subscribe to theme service changes
+    this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
+      .subscribe(isDark => {
+        this.isDarkMode = isDark;
+      });
+
     this.route.data.pipe(takeUntil(this.destroy$)).subscribe(data => {
       if (data['scrollToSection']) {
-        setTimeout(() => {
-          this.scrollToSection(data['scrollToSection']);
-        }, 100); // Short delay to ensure DOM is ready
+        setTimeout(() => this.scrollToSection(data['scrollToSection']), 100);
       } else if (data['scrollToSection'] === undefined) {
         this.scrollToSection('hero');
       }
@@ -114,18 +121,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
           environment.fetchServicesRequests,
           { serviceProviderEmail: this.userEmail }
         ).subscribe({
-          next: (data) => {
-            this.liveRequests = data || [];
-          },
-          error: (error) => {
-            console.error('Failed to fetch services:', error);
-          }
+          next: (data) => this.liveRequests = data || [],
+          error: (error) => console.error('Failed to fetch services:', error)
         });
       }, 3000);
     }
   }
 
-  // Method to scroll to a specific section
   scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -133,30 +135,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Function to dispatch a request
   dispatch(requestIndex: number): void {
-    // Find an available team
     const availableTeam = this.teams.find(team => team.status === 'Available');
     if (!availableTeam) {
       alert('No teams are currently available.');
       return;
     }
-
-    // Get the request to be dispatched
     const requestToDispatch = this.liveRequests[requestIndex];
-
-    // Add the request to active jobs
     this.activeJobs.unshift({
       name: requestToDispatch?.userName || '',
       service: requestToDispatch?.category || '',
       location: requestToDispatch?.location || '',
       team: availableTeam.name
     });
-
-    // Remove the request from the live queue
     this.liveRequests.splice(requestIndex, 1);
-
-    // Update the team's status
     availableTeam.status = 'On Job';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.destroy$.unsubscribe();
   }
 }

@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
+import { TheamServiceService } from '../app/theam-service.service';
 
 export interface Service {
   serviceId: any;
@@ -21,8 +22,12 @@ export interface Service {
   styleUrls: ['./service-management.component.css']
 })
 export class ServiceManagementComponent {
-  currentUser$: Observable<AppUser | null>;
+
+  currentState$: Observable<AppUser | null>;
   serviceProviderEmail!: string;
+  isDarkMode: boolean = false;
+  private destroy$ = new Subject<void>();
+
 
   // Array to hold the list of existing services
   currentServices: Service[] = [];
@@ -39,9 +44,9 @@ export class ServiceManagementComponent {
   // Available categories for the dropdown
   categories: string[] = ['Towing service', 'Fuel Delivery', 'Battery Assistance'];
 
-  constructor(private accesspointService: AccesspointService, private http: HttpClient) {
-    this.currentUser$ = this.accesspointService.currentUser$;
-    this.currentUser$.subscribe(Appuser => {
+  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: TheamServiceService) {
+    this.currentState$ = this.accesspointService.currentState$;
+    this.currentState$.subscribe(Appuser => {
       if (Appuser) {
         console.log('User Data:', Appuser.type, Appuser.email, Appuser.name);
         if (Appuser.type === 'serviceProvider') {
@@ -51,6 +56,12 @@ export class ServiceManagementComponent {
         this.serviceProviderEmail = '';
       }
     });
+  }
+  ngOnInit(): void {
+    this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
+      .subscribe(isDark => {
+        this.isDarkMode = isDark;
+      });
   }
 
   addToActiveServicesList() {
@@ -99,4 +110,6 @@ export class ServiceManagementComponent {
   deleteService(serviceId: number): void {
     this.currentServices = this.currentServices.filter(service => service.serviceId !== serviceId);
   }
+
+
 }

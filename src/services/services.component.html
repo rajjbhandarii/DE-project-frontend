@@ -1,5 +1,5 @@
-<div class="container">
-    <div class="services-card">
+<div class="container" [ngClass]="{ 'dark-mode': isDarkMode }">
+    <div class="services-section">
         <h1 class="main-title">Available Services</h1>
 
         <div class="location-input-section">
@@ -11,10 +11,13 @@
             </div>
         </div>
 
-        <div class="service-category">
+        <div [ngStyle]="{'background-color': isDarkMode ? '#1a202c' : '#e3dbdb', 
+                                    'border': isDarkMode ? '3px solid #ffd3d3' : '3px solid #000000'}"
+            class="service-category">
             <div class="category-header">Towing Services</div>
             <div class="providers-list">
-                <div *ngFor="let service of TowingServices" class="provider-item">
+                <div *ngFor="let service of TowingServices" class="provider-item"
+                    [ngStyle]="{'border': !isDarkMode ?'1px solid var(--border-color, #000000)' : '1px solid white'}">
                     <div class="provider-details">
                         <span class="provider-name">{{ service.providerName }} - {{ service.serviceName }}</span>
                         <span class="provider-rating">
@@ -34,10 +37,13 @@
             </div>
         </div>
 
-        <div class="service-category">
+        <div [ngStyle]="{'background-color': isDarkMode ? '#1a202c' : '#e3dbdb', 
+                                    'border': isDarkMode ? '3px solid #ffd3d3' : '3px solid #000000'}"
+            class="service-category">
             <div class="category-header">Fuel Delivery</div>
             <div class="providers-list">
-                <div *ngFor="let service of FuelServices" class="provider-item">
+                <div *ngFor="let service of FuelServices" class="provider-item"
+                    [ngStyle]="{'border': !isDarkMode ?'1px solid var(--border-color, #000000)' : '1px solid white'}">
                     <div class="provider-details">
                         <span class="provider-name">{{ service.providerName }} - {{ service.serviceName }}</span>
                         <span class="provider-rating">
@@ -57,10 +63,13 @@
             </div>
         </div>
 
-        <div class="service-category">
+        <div [ngStyle]="{'background-color': isDarkMode ? '#1a202c' : '#e3dbdb', 
+                                    'border': isDarkMode ? '3px solid #ffd3d3' : '3px solid #000000'}"
+            class="service-category">
             <div class="category-header">Battery Assistance</div>
             <div class="providers-list">
-                <div *ngFor="let service of BatteryServices" class="provider-item">
+                <div *ngFor="let service of BatteryServices" class="provider-item"
+                    [ngStyle]="{'border': !isDarkMode ?'1px solid var(--border-color, #000000)' : '1px solid white'}">
                     <div class="provider-details">
                         <span class="provider-name">{{ service.providerName }} - {{ service.serviceName }}</span>
                         <span class="provider-rating">

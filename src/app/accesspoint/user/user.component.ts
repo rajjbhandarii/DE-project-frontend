@@ -13,8 +13,8 @@ import { RouterLink } from '@angular/router';
 export class UserComponent {
   isLogin: boolean = true;
   userName: string = '';
-  email: string = '';
-  password: string = '';
+  email: string = 'raj@gmail.com';
+  password: string = 'raj';
   showPassword: boolean = false;
   inputType: string = 'password';
 

@@ -1,10 +1,10 @@
-<ng-container *ngIf="(currentUser$ | async)?.type === 'user'; else serviceProviderTemplate">
+<ng-container *ngIf="(State$ | async)?.type === 'user'; else serviceProviderTemplate">
 
   <body>
     <section id="hero" class="hero-section">
       <div class="hero-content-container">
         <div class="hero-text-content">
-          <h1 class="hero-title">
+          <h1 [ngClass]="{'dark-mode-hero-title': isDarkMode, 'hero-title': !isDarkMode}">
             Stuck on the Road? <br> We're Here to Help!
           </h1>
           <p class="hero-subtitle">
@@ -16,13 +16,13 @@
           </a>
         </div>
         <div class="hero-image-container hidden-sm">
-          <img src="about.png" alt=" Road rescue image" class="hero-image">
+          <img [src]="heroImage" alt=" Road rescue image" class="hero-image" />
         </div>
       </div>
 
     </section>
 
-    <section id=" services" class="services-section">
+    <section id="services" class="services-section">
       <div class="section-container">
         <h2 class="section-title">Our Comprehensive Services</h2>
         <div class="services-grid">
@@ -114,7 +114,7 @@
     <section id="about" class="about-section">
       <div class="section-container about-content-container">
         <div class="about-image-container hidden-sm">
-          <img src="about.png" alt="About Us Image" class="about-image">
+          <img [src]="aboutImage" loading="lazy" alt=" About Us Image" class="about-image">
         </div>
         <div class="about-text-content">
           <h2 class="section-title">About Road Rescue</h2>
@@ -132,7 +132,8 @@
             satisfaction
             are our top priorities.
           </p>
-          <a class="about-button">
+          <a class="about-button"
+            [ngStyle]="{'color': isDarkMode ? 'var(--color-light-blue-text)' : 'var(--color-light-blue-text)','border':isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
             Learn More
           </a>
         </div>
@@ -191,7 +192,8 @@
         <p class="contact-subtitle">
           Don't hesitate! Call us now for quick and reliable roadside help.
         </p>
-        <a href="tel:+1234567890" class="call-button">
+        <a href="tel:+1234567890" class="call-button"
+          [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'black', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
           <svg class="call-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -203,14 +205,15 @@
         <p class="contact-form-intro">Or fill out our quick contact form below:</p>
         <div class="contact-form-wrapper">
           <div class="contact-form-container">
-            <form class="contact-form">
+            <form class="contact-form" autocomplete="on">
               <div class="form-group">
                 <label for="name" class="form-label">Your Name</label>
-                <input type="text" id="name" name="name" class="form-input" placeholder="John Doe">
+                <input type="text" autocomplete="on" id="name" name="name" class="form-input" placeholder="John Doe">
               </div>
               <div class="form-group">
                 <label for="email" class="form-label">Your Email</label>
-                <input type="email" id="email" name="email" class="form-input" placeholder="john.doe@example.com">
+                <input type="email" autocomplete="on" id="email" name="email" class="form-input"
+                  placeholder="john.doe@example.com">
               </div>
               <div class="form-group">
                 <label for="message" class="form-label">Message</label>
@@ -243,7 +246,7 @@
 
 <ng-template #serviceProviderTemplate>
 
-  <body id="admin-body">
+  <body class="admin-body">
     <div class="admin-dashboard-container">
       <header class=" admin-header">
         <h1>Operations Dashboard:{{ currentUserName }}</h1>
@@ -251,9 +254,11 @@
 
       <main class="admin-dashboard-grid">
         <!-- Live Requests Column -->
-        <div class="card">
+        <div [ngStyle]="{'background-color': isDarkMode ? '#1A202C' : '#FFFFFF'}" class="admin-card">
           <div class="admin-card-content">
-            <h2 class="admin-card-header">Live Requests</h2>
+            <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
+              class="admin-card-header">Live
+              Requests</h2>
 
             <div *ngFor="let req of liveRequests; let i = index" class="item">
               <div class="admin-item-details">
@@ -267,8 +272,9 @@
         </div>
 
         <!-- Active Jobs Column -->
-        <div class="admin-card">
-          <h2 class="admin-card-header">Active Jobs</h2>
+        <div [ngStyle]="{'background-color': isDarkMode ? '#1A202C' : '#FFFFFF'}" class="admin-card">
+          <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
+            class="admin-card-header">Active Jobs</h2>
           <div class="admin-card-content">
             <div *ngFor="let job of activeJobs" class="admin-item">
               <div class="admin-item-details">
@@ -281,8 +287,9 @@
         </div>
 
         <!-- Team Status Column -->
-        <div class="admin-card">
-          <h2 class="admin-card-header">Team Status</h2>
+        <div [ngStyle]="{'background-color': isDarkMode ? '#1A202C' : '#FFFFFF'}" class="admin-card">
+          <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
+            class="admin-card-header">Team Status</h2>
           <div class="admin-card-content">
             <div *ngFor="let team of teams" class="admin-item">
               <div class="admin-item-details">

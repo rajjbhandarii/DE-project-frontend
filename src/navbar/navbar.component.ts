@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
-import { Observable } from 'rxjs/internal/Observable';
+import { Subject, Observable, takeUntil } from 'rxjs';
+import { TheamServiceService } from '../app/theam-service.service';
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, CommonModule, RouterOutlet],
@@ -10,12 +11,56 @@ import { Observable } from 'rxjs/internal/Observable';
   styleUrls: ['./navbar.component.css']
 })
 
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
   menuActive = false;
-  currentUser$: Observable<AppUser | null>;
+  userEmail = '';
+  currentUser = '';
+  currentUserName = '';
+  visualTheme = '';
+  isDarkMode: boolean = false;
+  private destroy$ = new Subject<void>();
 
-  constructor(private accesspointService: AccesspointService) {
-    this.currentUser$ = this.accesspointService.currentUser$;
+  constructor(public accesspointService: AccesspointService, private themeService: TheamServiceService) { };
+
+  ngOnInit(): void {
+
+    // Subscribe to theme service changes
+    this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
+      .subscribe(isDark => {
+        this.isDarkMode = isDark;
+      });
+
+    // Subscribe to user changes
+    this.accesspointService.currentState$.pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        if (user) {
+          this.userEmail = user.email;
+          this.currentUser = user.type;
+          this.currentUserName = user.name;
+          this.visualTheme = user.visual;
+
+          // Apply user's saved theme preference
+          const isDark = user.visual === 'dark';
+          this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
+        }
+      });
+  }
+
+  changeTheme(theme: string) {
+
+    const currentUser = this.accesspointService.getCurrentState;
+    if (currentUser) {
+      // This calls the setter method automatically
+      this.accesspointService.updateCurrentState = {
+        ...currentUser,
+        visual: theme
+      };
+      this.themeService.updateUserThemePreference(theme as 'light' | 'dark');
+    } else {
+      console.log("No current user to update theme for.");
+    }
+
+    this.visualTheme = theme;
   }
 
   toggleMenu() {
@@ -23,5 +68,10 @@ export class NavbarComponent {
   }
   logout() {
     this.accesspointService.logout();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.destroy$.unsubscribe();
   }
 }

@@ -8,6 +8,7 @@ export interface AppUser {
   name: string;
   email: string;
   type: string;
+  visual: string;
 }
 
 export interface AuthResponse {
@@ -23,7 +24,20 @@ export interface AuthResponse {
 export class AccesspointService {
 
   private currentUserSubject = new BehaviorSubject<AppUser | null>(null);
-  public currentUser$ = this.currentUserSubject.asObservable();
+  public currentState$ = this.currentUserSubject.asObservable();
+
+  public get getCurrentState(): AppUser | null {
+    return this.currentUserSubject.value;
+  }
+
+  public set updateCurrentState(value: AppUser | null) {
+    this.currentUserSubject.next(value);
+    if (value) {
+      localStorage.setItem('user', JSON.stringify(value));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }
 
   constructor(private router: Router, private http: HttpClient) {
     this.loadUserFromStorage();
@@ -32,12 +46,13 @@ export class AccesspointService {
   private loadUserFromStorage() {
     const user = localStorage.getItem('user');
     if (user) {
-      this.currentUserSubject.next(JSON.parse(user));
+      const parsedUser = JSON.parse(user);
+      // Ensure visual property exists, default to 'light' if missing
+      if (!parsedUser.visual) {
+        parsedUser.visual = 'light';
+      }
+      this.currentUserSubject.next(parsedUser);
     }
-  }
-
-  public get currentUserValue(): AppUser | null {
-    return this.currentUserSubject.value;
   }
 
   signup(name: string, email: string, password: string, roleType: string) {
@@ -49,7 +64,7 @@ export class AccesspointService {
 
         if (response.token) {
           // Save token and user
-          const roleBasedUser: AppUser = { name: name, email: email, type: roleType };
+          const roleBasedUser: AppUser = { name: name, email: email, type: roleType, visual: 'light' };
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(roleBasedUser));
           this.currentUserSubject.next(roleBasedUser);
@@ -82,11 +97,21 @@ export class AccesspointService {
     this.http.post<AuthResponse>(endpoint, credentials).subscribe({
       next: (response: AuthResponse) => {
         if (response.token) {
-          // Store token and user info
+          // Check if user has existing preferences in localStorage
+          const existingUser = localStorage.getItem('user');
+          let savedVisualTheme = 'light'; // default to light
+
+          if (existingUser) {
+            const parsed = JSON.parse(existingUser);
+            savedVisualTheme = parsed.visual || 'light';
+          }
+
+          // Store token and user info, preserving theme preference
           const roleBasedUser: AppUser = {
             name: response.name || '',
             email: email,
-            type: roleType
+            type: roleType,
+            visual: savedVisualTheme
           };
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(roleBasedUser));

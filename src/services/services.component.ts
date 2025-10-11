@@ -46,7 +46,7 @@ interface ApiProvider {
   styleUrls: ['./services.component.css']
 })
 export class ServicesComponent implements OnInit {
-  currentUser$: Observable<AppUser | null>;
+  currentState$: Observable<AppUser | null>;
   userLocation: string = 'Vapi';
   userName: string = '';
 
@@ -54,12 +54,13 @@ export class ServicesComponent implements OnInit {
   TowingServices: DisplayService[] = [];
   FuelServices: DisplayService[] = [];
   BatteryServices: DisplayService[] = [];
-
+  isDarkMode: boolean = false;
   constructor(private accesspointService: AccesspointService, private http: HttpClient) {
-    this.currentUser$ = this.accesspointService.currentUser$;
-    this.currentUser$.subscribe(user => {
+    this.currentState$ = this.accesspointService.currentState$;
+    this.currentState$.subscribe(user => {
       if (user) {
         this.userName = user.name;
+        this.isDarkMode = user.visual === 'dark';
       }
     });
   }

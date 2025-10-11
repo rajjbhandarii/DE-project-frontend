@@ -2,7 +2,7 @@
     <div class="main">
         <div class=" form-container">
             <p class="title">Welcome back User</p>
-            <form class="form">
+            <form class="form" autocomplete="on">
                 <input type="email" class="input" [(ngModel)]="email" name="logininput" placeholder="Email"
                     required="true">
                 <div class="password-container">
@@ -33,7 +33,7 @@
     <div class="main">
         <div class=" form-container">
             <p class="title">Create User account</p>
-            <form class="form">
+            <form class="form" autocomplete="on">
                 <input type="text" class="input" name="signupinput" [(ngModel)]="userName" placeholder="Username">
                 <input type="email" class="input" name="signupinput" [(ngModel)]="email" placeholder="Email">
                 <input type="password" class="input" name="signupinput" [(ngModel)]="password" placeholder="Password">
