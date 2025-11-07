@@ -43,6 +43,11 @@ export class AccesspointService {
     this.loadUserFromStorage();
   }
 
+  emailValidaetor(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   private loadUserFromStorage() {
     const user = localStorage.getItem('user');
     if (user) {
@@ -56,80 +61,89 @@ export class AccesspointService {
   }
 
   signup(name: string, email: string, password: string, roleType: string) {
-    const credentials = roleType === 'serviceProvider' ? { serviceProviderName: name, email, password } : { userName: name, email, password };
-    const endpoint = roleType === 'serviceProvider' ? environment.serviceProviderSignup : environment.userSignup;
+    if (this.emailValidaetor(email)) {
+      const credentials = roleType === 'serviceProvider' ? { serviceProviderName: name, email, password } : { userName: name, email, password };
+      const endpoint = roleType === 'serviceProvider' ? environment.serviceProviderSignup : environment.userSignup;
 
-    this.http.post<AuthResponse>(endpoint, credentials).subscribe({
-      next: (response: AuthResponse) => {
+      this.http.post<AuthResponse>(endpoint, credentials).subscribe({
+        next: (response: AuthResponse) => {
 
-        if (response.token) {
-          // Save token and user
-          const roleBasedUser: AppUser = { name: name, email: email, type: roleType, visual: 'light' };
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(roleBasedUser));
-          this.currentUserSubject.next(roleBasedUser);
+          if (response.token) {
+            // Save token and user
+            const roleBasedUser: AppUser = { name: name, email: email, type: roleType, visual: 'light' };
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(roleBasedUser));
+            this.currentUserSubject.next(roleBasedUser);
 
-          alert(`${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`);
+            alert(`${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`);
 
-          // Redirect to dashboard with query param
-          this.router.navigate(['/dashboard']);
+            // Redirect to dashboard with query param
+            this.router.navigate(['/dashboard']);
 
-        } else if (response.message) {
-          alert(response.message);
+          } else if (response.message) {
+            alert(response.message);
+          }
+        },
+        error: (error) => {
+          if (error.status === 409 && error.error.message) {
+            alert(error.error.message);
+          } else if (error.status === 500) {
+            alert('An error occurred while registering. Please try again later.');
+          } else {
+            alert('Something went wrong');
+          }
         }
-      },
-      error: (error) => {
-        if (error.status === 409 && error.error.message) {
-          alert(error.error.message);
-        } else if (error.status === 500) {
-          alert('An error occurred while registering. Please try again later.');
-        } else {
-          alert('Something went wrong');
-        }
-      }
-    });
+      });
+    } else {
+      alert('Please enter a valid email address.');
+    }
   }
 
+
   login(email: string, password: string, roleType: string) {
-    const credentials = roleType === 'serviceProvider' ? { email: email, password } : { email: email, password };
-    const endpoint = roleType === 'serviceProvider' ? environment.serviceProviderLogin : environment.userLogin;
+    if (this.emailValidaetor(email)) {
+      const credentials = roleType === 'serviceProvider' ? { email: email, password } : { email: email, password };
+      const endpoint = roleType === 'serviceProvider' ? environment.serviceProviderLogin : environment.userLogin;
 
-    this.http.post<AuthResponse>(endpoint, credentials).subscribe({
-      next: (response: AuthResponse) => {
-        if (response.token) {
-          // Check if user has existing preferences in localStorage
-          const existingUser = localStorage.getItem('user');
-          let savedVisualTheme = 'light'; // default to light
+      this.http.post<AuthResponse>(endpoint, credentials).subscribe({
+        next: (response: AuthResponse) => {
+          if (response.token) {
+            // Check if user has existing preferences in localStorage
+            const existingUser = localStorage.getItem('user');
+            let savedVisualTheme = 'light'; // default to light
 
-          if (existingUser) {
-            const parsed = JSON.parse(existingUser);
-            savedVisualTheme = parsed.visual || 'light';
+            if (existingUser) {
+              const parsed = JSON.parse(existingUser);
+              savedVisualTheme = parsed.visual || 'light';
+            }
+
+            // Store token and user info, preserving theme preference
+            const roleBasedUser: AppUser = {
+              name: response.name || '',
+              email: email,
+              type: roleType,
+              visual: savedVisualTheme
+            };
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(roleBasedUser));
+            this.currentUserSubject.next(roleBasedUser);
+            // Redirect after login
+            this.router.navigate(['/dashboard']);
+          } else {
+            alert('Login failed: No token received');
           }
-
-          // Store token and user info, preserving theme preference
-          const roleBasedUser: AppUser = {
-            name: response.name || '',
-            email: email,
-            type: roleType,
-            visual: savedVisualTheme
-          };
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(roleBasedUser));
-          this.currentUserSubject.next(roleBasedUser);
-          // Redirect after login
-          this.router.navigate(['/dashboard']);
-        } else {
-          alert('Login failed: No token received');
+        },
+        error: (error) => {
+          if (error.status === 401 && error.error.message) {
+            alert(error.error.message); // e.g. "Invalid credentials"
+          } else {
+            alert('An error occurred during login. Please try again.');
+          }
         }
-      },
-      error: (error) => {
-        if (error.status === 401 && error.error.message) {
-          alert(error.error.message); // e.g. "Invalid credentials"
-        } else {
-          alert('An error occurred during login. Please try again.');
-        }
-      }
-    });
+      });
+    } else {
+      alert('Please enter a valid email address.');
+    }
   }
 
   logout() {

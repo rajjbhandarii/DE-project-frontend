@@ -101,7 +101,6 @@ body {
 }
 
 .hero-image {
-  /* content: url("hero.png"); */
   width: 100%;
   max-width: 550px;
   height: auto;

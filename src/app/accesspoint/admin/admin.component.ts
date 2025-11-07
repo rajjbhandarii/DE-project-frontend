@@ -25,7 +25,7 @@ export class AdminComponent {
     this.inputType = this.showPassword ? 'text' : 'password';
   }
 
-  validateserviceProvider() {
+  verifyUserInput() {
     if (this.isLogin) {
       if (this.email === '' || this.password === '') {
         alert('Please fill in all fields');
@@ -40,8 +40,8 @@ export class AdminComponent {
     return true; // Proceed with login if fields are filled
   }
 
-  signupserviceProvider() {
-    if (!this.validateserviceProvider()) {
+  signupServiceProvider() {
+    if (!this.verifyUserInput()) {
       return; // Exit if validation fails
     } else {
       this.access.signup(this.serviceProviderName, this.email, this.password, 'serviceProvider');
@@ -54,7 +54,7 @@ export class AdminComponent {
 
 
   loginserviceProvider() {
-    if (!this.validateserviceProvider()) {
+    if (!this.verifyUserInput()) {
       return; // Exit if validation fails
     } else {
       this.access.login(this.email, this.password, 'serviceProvider');

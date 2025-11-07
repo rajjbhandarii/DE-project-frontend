@@ -25,7 +25,7 @@ export class UserComponent {
     this.inputType = this.showPassword ? 'text' : 'password';
   }
 
-  validateUser() {
+  verifyUserInput() {
     if (this.isLogin) {
       if (this.email === '' || this.password === '') {
         alert('Please fill in all fields');
@@ -41,7 +41,7 @@ export class UserComponent {
   }
 
   signupUser() {
-    if (!this.validateUser()) {
+    if (!this.verifyUserInput()) {
       return; // Exit if validation fails
     } else {
       this.access.signup(this.userName, this.email, this.password, 'user');
@@ -53,7 +53,7 @@ export class UserComponent {
   }
 
   loginUser() {
-    if (!this.validateUser()) {
+    if (!this.verifyUserInput()) {
       return; // Exit if validation fails
     }
     else {
