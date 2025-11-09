@@ -9,7 +9,7 @@ import { TheamServiceService } from '../app/theam-service.service';
 
 export interface Service {
   serviceId: any;
-  name: string;
+  serviceName: string;
   category: string;
   description: string;
   price: number;
@@ -27,6 +27,8 @@ export class ServiceManagementComponent {
   serviceProviderEmail!: string;
   isDarkMode: boolean = false;
   private destroy$ = new Subject<void>();
+  // Available categories for the dropdown
+  categories: string[] = ['Towing service', 'Fuel Delivery', 'Battery Assistance'];
 
 
   // Array to hold the list of existing services
@@ -35,14 +37,12 @@ export class ServiceManagementComponent {
   // Object to bind to the form fields for a new service
   newService: Partial<Service> = {
     serviceId: new Date().getTime().toString(),
-    name: '',
+    serviceName: '',
     category: '',
     description: '',
     price: 400
   };
 
-  // Available categories for the dropdown
-  categories: string[] = ['Towing service', 'Fuel Delivery', 'Battery Assistance'];
 
   constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: TheamServiceService) {
     this.currentState$ = this.accesspointService.currentState$;
@@ -56,6 +56,7 @@ export class ServiceManagementComponent {
         this.serviceProviderEmail = '';
       }
     });
+    this.getAvaliableServices();
   }
   ngOnInit(): void {
     this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
@@ -68,11 +69,13 @@ export class ServiceManagementComponent {
     // Create a complete Service object with a unique ID
     const serviceToAdd: Service = {
       serviceId: new Date().getTime().toString(), // Unique ID based on timestamp
-      name: this.newService.name!,
+      serviceName: this.newService.serviceName!,
       category: this.newService.category!,
       description: this.newService.description!,
       price: this.newService.price || 0
     };
+
+    this.http.get
 
     // Add the new service to the beginning of the array
     this.currentServices.unshift(serviceToAdd);
@@ -80,7 +83,7 @@ export class ServiceManagementComponent {
     // Reset the form fields for the next entry
     this.newService = {
       serviceId: new Date().getTime().toString(),
-      name: '',
+      serviceName: '',
       category: '',
       description: '',
       price: undefined
@@ -88,8 +91,8 @@ export class ServiceManagementComponent {
   }
 
   addService(): void {
-    if (!this.newService.name && !this.newService.price && !this.categories && !this.newService.description) {
-      alert('Please enter a service name and price.');
+    if (!this.newService.serviceName && !this.newService.price && !this.categories && !this.newService.description) {
+      alert('Please enter all required fields.');
       return;
     } else {
       this.http.post(environment.addNewServices, { ...this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
@@ -103,6 +106,16 @@ export class ServiceManagementComponent {
     }
   }
 
+  getAvaliableServices() {
+    this.http.get<Service[]>(environment.getServicesCategory, { params: { serviceProviderEmail: this.serviceProviderEmail } }).subscribe({
+      next: (services) => {
+        services.forEach(n => this.currentServices.push(n))
+        console.log(this.currentServices);
+      }, error: (error) => {
+        console.error('Error retrieving services:', error);
+      }
+    });
+  }
   /**
    * Deletes a service from the list based on its ID.
    * @param serviceId The ID of the service to delete.

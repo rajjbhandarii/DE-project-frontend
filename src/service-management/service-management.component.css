@@ -124,24 +124,32 @@
 
 .item-title {
   font-weight: 600;
+  color: #000000;
 }
 .item-category {
   color: var(--primary-accent);
   font-weight: 400;
 }
 .item-subtitle {
-  color: var(--text-secondary);
+  color: var(--background-color);
   margin: 0.25rem 0;
 }
 .item-price {
   font-weight: bold;
-  margin-top: 0.5rem;
+  color: green;
+}
+.pricebox {
+  width: fit-content;
+  height: fit-content;
+  padding: 7px;
+  border-radius: 10px;
+  border: solid 2px #000000;
 }
 
 .delete-button {
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: red;
   font-size: 1.5rem;
   cursor: pointer;
   transition: color 0.2s;

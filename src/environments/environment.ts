@@ -8,4 +8,5 @@ export const environment = {
     fetchServicesRequests: 'https://road-rescue-backend.onrender.com/dashboard/fetch-servicesRequests',
     fetchServicesProvider: 'https://road-rescue-backend.onrender.com/services/fetch-serviceProvider',
     addNewServices: 'https://road-rescue-backend.onrender.com/serviceManagement/addNewServices',
+    getServicesCategory: 'https://road-rescue-backend.onrender.com/serviceManagement/getServicesCategory'
 }

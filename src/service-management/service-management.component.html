@@ -5,9 +5,9 @@
 
     <div class="content-grid">
         <div class="card" [ngStyle]="{
-    'background-color': !isDarkMode ? 'white' : '',
+            'background-color': !isDarkMode ? 'white' : '',
             'box-shadow':!isDarkMode?'0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);':'',
-            border:!isDarkMode?'1px solid black':''
+             border:!isDarkMode?'1px solid black':''
 }">
             <h2 class="card-header" [ngStyle]="{'color':!isDarkMode?'black':''}">Add a New Service</h2>
             <div class="card-content">
@@ -15,7 +15,7 @@
                     [ngStyle]="{'background-color':!isDarkMode?'white':''}">
                     <div class="form-group">
                         <label for="serviceName" [ngStyle]="{'color':isDarkMode?'white':'black'}">Service Name</label>
-                        <input id="serviceName" type="text" [(ngModel)]="newService.name" name="serviceName"
+                        <input id="serviceName" type="text" [(ngModel)]="newService.serviceName" name="serviceName"
                             [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
                             placeholder="e.g., Leaky Faucet Repair" required>
                     </div>
@@ -31,7 +31,7 @@
 
                     <div class="form-group">
                         <label for="servicePrice" [ngStyle]="{'color':isDarkMode?'white':'black'}">Base Price
-                            ($)</label>
+                            (₹)</label>
                         <input id="servicePrice" type="number" [(ngModel)]="newService.price" name="servicePrice"
                             [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
                             placeholder="e.g., 99.99" required>
@@ -52,10 +52,8 @@
             </div>
         </div>
 
-        <div class="card" [ngStyle]="{'background-color':!isDarkMode?'white
-        ':'',
-            'box-shadow':!isDarkMode?'0 4px 6px -1px white,
-    0 2px 4px -1px white;':'',
+        <div class="card" [ngStyle]="{'background-color':!isDarkMode?'white':'','box-shadow':!isDarkMode?'0 4px 6px -1px white, 0 2px 4px -1px white;':'',
+  
             border:!isDarkMode?'1px solid black':''
         }">
             <h2 class="card-header " [ngStyle]="{'color':!isDarkMode?'black':''}">Current Services ({{
@@ -64,10 +62,16 @@
                 <div *ngIf="currentServices.length > 0; else noServices">
                     <div *ngFor="let service of currentServices" class="list-item">
                         <div class="item-details">
-                            <p class="item-title">{{ service.name }} <span class="item-category">({{ service.category
-                                    }})</span></p>
-                            <p class="item-subtitle">{{ service.description }}</p>
-                            <p class="item-price">${{ service.price }}</p>
+                            <p class="item-title" [ngStyle]="{'color':isDarkMode?'white':''}">{{ service.serviceName }}
+                                <span class="item-category">({{
+                                    service.category
+                                    }})</span>
+                            </p>
+                            <p class="item-subtitle" [ngStyle]="{'color':isDarkMode?'white':''}">{{ service.description
+                                }}</p>
+                            <div class="pricebox">
+                                <p class="item-price">₹{{ service.price }}</p>
+                            </div>
                         </div>
                         <button (click)="deleteService(service.serviceId)" class="delete-button" title="Delete Service">
                             <i class="fas fa-trash"></i>

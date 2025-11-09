@@ -8,5 +8,5 @@ export const environment = {
     fetchServicesProvider: 'http://localhost:3000/services/fetch-serviceProvider',
     fetchServicesRequests: 'http://localhost:3000/dashboard/fetch-servicesRequests',
     addNewServices: 'http://localhost:3000/serviceManagement/addNewServices',
-
+    getServicesCategory: 'http://localhost:3000/serviceManagement/getServicesCategory'
 };
