@@ -280,7 +280,8 @@
           <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
             class="admin-card-header">Active Jobs</h2>
           <div class="admin-card-content">
-            <div *ngFor="let job of activeJobs" class="admin-item">
+            <div *ngFor="let job of activeJobs" class="admin-item"
+              [ngStyle]="{'border': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}">
               <div class="admin-item-details">
                 <h4>{{ job.name }} - {{ job.service }}</h4>
                 <p>Assigned to: {{ job.team }}</p>
@@ -295,7 +296,8 @@
           <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
             class="admin-card-header">Team Status</h2>
           <div class="admin-card-content">
-            <div *ngFor="let team of teams" class="admin-item">
+            <div *ngFor="let team of teams" class="admin-item"
+              [ngStyle]="{'border': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}">
               <div class="admin-item-details">
                 <h4>{{ team.name }}</h4>
               </div>
