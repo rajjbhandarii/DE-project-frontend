@@ -204,23 +204,27 @@
         </a>
         <p class="contact-form-intro">Or fill out our quick contact form below:</p>
         <div class="contact-form-wrapper">
-          <div class="contact-form-container">
+          <div class="contact-form-container"
+            [ngStyle]="{'background-color':isDarkMode?'var(--color-background-secondary)':'rgb(213, 200, 211)'}">
             <form class="contact-form" autocomplete="on">
               <div class="form-group">
-                <label for="name" class="form-label">Your Name</label>
-                <input type="text" autocomplete="on" id="name" name="name" class="form-input" placeholder="John Doe">
+                <label for="name" class="form-label" [ngStyle]="{'color':isDarkMode?'':'black'}">Your Name</label>
+                <input type="text" autocomplete="on" id="name" name="name"
+                  [ngClass]="isDarkMode?'dark-mode-form-input':'form-input'" placeholder="John Doe">
               </div>
               <div class="form-group">
-                <label for="email" class="form-label">Your Email</label>
-                <input type="email" autocomplete="on" id="email" name="email" class="form-input"
-                  placeholder="john.doe@example.com">
+                <label for="email" class="form-label" [ngStyle]="{'color':isDarkMode?'':'black'}">Your Email</label>
+                <input type="email" autocomplete="on" id="email" name="email"
+                  [ngClass]="isDarkMode?'dark-mode-form-input':'form-input'" placeholder="john.doe@example.com">
               </div>
               <div class="form-group">
-                <label for="message" class="form-label">Message</label>
-                <textarea id="message" name="message" rows="5" class="form-textarea"
+                <label for="message" class="form-label" [ngStyle]="{'color':isDarkMode?'':'black'}">Message</label>
+                <textarea id="message" name="message" rows="5"
+                  [ngClass]="isDarkMode?'dark-mode-form-textarea':'form-textarea'"
                   placeholder="Describe your issue..."></textarea>
               </div>
-              <button type="submit" class="submit-button">
+              <button type="submit" class="submit-button"
+                [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'black', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
                 Send Message
               </button>
             </form>

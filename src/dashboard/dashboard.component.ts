@@ -81,6 +81,7 @@ export class DashboardComponent implements OnInit {
             // Apply theme immediately
             this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
             this.setupServiceProviderInterval();
+            this.changeImage();
           } else {
             this.userEmail = user.email;
             this.currentUser = user.type;
@@ -88,6 +89,7 @@ export class DashboardComponent implements OnInit {
             this.isDarkMode = user.visual === 'dark' ? true : false;
             // Apply theme immediately
             this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
+            this.changeImage();
           }
         } else {
           alert('User not found');
@@ -108,6 +110,17 @@ export class DashboardComponent implements OnInit {
         this.scrollToSection('hero');
       }
     });
+
+  }
+
+  changeImage() {
+    if (this.isDarkMode) {
+      this.aboutImage = 'assets/about.png';
+      this.heroImage = 'assets/blue.png';
+    } else {
+      this.aboutImage = 'assets/about-white.png';
+      this.heroImage = 'assets/hero-white.png';
+    }
   }
 
   toggleMobileMenu(): void {
