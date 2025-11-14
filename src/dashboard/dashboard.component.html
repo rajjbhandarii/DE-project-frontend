@@ -11,7 +11,7 @@
             Fast, reliable, and professional roadside assistance available 24/7. Get back on track quickly and
             safely.
           </p>
-          <a class="hero-button">
+          <a href="tel:+917567853633" class="hero-button">
             Get Immediate Help
           </a>
         </div>
@@ -132,10 +132,10 @@
             satisfaction
             are our top priorities.
           </p>
-          <a class="about-button"
+          <!-- <a class="about-button"
             [ngStyle]="{'color': isDarkMode ? 'var(--color-light-blue-text)' : 'var(--color-light-blue-text)','border':isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
             Learn More
-          </a>
+          </a> -->
         </div>
       </div>
     </section>
@@ -192,7 +192,7 @@
         <p class="contact-subtitle">
           Don't hesitate! Call us now for quick and reliable roadside help.
         </p>
-        <a href="tel:+1234567890" class="call-button"
+        <a href="tel:+917567853633" class="call-button"
           [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'black', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
           <svg class="call-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">
@@ -200,7 +200,7 @@
               d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
             </path>
           </svg>
-          +1 (234) 567-890
+          +917567853633
         </a>
         <p class="contact-form-intro">Or fill out our quick contact form below:</p>
         <div class="contact-form-wrapper">
@@ -224,7 +224,7 @@
                   placeholder="Describe your issue..."></textarea>
               </div>
               <button type="submit" class="submit-button"
-                [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'black', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
+                [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'var(--color-black)', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
                 Send Message
               </button>
             </form>
@@ -267,7 +267,7 @@
             <div *ngFor="let req of liveRequests; let i = index" class="item">
               <div class="admin-item-details">
                 <h4>{{ req.userName }} - {{ req.category }}</h4>
-                <p>{{ req.location }}</p>
+                <p>{{ req.userLocation }}</p>
               </div>
               <button (click)="dispatch(i)" class="admin-dispatch-button">Dispatch</button>
             </div>

@@ -105,7 +105,8 @@ body {
   max-width: 550px;
   height: auto;
   border-radius: 1rem;
-  box-shadow: 0 20px 40px var(--shadow-color-black-t);
+
+  /* box-shadow: 0 20px 40px var(--shadow-color-black-t); */
 }
 
 /* Background Shapes */
@@ -400,7 +401,7 @@ body {
   width: 100%;
   padding: 10px;
   background: var(--color-dark-bg-primary);
-  color: var(--color-white);
+  color: var(--color-black);
   border: 2px solid var(--color-black);
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -644,7 +645,13 @@ body {
   }
   .contact-form {
     max-width: 100%;
+    .submit-button {
+      width: 40%;
+      padding: 0.4rem;
+      font-size: 0.9rem;
+    }
   }
+
   .form-input,
   .form-textarea {
     width: 90%;

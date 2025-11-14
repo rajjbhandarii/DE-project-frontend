@@ -9,7 +9,7 @@ import { TheamServiceService } from '../app/theam-service.service';
 
 interface LiveRequest {
   userName: string;
-  location: string;
+  userLocation: string;
   category: string;
 }
 
@@ -116,7 +116,7 @@ export class DashboardComponent implements OnInit {
   changeImage() {
     if (this.isDarkMode) {
       this.aboutImage = 'assets/about.png';
-      this.heroImage = 'assets/blue.png';
+      this.heroImage = 'assets/hero.png';
     } else {
       this.aboutImage = 'assets/about-white.png';
       this.heroImage = 'assets/hero-white.png';
@@ -135,6 +135,7 @@ export class DashboardComponent implements OnInit {
           { serviceProviderEmail: this.userEmail }
         ).subscribe({
           next: (data) => this.liveRequests = data || [],
+
           error: (error) => console.error('Failed to fetch services:', error)
         });
       }, 3000);
@@ -158,7 +159,7 @@ export class DashboardComponent implements OnInit {
     this.activeJobs.unshift({
       name: requestToDispatch?.userName || '',
       service: requestToDispatch?.category || '',
-      location: requestToDispatch?.location || '',
+      location: requestToDispatch?.userLocation || '',
       team: availableTeam.name
     });
     this.liveRequests.splice(requestIndex, 1);
