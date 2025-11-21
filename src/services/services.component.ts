@@ -5,6 +5,7 @@ import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.serv
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { io } from "socket.io-client";
 
 /**
  * @interface DisplayService
@@ -49,6 +50,7 @@ export class ServicesComponent implements OnInit {
   currentState$: Observable<AppUser | null>;
   userLocation: string = 'Vapi';
   userName: string = '';
+  socket: any;
 
   // These arrays will now hold our new `DisplayService` objects.
   TowingServices: DisplayService[] = [];
@@ -67,6 +69,12 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchServicesProvider();
+
+    this.socket = io(environment.baseUrl);
+    this.socket.on('updateServiceProvider', (data: ApiProvider[]) => {
+      this.assignServicesByCategory(data);
+      console.log('Connected to socket server with ID:', this.socket.id);
+    });
   }
 
   /**
@@ -82,36 +90,41 @@ export class ServicesComponent implements OnInit {
         this.FuelServices = [];
         this.BatteryServices = [];
 
-        // Loop through each provider returned from the API
-        providers.forEach(provider => {
-          // Loop through the services offered by that provider
-          provider.services.forEach(service => {
-            // Create a new, combined object with all the details
-            const displayService: DisplayService = {
-              providerId: provider._id,
-              providerName: provider.serviceProviderName,
-              serviceId: service._id,
-              serviceName: service.serviceName,
-              price: service.price,
-              category: service.category,
-              description: service.description,
-              rating: service.rating
-            };
+        this.assignServicesByCategory(providers);
 
-            // Add the combined object to the correct category array
-            if (service.category === 'Towing service') {
-              this.TowingServices.push(displayService);
-            } else if (service.category === 'Fuel Delivery') {
-              this.FuelServices.push(displayService);
-            } else if (service.category === 'Battery Assistance') {
-              this.BatteryServices.push(displayService);
-            }
-          });
-        });
       },
       error: (error) => {
         console.error('Error fetching service providers:', error);
       }
+    });
+  }
+
+  assignServicesByCategory(providers: ApiProvider[]) {
+    // Loop through each provider returned from the API
+    providers.forEach(provider => {
+      // Loop through the services offered by that provider
+      provider.services.forEach(service => {
+        // Create a new, combined object with all the details
+        const displayService: DisplayService = {
+          providerId: provider._id,
+          providerName: provider.serviceProviderName,
+          serviceId: service._id,
+          serviceName: service.serviceName,
+          price: service.price,
+          category: service.category,
+          description: service.description,
+          rating: service.rating
+        };
+
+        // Add the combined object to the correct category array
+        if (service.category === 'Towing service') {
+          this.TowingServices.push(displayService);
+        } else if (service.category === 'Fuel Delivery') {
+          this.FuelServices.push(displayService);
+        } else if (service.category === 'Battery Assistance') {
+          this.BatteryServices.push(displayService);
+        }
+      });
     });
   }
 

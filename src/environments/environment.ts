@@ -1,5 +1,6 @@
 export const environment = {
     production: true,
+    baseUrl: 'https://road-rescue-backend.onrender.com',
     userSignup: 'https://road-rescue-backend.onrender.com/signup-user',
     userLogin: 'https://road-rescue-backend.onrender.com/login-user',
     serviceProviderSignup: 'https://road-rescue-backend.onrender.com/signup-serviceProvider',

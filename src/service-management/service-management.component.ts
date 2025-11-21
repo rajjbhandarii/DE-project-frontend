@@ -95,14 +95,19 @@ export class ServiceManagementComponent {
       alert('Please enter all required fields.');
       return;
     } else {
-      this.http.post(environment.addNewServices, { ...this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
-        next: (response) => {
-          this.addToActiveServicesList();
-          console.log('Service added successfully:', response);
-        }, error: (error) => {
-          console.error('Error adding service:', error);
-        }
-      });
+      if (!this.serviceProviderEmail) {
+        alert('Service Provider email is missing.');
+        return;
+      } else {
+        this.http.post(environment.addNewServices, { ...this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
+          next: (response) => {
+            this.addToActiveServicesList();
+            console.log('Service added successfully:', response);
+          }, error: (error) => {
+            console.error('Error adding service:', error);
+          }
+        });
+      }
     }
   }
 
