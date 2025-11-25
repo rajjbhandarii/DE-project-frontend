@@ -113,13 +113,13 @@ export class DashboardComponent implements OnInit {
         this.scrollToSection('hero');
       }
     });
-    this.socket = io("http://localhost:3000");
+    this.socket = io(environment.baseUrl);
 
     // Register provider
     this.socket.emit("registerProvider", this.userEmail);
 
     // Receive real-time updates
-    this.socket.on("serviceRequestUpdated", (data: ActiveRequest[]) => {
+    this.socket.on("serviceRequestUpdated/provider-dashboard", (data: ActiveRequest[]) => {
       console.log("Real-time update received:", data);
       this.liveRequests = data as ActiveRequest[];
     });
