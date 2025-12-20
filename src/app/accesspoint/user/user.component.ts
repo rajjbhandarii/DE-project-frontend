@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AccesspointService } from '../accesspoint.service';
 import { RouterLink } from '@angular/router';
+import { TheamServiceService } from '../../theam-service.service';
 
 @Component({
   selector: 'app-user',
@@ -18,7 +19,7 @@ export class UserComponent {
   showPassword: boolean = false;
   inputType: string = 'password';
 
-  constructor(private access: AccesspointService) { }
+  constructor(private access: AccesspointService, private themeService: TheamServiceService) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -27,13 +28,14 @@ export class UserComponent {
 
   verifyUserInput() {
     if (this.isLogin) {
-      if (this.email === '' || this.password === '') {
-        alert('Please fill in all fields');
+      if (!this.email?.trim() || !this.password?.trim()) {
+        this.themeService.displayNotification('Error', 'Please fill in all fields before submitting.', 'error');
         return false;
       }
     } else {
-      if (this.userName === '' || this.email === '' || this.password === '') {
-        alert('Please fill in all fields');
+      //if user is signing up
+      if (!this.userName?.trim() || !this.email?.trim() || !this.password?.trim()) {
+        this.themeService.displayNotification('Error', 'Please fill in all fields before submitting.', 'error');
         return false;
       }
     }

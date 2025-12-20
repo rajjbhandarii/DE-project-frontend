@@ -58,6 +58,7 @@ export class ServiceManagementComponent {
     });
     this.getAvaliableServices();
   }
+
   ngOnInit(): void {
     this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
       .subscribe(isDark => {
@@ -75,8 +76,6 @@ export class ServiceManagementComponent {
       price: this.newService.price || 0
     };
 
-    this.http.get
-
     // Add the new service to the beginning of the array
     this.currentServices.unshift(serviceToAdd);
 
@@ -90,27 +89,29 @@ export class ServiceManagementComponent {
     };
   }
 
+  //to add a new service
   addService(): void {
     if (!this.newService.serviceName && !this.newService.price && !this.categories && !this.newService.description) {
-      alert('Please enter all required fields.');
+      this.themeService.displayNotification('Error', 'Please enter all required fields.', 'error');
       return;
     } else {
       if (!this.serviceProviderEmail) {
-        alert('Service Provider email is missing.');
+        this.themeService.displayNotification('Error', 'Service Provider email is missing.', 'error');
         return;
       } else {
         this.http.post(environment.addNewServices, { ...this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
           next: (response) => {
             this.addToActiveServicesList();
-            console.log('Service added successfully:', response);
+            this.themeService.displayNotification('Success', 'Service added successfully.', 'success');
           }, error: (error) => {
-            console.error('Error adding service:', error);
+            this.themeService.displayNotification('Error', 'Error adding service. Please try again later.', 'error');
           }
         });
       }
     }
   }
 
+  // Retrieve available services for the service provider
   getAvaliableServices() {
     this.http.get<Service[]>(environment.getServicesCategory, { params: { serviceProviderEmail: this.serviceProviderEmail } }).subscribe({
       next: (services) => {
@@ -118,6 +119,7 @@ export class ServiceManagementComponent {
         console.log(this.currentServices);
       }, error: (error) => {
         console.error('Error retrieving services:', error);
+        this.themeService.displayNotification('Error', 'Error retrieving services. Please try again later.', 'error');
       }
     });
   }
@@ -127,7 +129,7 @@ export class ServiceManagementComponent {
    */
   deleteService(serviceId: number): void {
     this.currentServices = this.currentServices.filter(service => service.serviceId !== serviceId);
+    this.themeService.displayNotification('Success', 'Service deleted successfully.', 'success');
   }
-
 
 }

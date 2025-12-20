@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
             this.changeImage();
           }
         } else {
-          alert('User not found');
+          this.themeService.displayNotification('Error', 'User not found', 'error');
           this.router.navigate(['/userpage']);
         }
       });
@@ -167,7 +167,7 @@ export class DashboardComponent implements OnInit {
   dispatch(requestIndex: number): void {
     // const availableTeam = this.teams.find(team => team.status === 'Available');
     // if (!availableTeam) {
-    //   alert('No teams are currently available.');
+    //   this.themeService.displayNotification('Error', 'No teams are currently available.', 'error');
     //   return;
     // }
     // const requestToDispatch = this.liveRequests[requestIndex];
@@ -183,7 +183,7 @@ export class DashboardComponent implements OnInit {
 
   sendEmail(): void {
     if (!this.formData.email && !this.formData.message && !this.formData.name) {
-      alert('Please fill in all the fields before sending the message.');
+      this.themeService.displayNotification('Error', 'Please fill in all fields before submitting the form.', 'error');
       return;
     } else {
       emailjs.send(environment.serviceID, environment.templateID,
@@ -191,11 +191,11 @@ export class DashboardComponent implements OnInit {
         environment.publicKey)
         .then((response) => {
           console.log('SUCCESS!', response.status, response.text);
-          alert('Email sent successfully!');
+          this.themeService.displayNotification('Success', 'Your message has been sent successfully!', 'success');
         })
         .catch((error) => {
           console.error('FAILED...', error);
-          alert('Failed to send email. Please try again later.');
+          this.themeService.displayNotification('Error', 'Failed to send email. Please try again later.', 'error');
         });
     }
   }

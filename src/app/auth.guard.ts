@@ -3,19 +3,20 @@ import {
   CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router
 } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { TheamServiceService } from './theam-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private themeService: TheamServiceService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      alert("You must be logged in to access this page");
+      this.themeService.displayNotification('Error', "You must be logged in to access this page", 'error');
       return this.router.parseUrl('/userpage');
     }
 
@@ -25,7 +26,7 @@ export class AuthGuard implements CanActivate {
 
       if (decoded.exp < now) {
         localStorage.clear();
-        alert("Session expired. Please log in again.");
+        this.themeService.displayNotification('Error', "Session expired. Please log in again.", 'error');
         return this.router.parseUrl('/userpage');
       }
 

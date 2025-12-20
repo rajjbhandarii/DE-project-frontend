@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { io } from "socket.io-client";
+import { TheamServiceService } from '../app/theam-service.service';
 
 /**
  * @interface DisplayService
@@ -57,7 +58,7 @@ export class ServicesComponent implements OnInit {
   FuelServices: DisplayService[] = [];
   BatteryServices: DisplayService[] = [];
   isDarkMode: boolean = false;
-  constructor(private accesspointService: AccesspointService, private http: HttpClient) {
+  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: TheamServiceService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(user => {
       if (user) {
@@ -153,11 +154,11 @@ export class ServicesComponent implements OnInit {
     }).subscribe({
       next: () => {
         console.log('Service request sent successfully!');
-        alert('Service request sent successfully!');
+        this.themeService.displayNotification('Success', 'Your service request has been sent successfully!', 'success');
       },
       error: (error) => {
         console.error('Error sending service request:', error);
-        alert('Failed to send service request.');
+        this.themeService.displayNotification('Error', 'Failed to send service request. Please try again later.', 'error');
       }
     });
   }

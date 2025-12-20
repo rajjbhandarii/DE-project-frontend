@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { TheamServiceService } from '../theam-service.service';
 
 export interface AppUser {
   name: string;
@@ -39,7 +40,7 @@ export class AccesspointService {
     }
   }
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private themeService: TheamServiceService) {
     this.loadUserFromStorage();
   }
 
@@ -75,27 +76,27 @@ export class AccesspointService {
             localStorage.setItem('user', JSON.stringify(roleBasedUser));
             this.currentUserSubject.next(roleBasedUser);
 
-            alert(`${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`);
+            this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
 
             // Redirect to dashboard with query param
             this.router.navigate(['/dashboard']);
 
           } else if (response.message) {
-            alert(response.message);
+            this.themeService.displayNotification('Error', response.message, 'error');
           }
         },
         error: (error) => {
           if (error.status === 409 && error.error.message) {
-            alert(error.error.message);
+            this.themeService.displayNotification('Error', error.error.message, 'error');
           } else if (error.status === 500) {
-            alert('An error occurred while registering. Please try again later.');
+            this.themeService.displayNotification('Error', 'An error occurred while registering. Please try again later.', 'error');
           } else {
-            alert('Something went wrong');
+            this.themeService.displayNotification('Error', 'Something went wrong', 'error');
           }
         }
       });
     } else {
-      alert('Please enter a valid email address.');
+      this.themeService.displayNotification('Error', 'Please enter a valid email address.', 'error');
     }
   }
 
@@ -130,19 +131,19 @@ export class AccesspointService {
             // Redirect after login
             this.router.navigate(['/dashboard']);
           } else {
-            alert('Login failed: No token received');
+            this.themeService.displayNotification('Error', 'Login failed. Please try again.', 'error');
           }
         },
         error: (error) => {
           if (error.status === 401 && error.error.message) {
-            alert(error.error.message); // e.g. "Invalid credentials"
+            this.themeService.displayNotification('Error', error.error.message, 'error'); // e.g. "Invalid credentials"
           } else {
-            alert('An error occurred during login. Please try again.');
+            this.themeService.displayNotification('Error', 'An error occurred during login. Please try again.', 'error');
           }
         }
       });
     } else {
-      alert('Please enter a valid email address.');
+      this.themeService.displayNotification('Error', 'Please enter a valid email address.', 'error');
     }
   }
 
