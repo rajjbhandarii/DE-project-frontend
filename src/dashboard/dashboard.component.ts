@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
 import { HttpClient } from '@angular/common/http';
@@ -7,6 +7,8 @@ import { environment } from '../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TheamServiceService } from '../app/theam-service.service';
 import { io } from "socket.io-client";
+import { FormsModule } from '@angular/forms';
+import emailjs from 'emailjs-com';
 
 interface ActiveRequest {
   requestServiceId: string;
@@ -31,7 +33,7 @@ interface ActiveJob {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -51,6 +53,12 @@ export class DashboardComponent implements OnInit {
   activeJobs: ActiveJob[] = [
     { name: 'Rohan Singh', service: 'Towing', location: 'HSR Layout, Bangalore', team: 'Team Alpha' }
   ];
+
+  formData: any = {
+    name: '',
+    message: '',
+    email: ''
+  };
 
   teams: TeamMember[] = [
     { name: 'Team Alpha', status: 'On Job' },
@@ -171,6 +179,25 @@ export class DashboardComponent implements OnInit {
     // });
     // this.liveRequests.splice(requestIndex, 1);
     // availableTeam.status = 'On Job';
+  }
+
+  sendEmail(): void {
+    if (!this.formData.email && !this.formData.message && !this.formData.name) {
+      alert('Please fill in all the fields before sending the message.');
+      return;
+    } else {
+      emailjs.send(environment.serviceID, environment.templateID,
+        this.formData,
+        environment.publicKey)
+        .then((response) => {
+          console.log('SUCCESS!', response.status, response.text);
+          alert('Email sent successfully!');
+        })
+        .catch((error) => {
+          console.error('FAILED...', error);
+          alert('Failed to send email. Please try again later.');
+        });
+    }
   }
 
   ngOnDestroy(): void {

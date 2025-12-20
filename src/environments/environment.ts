@@ -9,5 +9,9 @@ export const environment = {
     fetchServicesRequests: 'https://road-rescue-backend.onrender.com/dashboard/fetch-servicesRequests',
     fetchServicesProvider: 'https://road-rescue-backend.onrender.com/services/fetch-serviceProvider',
     addNewServices: 'https://road-rescue-backend.onrender.com/serviceManagement/addNewServices',
-    getServicesCategory: 'https://road-rescue-backend.onrender.com/serviceManagement/getServicesCategory'
-}
+    getServicesCategory: 'https://road-rescue-backend.onrender.com/serviceManagement/getServicesCategory',
+    sendEmail: 'https://road-rescue-backend.onrender.com/dashboard/send-email',
+    serviceID: 'service_vy31m7j',
+    templateID: 'template_sqac51r',
+    publicKey: 'qhFAUQ3zY8uh-2Lsz'
+};

@@ -209,21 +209,21 @@
             <form class="contact-form" autocomplete="on">
               <div class="form-group">
                 <label for="name" class="form-label" [ngStyle]="{'color':isDarkMode?'':'black'}">Your Name</label>
-                <input type="text" autocomplete="on" id="name" name="name"
+                <input type="text" autocomplete="on" id="name" name="name" [(ngModel)]="formData.name"
                   [ngClass]="isDarkMode?'dark-mode-form-input':'form-input'" placeholder="John Doe">
               </div>
               <div class="form-group">
                 <label for="email" class="form-label" [ngStyle]="{'color':isDarkMode?'':'black'}">Your Email</label>
-                <input type="email" autocomplete="on" id="email" name="email"
+                <input type="email" autocomplete="on" id="email" name="email" [(ngModel)]="formData.email"
                   [ngClass]="isDarkMode?'dark-mode-form-input':'form-input'" placeholder="john.doe@example.com">
               </div>
               <div class="form-group">
                 <label for="message" class="form-label" [ngStyle]="{'color':isDarkMode?'':'black'}">Message</label>
-                <textarea id="message" name="message" rows="5"
+                <textarea id="message" name="message" rows="5" [(ngModel)]="formData.message"
                   [ngClass]="isDarkMode?'dark-mode-form-textarea':'form-textarea'"
                   placeholder="Describe your issue..."></textarea>
               </div>
-              <button type="submit" class="submit-button"
+              <button type="submit" class="submit-button" (click)="sendEmail()"
                 [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'var(--color-black)', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
                 Send Message
               </button>
