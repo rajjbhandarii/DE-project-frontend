@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -21,7 +21,7 @@ export interface Service {
   templateUrl: './service-management.component.html',
   styleUrls: ['./service-management.component.css']
 })
-export class ServiceManagementComponent {
+export class ServiceManagementComponent implements OnInit {
 
   currentState$: Observable<AppUser | null>;
   serviceProviderEmail!: string;

@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth.guard'; // 👈 Import guard
-import { AdminComponent } from './accesspoint/admin/admin.component';
-import { DashboardComponent } from '../dashboard/dashboard.component';
-import { NavbarComponent } from '../navbar/navbar.component';
 import { UserComponent } from './accesspoint/user/user.component';
-import { ServicesComponent } from '../services/services.component';
-import { ServiceManagementComponent } from '../service-management/service-management.component';
+import { AuthGuard } from './auth.guard';
+import { NavbarComponent } from '../navbar/navbar.component';
+
 
 export const routes: Routes = [
-  { path: 'adminpage', component: AdminComponent },
+  { path: 'adminPage', loadComponent: () => import('./accesspoint/admin/admin.component').then(m => m.AdminComponent) },
   { path: 'userpage', component: UserComponent },
   { path: '', redirectTo: 'userpage', pathMatch: 'full' },
 
@@ -19,11 +16,12 @@ export const routes: Routes = [
     component: NavbarComponent,
     canActivate: [AuthGuard], // This guard protects all children
     children: [
-      { path: 'dashboard', component: DashboardComponent, data: { scrollToSection: 'hero' } },
-      { path: 'services', component: ServicesComponent },
-      { path: 'about', component: DashboardComponent, data: { scrollToSection: 'about' } },
-      { path: 'contact', component: DashboardComponent, data: { scrollToSection: 'contact' } },
-      { path: 'serviceManagement', component: ServiceManagementComponent }
+      //lazy loaded components for better performance
+      { path: 'dashboard', loadComponent: () => import('../dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'hero' } },
+      { path: 'services', loadComponent: () => import('../services/services.component').then(m => m.ServicesComponent) },
+      { path: 'about', loadComponent: () => import('../dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'about' } },
+      { path: 'contact', loadComponent: () => import('../dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'contact' } },
+      { path: 'serviceManagement', loadComponent: () => import('../service-management/service-management.component').then(m => m.ServiceManagementComponent) }
     ]
   },
 

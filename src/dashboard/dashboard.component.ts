@@ -8,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeServiceService } from '../app/theme-service.service';
 import { io } from "socket.io-client";
 import { FormsModule } from '@angular/forms';
-import emailjs from 'emailjs-com';
 
 interface ActiveRequest {
   requestServiceId: string;
@@ -72,17 +71,15 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private themeService: ThemeServiceService // Inject the theme service
+    private themeService: ThemeServiceService
   ) {
     this.State$ = this.accesspointService.currentState$;
   }
 
   ngOnInit(): void {
 
-    console.log(this.State$);
     this.State$.pipe(takeUntil(this.destroy$))
       .subscribe(user => {
-        // user?.visual === 'dark' ? this.isDarkMode = true : this.isDarkMode = false;
         if (user) {
           if (user.type === 'serviceProvider') {
             this.userEmail = user.email;
@@ -128,7 +125,6 @@ export class DashboardComponent implements OnInit {
 
     // Receive real-time updates
     this.socket.on("serviceRequestUpdated/provider-dashboard", (data: ActiveRequest[]) => {
-      console.log("Real-time update received:", data);
       this.liveRequests = data as ActiveRequest[];
     });
   }
@@ -181,24 +177,21 @@ export class DashboardComponent implements OnInit {
     // availableTeam.status = 'On Job';
   }
 
-  sendEmail(): void {
-    if (!this.formData.email && !this.formData.message && !this.formData.name) {
+  async sendEmail(): Promise<void> {
+    if (!this.formData.email || !this.formData.message || !this.formData.name) {
       this.themeService.displayNotification('Error', 'Please fill in all fields before submitting the form.', 'error');
       return;
-    } else {
-      emailjs.send(environment.serviceID, environment.templateID,
-        this.formData,
-        environment.publicKey)
-        .then((response) => {
-          console.log('SUCCESS!', response.status, response.text);
-          this.themeService.displayNotification('Success', 'Your message has been sent successfully!', 'success');
-        })
-        .catch((error) => {
-          console.error('FAILED...', error);
-          this.themeService.displayNotification('Error', 'Failed to send email. Please try again later.', 'error');
-        });
+    }
+
+    const emailjs = (await import('emailjs-com')).default ?? await import('emailjs-com');
+    try {
+      await emailjs.send(environment.serviceID, environment.templateID, this.formData, environment.publicKey);
+      this.themeService.displayNotification('Success', 'Your message has been sent successfully!', 'success');
+    } catch (error) {
+      this.themeService.displayNotification('Error', 'Failed to send email. Please try again later.', 'error');
     }
   }
+
 
   ngOnDestroy(): void {
     this.destroy$.next();
