@@ -1,0 +1,65 @@
+<body class="admin-body">
+    <div class="admin-dashboard-container">
+        <header class=" admin-header">
+            <h1>Operations Dashboard:{{ currentUserName }}</h1>
+        </header>
+
+        <main class="admin-dashboard-grid">
+            <!-- Live Requests Column -->
+            <div [ngStyle]="{'background-color': isDarkMode ? '#1A202C' : '#FFFFFF'}" class="admin-card">
+                <div class="admin-card-content">
+                    <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
+                        class="admin-card-header">Live
+                        Requests</h2>
+
+                    <div *ngFor="let req of liveRequests; let i = index" class="item">
+                        <div class="admin-item-details">
+                            <h4>{{ req.userName }} - {{ req.category }}</h4>
+                            <p>{{ req.userLocation }}</p>
+                        </div>
+                        <button (click)="dispatch(i)" class="admin-dispatch-button">Dispatch</button>
+                    </div>
+                    <p *ngIf="liveRequests.length === 0" style="color: #718096;">No new requests.</p>
+                </div>
+            </div>
+
+            <!-- Active Jobs Column -->
+            <div [ngStyle]="{'background-color': isDarkMode ? '#1A202C' : '#FFFFFF'}" class="admin-card">
+                <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
+                    class="admin-card-header">Active Jobs</h2>
+                <div class="admin-card-content">
+                    <div *ngFor="let job of activeJobs" class="admin-item"
+                        [ngStyle]="{'border': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}">
+                        <div class="admin-item-details">
+                            <h4>{{ job.name }} - {{ job.service }}</h4>
+                            <p>Assigned to: {{ job.team }}</p>
+                        </div>
+                    </div>
+                    <p *ngIf="activeJobs.length === 0" style="color: #718096;">No active jobs.</p>
+                </div>
+            </div>
+
+            <!-- Team Status Column -->
+            <div [ngStyle]="{'background-color': isDarkMode ? '#1A202C' : '#FFFFFF'}" class="admin-card">
+                <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
+                    class="admin-card-header">Team Status</h2>
+                <div class="admin-card-content">
+                    <div *ngFor="let team of teams" class="admin-item"
+                        [ngStyle]="{'border': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}">
+                        <div class="admin-item-details">
+                            <h4>{{ team.name }}</h4>
+                        </div>
+                        <div class="admin-team-status">
+                            <div class="admin-status-dot" [ngClass]="{
+                                            'status-available': team.status === 'Available',
+                                            'status-on-job': team.status === 'On Job',
+                                            'status-offline': team.status === 'Offline'
+                                        }"></div>
+                            <p>{{ team.status }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>

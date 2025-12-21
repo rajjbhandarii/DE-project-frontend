@@ -76,11 +76,13 @@ export class AccesspointService {
             localStorage.setItem('user', JSON.stringify(roleBasedUser));
             this.currentUserSubject.next(roleBasedUser);
 
-            this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
-
-            // Redirect to dashboard with query param
-            this.router.navigate(['/dashboard']);
-
+            if (roleType === 'serviceProvider') {
+              this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
+              this.router.navigate(['/SPDashboard']);
+            } else {
+              this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
+              this.router.navigate(['/dashboard']);
+            }
           } else if (response.message) {
             this.themeService.displayNotification('Error', response.message, 'error');
           }
@@ -100,14 +102,13 @@ export class AccesspointService {
     }
   }
 
-
-  login(email: string, password: string, roleType: string) {
+  async login(email: string, password: string, roleType: string) {
     if (this.emailValidaetor(email)) {
       const credentials = roleType === 'serviceProvider' ? { email: email, password } : { email: email, password };
       const endpoint = roleType === 'serviceProvider' ? environment.serviceProviderLogin : environment.userLogin;
 
       this.http.post<AuthResponse>(endpoint, credentials).subscribe({
-        next: (response: AuthResponse) => {
+        next: async (response: AuthResponse) => {
           if (response.token) {
             // Check if user has existing preferences in localStorage
             const existingUser = localStorage.getItem('user');
@@ -129,7 +130,13 @@ export class AccesspointService {
             localStorage.setItem('user', JSON.stringify(roleBasedUser));
             this.currentUserSubject.next(roleBasedUser);
             // Redirect after login
-            this.router.navigate(['/dashboard']);
+            if (roleType === 'serviceProvider') {
+              await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} logged in`, 'success');
+              await this.router.navigate(['/SPDashboard']);
+            } else {
+              await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} logged in`, 'success');
+              await this.router.navigate(['/dashboard']);
+            }
           } else {
             this.themeService.displayNotification('Error', 'Login failed. Please try again.', 'error');
           }
