@@ -15,7 +15,7 @@ export class TheamServiceService {
   constructor() {
     // Initialize theme from localStorage or default to false
     const savedTheme: string | null = localStorage.getItem('isDarkMode');
-    const initialDarkMode: boolean = savedTheme ? JSON.parse(savedTheme) : false;
+    const initialDarkMode: boolean = savedTheme === 'true';
     this.setTheme(initialDarkMode);
   }
 
@@ -30,7 +30,11 @@ export class TheamServiceService {
     }
 
     this.isDarkModeSubject.next(isDarkMode);
-    localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
+    try {
+      localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
+    } catch (error) {
+      console.error('Failed to save isDarkMode to localStorage:', error);
+    }
   }
 
   // Method to update user's visual preference in localStorage
@@ -43,9 +47,13 @@ export class TheamServiceService {
     // Update user object in localStorage
     const user = localStorage.getItem('user');
     if (user) {
-      const userObj = JSON.parse(user);
-      userObj.visual = theme;
-      localStorage.setItem('user', JSON.stringify(userObj));
+      try {
+        const userObj = JSON.parse(user);
+        userObj.visual = theme;
+        localStorage.setItem('user', JSON.stringify(userObj));
+      } catch (error) {
+        console.error('Failed to parse user from localStorage:', error);
+      }
     }
   }
 
