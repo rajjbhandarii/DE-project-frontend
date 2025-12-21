@@ -5,7 +5,7 @@ import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.serv
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TheamServiceService } from '../app/theam-service.service';
+import { ThemeServiceService } from '../app/theme-service.service';
 import { io } from "socket.io-client";
 import { FormsModule } from '@angular/forms';
 import emailjs from 'emailjs-com';
@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private themeService: TheamServiceService // Inject the theme service
+    private themeService: ThemeServiceService // Inject the theme service
   ) {
     this.State$ = this.accesspointService.currentState$;
   }
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
 
     // Subscribe to theme service changes
     this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
-      .subscribe(isDark => {
+      .subscribe((isDark: boolean) => {
         this.isDarkMode = isDark;
       });
 

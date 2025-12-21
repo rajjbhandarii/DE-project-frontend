@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
-import { TheamServiceService } from '../app/theam-service.service';
+import { ThemeServiceService } from '../app/theme-service.service';
 
 export interface Service {
   serviceId: any;
@@ -44,7 +44,7 @@ export class ServiceManagementComponent {
   };
 
 
-  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: TheamServiceService) {
+  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(Appuser => {
       if (Appuser) {

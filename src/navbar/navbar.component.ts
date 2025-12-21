@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
-import { Subject, Observable, takeUntil } from 'rxjs';
-import { TheamServiceService } from '../app/theam-service.service';
+import { AccesspointService } from '../app/accesspoint/accesspoint.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ThemeServiceService } from '../app/theme-service.service';
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, CommonModule, RouterOutlet],
@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isDarkMode: boolean = false;
   private destroy$ = new Subject<void>();
 
-  constructor(public accesspointService: AccesspointService, private themeService: TheamServiceService) { };
+  constructor(public accesspointService: AccesspointService, private themeService: ThemeServiceService) { };
 
   ngOnInit(): void {
 
@@ -40,7 +40,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.visualTheme = user.visual;
 
           // Apply user's saved theme preference
-          const isDark = user.visual === 'dark';
           this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
         }
       });

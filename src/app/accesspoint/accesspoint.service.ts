@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { TheamServiceService } from '../theam-service.service';
+import { ThemeServiceService } from '../theme-service.service';
 
 export interface AppUser {
   name: string;
@@ -40,7 +40,7 @@ export class AccesspointService {
     }
   }
 
-  constructor(private router: Router, private http: HttpClient, private themeService: TheamServiceService) {
+  constructor(private router: Router, private http: HttpClient, private themeService: ThemeServiceService) {
     this.loadUserFromStorage();
   }
 

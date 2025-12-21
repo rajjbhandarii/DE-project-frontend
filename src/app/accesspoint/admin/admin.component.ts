@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AccesspointService } from '../accesspoint.service';
 import { RouterLink } from '@angular/router';
-import { TheamServiceService } from '../../theam-service.service';
+import { ThemeServiceService } from '../../theme-service.service';
 
 @Component({
   selector: 'app-admin',
@@ -19,7 +19,7 @@ export class AdminComponent {
   email: string = 'dev@gmail.com';
   password: string = 'r';
 
-  constructor(private access: AccesspointService, private themeService: TheamServiceService) { }
+  constructor(private access: AccesspointService, private themeService: ThemeServiceService) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;

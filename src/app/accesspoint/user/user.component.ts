@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AccesspointService } from '../accesspoint.service';
 import { RouterLink } from '@angular/router';
-import { TheamServiceService } from '../../theam-service.service';
+import { ThemeServiceService } from '../../theme-service.service';
 
 @Component({
   selector: 'app-user',
@@ -19,7 +19,7 @@ export class UserComponent {
   showPassword: boolean = false;
   inputType: string = 'password';
 
-  constructor(private access: AccesspointService, private themeService: TheamServiceService) { }
+  constructor(private access: AccesspointService, private themeService: ThemeServiceService) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;

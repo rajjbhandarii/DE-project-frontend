@@ -4,7 +4,14 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TheamServiceService {
+export class ThemeServiceService {
+  //This is the reactive programming pattern - 
+  // instead of components checking the theme manually, 
+  // they automatically receive updates whenever it changes.
+  // RxJS observable that:
+  // 1) Stores the current value
+  // 2) Immediately emits the current value to new subscribers
+  // 3) Can push new values to all active subscribers
   private isDarkModeSubject = new BehaviorSubject<boolean>(false);
   public isDarkMode$ = this.isDarkModeSubject.asObservable();
 

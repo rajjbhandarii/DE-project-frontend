@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { io } from "socket.io-client";
-import { TheamServiceService } from '../app/theam-service.service';
+import { ThemeServiceService } from '../app/theme-service.service';
 
 /**
  * @interface DisplayService
@@ -58,7 +58,7 @@ export class ServicesComponent implements OnInit {
   FuelServices: DisplayService[] = [];
   BatteryServices: DisplayService[] = [];
   isDarkMode: boolean = false;
-  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: TheamServiceService) {
+  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(user => {
       if (user) {

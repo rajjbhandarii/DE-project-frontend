@@ -3,14 +3,14 @@ import {
   CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router
 } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { TheamServiceService } from './theam-service.service';
+import { ThemeServiceService } from './theme-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router, private themeService: TheamServiceService) { }
+  constructor(private router: Router, private themeService: ThemeServiceService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const token = localStorage.getItem('token');
