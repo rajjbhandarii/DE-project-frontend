@@ -7,14 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeServiceService } from '../app/theme-service.service';
 import { FormsModule } from '@angular/forms';
 
-interface ActiveRequest {
-  requestServiceId: string;
-  userName: string;
-  userLocation: string;
-  category: string;
-  createdAt: number;
-}
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -24,12 +16,12 @@ interface ActiveRequest {
 })
 export class DashboardComponent implements OnInit {
   title = 'Road Rescue';
+  contactNumber: number = 917567853633;
   isDarkMode: boolean = false; // Default to light mode
   State$: Observable<AppUser | null>;
   userEmail = '';
   currentUser = '';
   currentUserName = '';
-  liveRequests: ActiveRequest[] = [];
   private destroy$ = new Subject<void>();
   aboutImage = 'assets/about.png';
   heroImage = 'assets/hero.png';
@@ -80,7 +72,6 @@ export class DashboardComponent implements OnInit {
         this.scrollToSection('hero');
       }
     });
-    // Provider-specific real-time handling moved to admin-dashboard component
   }
 
   changeImage() {

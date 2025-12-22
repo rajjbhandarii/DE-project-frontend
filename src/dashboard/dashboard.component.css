@@ -36,7 +36,7 @@ body {
 }
 
 .hero-title {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
   line-height: 1.2;
@@ -329,7 +329,6 @@ body {
 .call-button {
   display: inline-flex;
   align-items: center;
-  /* border: var(--color-green-bright) solid 2px; */
   text-decoration: none;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
@@ -401,15 +400,15 @@ body {
   width: 100%;
   padding: 10px;
   background: var(--color-dark-bg-primary);
-  color: var(--color-black);
+  color: black;
   border: 2px solid var(--color-black);
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: border-color 0.3s ease;
 }
-.dark-mode-form-input,
+/* .dark-mode-form-input,
 .dark-mode-form-textarea {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   background: var(--color-dark-bg-primary);
   color: var(--color-white);
@@ -417,12 +416,12 @@ body {
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: border-color 0.3s ease;
-}
+} */
 
-.form-input:focus,
+/* .form-input:focus,
 .form-textarea:focus {
   outline: none;
-}
+} */
 
 .form-textarea {
   resize: vertical;
@@ -556,10 +555,6 @@ body {
     padding: 6rem 1rem 3rem;
   }
 
-  .hero-title {
-    font-size: 2rem;
-  }
-
   .hero-subtitle {
     font-size: 1.125rem;
   }
@@ -625,10 +620,7 @@ body {
   .hero-subtitle {
     font-size: 0.875rem;
   }
-  h1.hero-title {
-    font-size: 1.7rem;
-    margin-bottom: 0.7rem;
-  }
+
   .hero-button {
     font-size: 0.8rem;
     padding: 1rem;
@@ -643,18 +635,18 @@ body {
   .contact-form-container {
     max-width: 100%;
   }
+  .form-input,
+  .form-textarea {
+    width: 90%;
+  }
   .contact-form {
-    max-width: 100%;
+    width: 90%;
+
     .submit-button {
       width: 40%;
       padding: 0.4rem;
       font-size: 0.9rem;
     }
-  }
-
-  .form-input,
-  .form-textarea {
-    width: 90%;
   }
 }
 

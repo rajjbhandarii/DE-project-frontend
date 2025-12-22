@@ -12,13 +12,14 @@ html {
   box-sizing: border-box;
 }
 .form-container {
-  max-width: 400px;
+  width: fit-content;
   height: fit-content;
   background-color: #151313;
   box-shadow: rgba(3, 2, 2, 0.35) 0px 5px 15px;
   border-radius: 10px;
   box-sizing: border-box;
   padding: 20px 30px;
+  margin: 20px;
 }
 
 .title {
@@ -28,7 +29,6 @@ html {
   margin: 10px 0 30px 0;
   font-size: 28px;
   font-weight: 800;
-  text-wrap-style: wrap;
   color: #fff;
 }
 

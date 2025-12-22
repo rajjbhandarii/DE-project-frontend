@@ -67,7 +67,7 @@ export class AccesspointService {
       const endpoint = roleType === 'serviceProvider' ? environment.serviceProviderSignup : environment.userSignup;
 
       this.http.post<AuthResponse>(endpoint, credentials).subscribe({
-        next: (response: AuthResponse) => {
+        next: async (response: AuthResponse) => {
 
           if (response.token) {
             // Save token and user
@@ -77,11 +77,11 @@ export class AccesspointService {
             this.currentUserSubject.next(roleBasedUser);
 
             if (roleType === 'serviceProvider') {
-              this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
-              this.router.navigate(['/SPDashboard']);
+              await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
+              await this.router.navigate(['/SPDashboard']);
             } else {
-              this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
-              this.router.navigate(['/dashboard']);
+              await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
+              await this.router.navigate(['/dashboard']);
             }
           } else if (response.message) {
             this.themeService.displayNotification('Error', response.message, 'error');
@@ -143,7 +143,7 @@ export class AccesspointService {
         },
         error: (error) => {
           if (error.status === 401 && error.error.message) {
-            this.themeService.displayNotification('Error', error.error.message, 'error'); // e.g. "Invalid credentials"
+            this.themeService.displayNotification('Error', error.error.message, 'error');
           } else {
             this.themeService.displayNotification('Error', 'An error occurred during login. Please try again.', 'error');
           }
