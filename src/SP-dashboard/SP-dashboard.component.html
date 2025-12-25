@@ -9,9 +9,7 @@
             <div [ngStyle]="{'background-color': isDarkMode ? '#1A202C' : '#FFFFFF'}" class="admin-card">
                 <div class="admin-card-content">
                     <h2 [ngStyle]="{'border-bottom': !isDarkMode ? '1px solid black' : ' 1px solid #FFFFFF'}"
-                        class="admin-card-header">Live
-                        Requests</h2>
-
+                        class="admin-card-header">Live Requests</h2>
                     <div *ngFor="let req of liveRequests; let i = index" class="item">
                         <div class="admin-item-details">
                             <h4>{{ req.userName }} - {{ req.category }}</h4>

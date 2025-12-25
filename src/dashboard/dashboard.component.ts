@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  changeImage() {
+  changeImage(): void {
     if (this.isDarkMode) {
       this.aboutImage = 'assets/about.png';
       this.heroImage = 'assets/hero.png';

@@ -84,6 +84,7 @@ export class AccesspointService {
               await this.router.navigate(['/dashboard']);
             }
           } else if (response.message) {
+            console.error('Signup failed: No token received');
             this.themeService.displayNotification('Error', response.message, 'error');
           }
         },
@@ -98,6 +99,7 @@ export class AccesspointService {
         }
       });
     } else {
+      console.error('Invalid email address provided for signup');
       this.themeService.displayNotification('Error', 'Please enter a valid email address.', 'error');
     }
   }
@@ -138,6 +140,7 @@ export class AccesspointService {
               await this.router.navigate(['/dashboard']);
             }
           } else {
+            console.error('Login failed: No token received');
             this.themeService.displayNotification('Error', 'Login failed. Please try again.', 'error');
           }
         },

@@ -43,7 +43,6 @@ export class ServiceManagementComponent implements OnInit {
     price: 400
   };
 
-
   constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(Appuser => {
@@ -66,7 +65,7 @@ export class ServiceManagementComponent implements OnInit {
       });
   }
 
-  addToActiveServicesList() {
+  addToActiveServicesList(): void {
     // Create a complete Service object with a unique ID
     const serviceToAdd: Service = {
       serviceId: new Date().getTime().toString(), // Unique ID based on timestamp
@@ -104,6 +103,7 @@ export class ServiceManagementComponent implements OnInit {
             this.addToActiveServicesList();
             this.themeService.displayNotification('Success', 'Service added successfully.', 'success');
           }, error: (error) => {
+            console.log('Error adding service:', error);
             this.themeService.displayNotification('Error', 'Error adding service. Please try again later.', 'error');
           }
         });
@@ -112,13 +112,12 @@ export class ServiceManagementComponent implements OnInit {
   }
 
   // Retrieve available services for the service provider
-  getAvaliableServices() {
+  getAvaliableServices(): void {
     this.http.get<Service[]>(environment.getServicesCategory, { params: { serviceProviderEmail: this.serviceProviderEmail } }).subscribe({
       next: (services) => {
         services.forEach(n => this.currentServices.push(n))
-        console.log(this.currentServices);
       }, error: (error) => {
-        console.error('Error retrieving services:', error);
+        console.error('Error fetching services:', error);
         this.themeService.displayNotification('Error', 'Error retrieving services. Please try again later.', 'error');
       }
     });

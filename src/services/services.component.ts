@@ -83,7 +83,7 @@ export class ServicesComponent implements OnInit {
    * Fetches the list of service providers and their services from the API.
    * It then transforms this data to make it easy to display in the template.
    */
-  fetchServicesProvider() {
+  fetchServicesProvider(): void {
     this.http.get<ApiProvider[]>(environment.fetchServicesProvider).subscribe({
       next: (providers) => {
         // Clear out old data before populating
@@ -100,7 +100,7 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  assignServicesByCategory(providers: ApiProvider[]) {
+  assignServicesByCategory(providers: ApiProvider[]): void {
     // Loop through each provider returned from the API
     providers.forEach(provider => {
       // Loop through the services offered by that provider
@@ -134,7 +134,7 @@ export class ServicesComponent implements OnInit {
    * Updates the user's location based on input.
    * @param newLocation The new location string from the input field.
    */
-  setLocation(newLocation: string) {
+  setLocation(newLocation: string): void {
     this.userLocation = newLocation;
     console.log(`Location set to: ${this.userLocation}`);
   }
@@ -144,7 +144,7 @@ export class ServicesComponent implements OnInit {
    * Sends a service request to the backend.
    * @param providerId The ID of the provider being requested.
    */
-  requestService(providerId: string, category: string) {
+  requestService(providerId: string, category: string): void {
     this.http.post(environment.requestServices, {
       _id: providerId,
       userName: this.userName,
@@ -153,7 +153,6 @@ export class ServicesComponent implements OnInit {
       requestServiceId: new Date().getTime().toString() // Unique ID based on timestamp
     }).subscribe({
       next: () => {
-        console.log('Service request sent successfully!');
         this.themeService.displayNotification('Success', 'Your service request has been sent successfully!', 'success');
       },
       error: (error) => {
