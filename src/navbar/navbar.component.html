@@ -1,14 +1,20 @@
 <ng-container *ngIf="(this.accesspointService.currentState$ | async)?.type === 'user'; else serviceProviderTemplate">
-    <header class="navbar">
-        <h1>Road Rescue</h1>
-        <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+    <header class="navbar" [class.dark-mode]="isDarkMode">
+
+        <h1 routerLink="/dashboard">Road Rescue</h1>
+
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <span style="font-size: 24px;">☰</span>
+        </button>
+
         <nav [class.show]="menuActive">
             <button class="close-menu" (click)="toggleMenu()">✖</button>
-            <a (click)="toggleMenu()" routerLink="/dashboard">Home</a>
-            <a (click)="toggleMenu()" routerLink="/services">Service</a>
-            <a (click)="toggleMenu()" routerLink="/about">About</a>
-            <a (click)="toggleMenu()" routerLink="/contact">Contact</a>
-            <a (click)="toggleMenu()" routerLink="/userpage">Logout</a>
+
+            <a class="nav-link" (click)="toggleMenu()" routerLink="/dashboard">Home</a>
+            <a class="nav-link" (click)="toggleMenu()" routerLink="/services">Service</a>
+            <a class="nav-link" (click)="toggleMenu()" routerLink="/about">About</a>
+            <a class="nav-link" (click)="toggleMenu()" routerLink="/contact">Contact</a>
+            <a class="nav-link logout-btn" (click)="toggleMenu(); logout()">Logout</a>
 
             <label class="switch">
                 <input id="input" type="checkbox" [checked]="isDarkMode"
@@ -55,7 +61,6 @@
                         <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="50"></circle>
                         </svg>
-
                         <svg id="cloud-1" class="cloud-dark" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="50"></circle>
                         </svg>
@@ -77,19 +82,26 @@
                     </div>
                 </div>
             </label>
-
         </nav>
     </header>
 </ng-container>
+
 <ng-template #serviceProviderTemplate>
-    <header class="navbar">
-        <h1>Road Rescue</h1>
-        <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+    <header class="navbar" [class.dark-mode]="isDarkMode">
+
+        <h1 routerLink="/SPDashboard">Road Rescue <span style="font-size: 12px; opacity: 0.7">Partner</span></h1>
+
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <span style="font-size: 24px;">☰</span>
+        </button>
+
         <nav [class.show]="menuActive">
             <button class="close-menu" (click)="toggleMenu()">✖</button>
-            <a (click)="toggleMenu()" routerLink="/SPDashboard">Home</a>
-            <a (click)="toggleMenu()" routerLink="/serviceManagement">Service Management</a>
-            <a (click)="toggleMenu()" routerLink="/adminPage">Logout</a>
+
+            <a class="nav-link" (click)="toggleMenu()" routerLink="/SPDashboard">Dashboard</a>
+            <a class="nav-link" (click)="toggleMenu()" routerLink="/serviceManagement">Manage Services</a>
+            <a class="nav-link logout-btn" (click)="toggleMenu(); logout()">Logout</a>
+
             <label class="switch">
                 <input id="input" type="checkbox" [checked]="isDarkMode"
                     (change)="changeTheme(isDarkMode ? 'light' : 'dark')" />
@@ -113,7 +125,6 @@
                         <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="50"></circle>
                         </svg>
-
                         <svg id="cloud-1" class="cloud-dark" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="50"></circle>
                         </svg>

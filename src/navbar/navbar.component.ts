@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet, Router } from '@angular/router'; // Added Router
 import { AccesspointService } from '../app/accesspoint/accesspoint.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ThemeServiceService } from '../app/theme-service.service';
+
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, CommonModule, RouterOutlet],
@@ -20,10 +21,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isDarkMode: boolean = false;
   private destroy$ = new Subject<void>();
 
-  constructor(public accesspointService: AccesspointService, private themeService: ThemeServiceService) { };
+  // Injected Router
+  constructor(
+    public accesspointService: AccesspointService,
+    private themeService: ThemeServiceService,
+    private router: Router
+  ) { };
 
   ngOnInit(): void {
-
     // Subscribe to theme service changes
     this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
       .subscribe(isDark => {
@@ -38,18 +43,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.currentUser = user.type;
           this.currentUserName = user.name;
           this.visualTheme = user.visual;
-
-          // Apply user's saved theme preference
           this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
         }
       });
   }
 
   changeTheme(theme: string) {
-
     const currentUser = this.accesspointService.getCurrentState;
     if (currentUser) {
-      // This calls the setter method automatically
       this.accesspointService.updateCurrentState = {
         ...currentUser,
         visual: theme
@@ -58,16 +59,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
     } else {
       console.log("No current user to update theme for.");
     }
-
     this.visualTheme = theme;
   }
 
   toggleMenu() {
     this.menuActive = !this.menuActive;
   }
+
   logout() {
     this.accesspointService.logout();
+    this.router.navigate(['/userpage']); // Ensure redirection happens
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

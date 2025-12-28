@@ -1,82 +1,137 @@
+/* --- THEME VARIABLES (Scoped to Navbar) --- */
 .navbar {
+  /* Default (Light Mode) Values */
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --nav-text: #1f2937; /* Dark Grey Text */
+  --nav-border: 1px solid rgba(0, 0, 0, 0.05);
+  --accent-color: #6366f1; /* Indigo */
+  --logo-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+
+  /* Layout & Glass Effect */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #000000;
-  color: white;
-  padding: 0.7rem;
-  font-family: Arial, sans-serif;
-  max-width: 100%;
+  padding: 1rem 2rem;
   position: fixed;
-  width: -webkit-fill-available;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
   z-index: 1000;
-  .close-menu {
-    display: none;
-  }
+
+  background: var(--nav-bg);
+  color: var(--nav-text); /* <--- vital for text color */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: var(--nav-border);
+  transition: all 0.3s ease;
 }
 
+/* --- DARK MODE OVERRIDES --- */
+/* When [class.dark-mode] is added to the header */
+.navbar.dark-mode {
+  --nav-bg: rgba(15, 23, 42, 0.85); /* Dark Blue/Black Glass */
+  --nav-text: #ffffff; /* <--- Force White Text */
+  --nav-border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Logo Styling */
 .navbar h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 800;
+  background: var(--logo-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -1px;
+  cursor: pointer;
 }
 
+/* --- NAVIGATION LINKS --- */
+nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--nav-text); /* Uses the variable we defined above */
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s;
+}
+
+/* Hover Effect */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--accent-color);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Logout Button */
+.logout-btn {
+  color: #ef4444 !important;
+}
+.logout-btn::after {
+  background: #ef4444 !important;
+}
+
+/* --- MOBILE MENU TOGGLE --- */
 .menu-toggle {
+  display: none;
   font-size: 24px;
   background: none;
   border: none;
-  color: white;
+  color: var(--nav-text); /* Will become white in dark mode */
   cursor: pointer;
+}
+
+.close-menu {
   display: none;
 }
 
-nav {
-  display: flex;
-  gap: 35px;
-  align-items: center;
-  justify-content: center;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  font-size: 20x;
-  transition: color 0.3s;
-}
-nav a.active {
-  color: #00bcd4;
-}
-
-nav a:hover {
-  color: #00bcd4;
-}
-
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
   .menu-toggle {
     display: block;
-    z-index: 1100;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    margin-left: auto;
   }
 
   nav {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: #120c2d;
     position: fixed;
     top: 0;
     right: 0;
     height: 100vh;
-    width: 40vw;
-    max-width: 320px;
-    padding: 40px 24px 24px 24px;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+    width: 280px;
+
+    /* Ensure Mobile Menu gets the right colors too */
+    background: rgba(135, 136, 129, 0.966);
+    color: var(--nav-text);
+
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 80px 24px 24px;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
     transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1050;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   nav.show {
@@ -85,46 +140,58 @@ nav a:hover {
 
   .close-menu {
     display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
     background: none;
     border: none;
-    color: #fff;
-    font-size: 2rem;
-    position: absolute;
-    top: 16px;
-    right: 16px;
+    color: var(--nav-text); /* Close button color */
+    font-size: 28px;
     cursor: pointer;
-    z-index: 1101;
   }
 
-  nav a {
-    display: block;
+  .nav-link {
+    font-size: 18px;
     width: 100%;
-    padding: 16px 0;
-    font-size: 1.2rem;
-    color: #fff;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(150, 150, 150, 0.1);
+    padding: 12px 0;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
   }
 
-  nav a:last-child {
-    border-bottom: none;
+  nav.show .nav-link {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  nav.show .nav-link:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  nav.show .nav-link:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+  nav.show .nav-link:nth-child(4) {
+    transition-delay: 0.3s;
+  }
+  nav.show .nav-link:nth-child(5) {
+    transition-delay: 0.4s;
   }
 }
 
-/* From Uiverse.io by RiccardoRapelli */
+/* ... Keep your existing Switch/Star/Cloud CSS here ... */
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  transform: scale(0.8);
 }
-
 .switch #input {
   opacity: 0;
   width: 0;
   height: 0;
 }
-
 .slider {
   position: absolute;
   cursor: pointer;
@@ -133,12 +200,10 @@ nav a:hover {
   right: 0;
   bottom: 0;
   background-color: #2196f3;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
   z-index: 0;
   overflow: hidden;
 }
-
 .sun-moon {
   position: absolute;
   content: "";
@@ -147,45 +212,33 @@ nav a:hover {
   left: 4px;
   bottom: 4px;
   background-color: yellow;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
 }
-
 #input:checked + .slider {
   background-color: black;
 }
-
 #input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
 }
-
 #input:checked + .slider .sun-moon {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
   transform: translateX(26px);
   background-color: white;
-  -webkit-animation: rotate-center 0.6s ease-in-out both;
   animation: rotate-center 0.6s ease-in-out both;
 }
-
 .moon-dot {
   opacity: 0;
   transition: 0.4s;
   fill: gray;
 }
-
 #input:checked + .slider .sun-moon .moon-dot {
   opacity: 1;
 }
-
 .slider.round {
   border-radius: 34px;
 }
-
 .slider.round .sun-moon {
   border-radius: 50%;
 }
-
 #moon-dot-1 {
   left: 10px;
   top: 3px;
@@ -194,7 +247,6 @@ nav a:hover {
   height: 6px;
   z-index: 4;
 }
-
 #moon-dot-2 {
   left: 2px;
   top: 10px;
@@ -203,7 +255,6 @@ nav a:hover {
   height: 10px;
   z-index: 4;
 }
-
 #moon-dot-3 {
   left: 16px;
   top: 18px;
@@ -212,7 +263,6 @@ nav a:hover {
   height: 3px;
   z-index: 4;
 }
-
 #light-ray-1 {
   left: -8px;
   top: -8px;
@@ -223,7 +273,6 @@ nav a:hover {
   fill: white;
   opacity: 10%;
 }
-
 #light-ray-2 {
   left: -50%;
   top: -50%;
@@ -234,7 +283,6 @@ nav a:hover {
   fill: white;
   opacity: 10%;
 }
-
 #light-ray-3 {
   left: -18px;
   top: -18px;
@@ -245,7 +293,6 @@ nav a:hover {
   fill: white;
   opacity: 10%;
 }
-
 .cloud-light {
   position: absolute;
   fill: #eee;
@@ -253,7 +300,6 @@ nav a:hover {
   animation-duration: 6s;
   animation-iteration-count: infinite;
 }
-
 .cloud-dark {
   position: absolute;
   fill: #ccc;
@@ -262,124 +308,100 @@ nav a:hover {
   animation-iteration-count: infinite;
   animation-delay: 1s;
 }
-
 #cloud-1 {
   left: 30px;
   top: 15px;
   width: 40px;
 }
-
 #cloud-2 {
   left: 44px;
   top: 10px;
   width: 20px;
 }
-
 #cloud-3 {
   left: 18px;
   top: 24px;
   width: 30px;
 }
-
 #cloud-4 {
   left: 36px;
   top: 18px;
   width: 40px;
 }
-
 #cloud-5 {
   left: 48px;
   top: 14px;
   width: 20px;
 }
-
 #cloud-6 {
   left: 22px;
   top: 26px;
   width: 30px;
 }
-
 @keyframes cloud-move {
   0% {
     transform: translateX(0px);
   }
-
   40% {
     transform: translateX(4px);
   }
-
   80% {
     transform: translateX(-4px);
   }
-
   100% {
     transform: translateX(0px);
   }
 }
-
 .stars {
   transform: translateY(-32px);
   opacity: 0;
   transition: 0.4s;
 }
-
 .star {
   fill: white;
   position: absolute;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
   animation-name: star-twinkle;
   animation-duration: 2s;
   animation-iteration-count: infinite;
 }
-
 #input:checked + .slider .stars {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
   transform: translateY(0);
   opacity: 1;
 }
-
 #star-1 {
   width: 20px;
   top: 2px;
   left: 3px;
   animation-delay: 0.3s;
 }
-
 #star-2 {
   width: 6px;
   top: 16px;
   left: 3px;
 }
-
 #star-3 {
   width: 12px;
   top: 20px;
   left: 10px;
   animation-delay: 0.6s;
 }
-
 #star-4 {
   width: 18px;
   top: 0px;
   left: 18px;
   animation-delay: 1.3s;
 }
-
 @keyframes star-twinkle {
   0% {
     transform: scale(1);
   }
-
   40% {
     transform: scale(1.2);
   }
-
   80% {
     transform: scale(0.8);
   }
-
   100% {
     transform: scale(1);
   }
