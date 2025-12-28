@@ -118,10 +118,10 @@ nav {
     top: 0;
     right: 0;
     height: 100vh;
-    width: 280px;
+    width: 220px;
 
     /* Ensure Mobile Menu gets the right colors too */
-    background: rgba(135, 136, 129, 0.966);
+    background: #fdacacf5;
     color: var(--nav-text);
 
     backdrop-filter: blur(20px);
