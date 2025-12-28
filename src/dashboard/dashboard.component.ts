@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit {
         this.isDarkMode = isDark;
       });
 
+
     this.route.data.pipe(takeUntil(this.destroy$)).subscribe(data => {
       if (data['scrollToSection']) {
         setTimeout(() => this.scrollToSection(data['scrollToSection']), 100);

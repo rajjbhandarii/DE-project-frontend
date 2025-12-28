@@ -37,9 +37,9 @@ export class ServiceManagementComponent implements OnInit {
   // Object to bind to the form fields for a new service
   newService: Partial<Service> = {
     serviceId: new Date().getTime().toString(),
-    serviceName: '',
-    category: '',
-    description: '',
+    serviceName: 'test service',
+    category: 'Towing service',
+    description: 'this is test api',
     price: 400
   };
 
@@ -99,7 +99,7 @@ export class ServiceManagementComponent implements OnInit {
         return;
       } else {
         this.http.post(environment.addNewServices, { ...this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
-          next: (response) => {
+          next: () => {
             this.addToActiveServicesList();
             this.themeService.displayNotification('Success', 'Service added successfully.', 'success');
           }, error: (error) => {

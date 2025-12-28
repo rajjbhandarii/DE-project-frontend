@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { CommonModule } from '@angular/common';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 interface ActiveJob {
   name: string;
@@ -43,7 +43,8 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
   userEmail: string = '';
   currentUserName = '';
   private destroy$ = new Subject<void>();
-  socket: any;
+  // init socket for provider real-time updates
+  socket: Socket = io(environment.baseUrl);
   activeJobs: ActiveJob[] = [
     { name: 'Rohan Singh', service: 'Towing', location: 'HSR Layout, Bangalore', team: 'Team Alpha' }
   ];
@@ -80,17 +81,11 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
       this.isDarkMode = isDark;
     });
 
-    // init socket for provider real-time updates
-    this.socket = io(environment.baseUrl);
-    // register provider when email available
-    this.State$.pipe(takeUntil(this.destroy$)).subscribe(user => {
-      if (user) {
-        this.socket.emit('registerProvider', user.email);
-      }
-    });
+    this.socket.emit('registerProvider', this.userEmail, 'SP-dashboard'); // register provider
 
-    this.socket.on('serviceRequestUpdated/provider-dashboard', (data: ActiveRequest[]) => {
-      this.liveRequests = data as ActiveRequest[];
+    this.socket.on('serviceRequestUpdated/providerDashboard', (data: ActiveRequest[]) => {
+      console.log('Received live service requests update:', data);
+      this.liveRequests.push(...data);
     });
   }
 
@@ -98,7 +93,7 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
 
     this.http.post<ActiveRequest[]>(environment.fetchServicesRequests, { serviceProviderEmail: this.userEmail }).subscribe({
       next: (data) => this.liveRequests = data || [],
-      error: (error) => console.error('Failed to fetch services:', error)
+      error: (error) => console.error('Failed to fetch services request:', error)
     });
 
   }

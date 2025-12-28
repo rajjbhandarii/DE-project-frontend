@@ -5,7 +5,7 @@ import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.serv
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { ThemeServiceService } from '../app/theme-service.service';
 
 /**
@@ -29,10 +29,10 @@ interface DisplayService {
  * Represents the structure of a single provider object coming from the API.
  */
 interface ApiProvider {
-  _id: any;
+  _id: string;
   serviceProviderName: string;
   services: {
-    _id: any;
+    _id: string;
     serviceName: string;
     price: number;
     category: string;
@@ -51,28 +51,29 @@ export class ServicesComponent implements OnInit {
   currentState$: Observable<AppUser | null>;
   userLocation: string = 'Vapi';
   userName: string = '';
-  socket: any;
-
   // These arrays will now hold our new `DisplayService` objects.
   TowingServices: DisplayService[] = [];
   FuelServices: DisplayService[] = [];
   BatteryServices: DisplayService[] = [];
+  socket: Socket = io(environment.baseUrl);
   isDarkMode: boolean = false;
+  userEmail: string = '';
+
   constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(user => {
       if (user) {
         this.userName = user.name;
         this.isDarkMode = user.visual === 'dark';
+        this.userEmail = user.email;
       }
     });
+    this.fetchServicesProvider();
   }
 
   ngOnInit(): void {
-    this.fetchServicesProvider();
-
-    this.socket = io(environment.baseUrl);
-    this.socket.on('updateServiceProvider', (data: ApiProvider[]) => {
+    this.socket.emit('registerProvider', this.userEmail, "service"); // register provider when email available
+    this.socket.on('services/updateServiceProviders', (data: ApiProvider[]) => {
       this.assignServicesByCategory(data);
       console.log('Connected to socket server with ID:', this.socket.id);
     });
@@ -86,13 +87,7 @@ export class ServicesComponent implements OnInit {
   fetchServicesProvider(): void {
     this.http.get<ApiProvider[]>(environment.fetchServicesProvider).subscribe({
       next: (providers) => {
-        // Clear out old data before populating
-        this.TowingServices = [];
-        this.FuelServices = [];
-        this.BatteryServices = [];
-
         this.assignServicesByCategory(providers);
-
       },
       error: (error) => {
         console.error('Error fetching service providers:', error);
@@ -101,7 +96,8 @@ export class ServicesComponent implements OnInit {
   }
 
   assignServicesByCategory(providers: ApiProvider[]): void {
-    // Loop through each provider returned from the API
+
+    // Loop through each provider returned from the API or socket
     providers.forEach(provider => {
       // Loop through the services offered by that provider
       provider.services.forEach(service => {
@@ -160,5 +156,8 @@ export class ServicesComponent implements OnInit {
         this.themeService.displayNotification('Error', 'Failed to send service request. Please try again later.', 'error');
       }
     });
+  }
+  ngOnDestroy(): void {
+    this.socket.disconnect();
   }
 }

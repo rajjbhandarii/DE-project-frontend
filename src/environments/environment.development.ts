@@ -7,7 +7,7 @@ export const environment = {
     serviceProviderLogin: 'http://localhost:3000/login-serviceProvider',
     requestServices: 'http://localhost:3000/services/request-services',
     fetchServicesProvider: 'http://localhost:3000/services/fetch-serviceProvider',
-    fetchServicesRequests: 'http://localhost:3000/dashboard/fetch-servicesRequests',
+    fetchServicesRequests: 'http://localhost:3000/SP-dashboard/fetch-servicesRequests',
     addNewServices: 'http://localhost:3000/serviceManagement/addNewServices',
     getServicesCategory: 'http://localhost:3000/serviceManagement/getServicesCategory',
     sendEmail: 'http://localhost:3000/dashboard/send-email',
