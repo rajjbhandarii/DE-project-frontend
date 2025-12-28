@@ -46,13 +46,14 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
   // init socket for provider real-time updates
   socket: Socket = io(environment.baseUrl);
   activeJobs: ActiveJob[] = [
-    { name: 'Rohan Singh', service: 'Towing', location: 'HSR Layout, Bangalore', team: 'Team Alpha' }
+    { name: 'Rohan Singh', service: 'Towing', location: 'HSR Layout, Bangalore', team: 'Team Jash' },
+    { name: 'Anita Desai', service: 'Flat Tire Repair', location: 'MG Road, Bangalore', team: 'Team Sahli' }
   ];
   teams: TeamMember[] = [
-    { name: 'Team Alpha', status: 'On Job' },
-    { name: 'Team Bravo', status: 'Available' },
-    { name: 'Team Charlie', status: 'Available' },
-    { name: 'Team Delta', status: 'Offline' }
+    { name: 'Team Jash', status: 'On Job' },
+    { name: 'Team Sahli', status: 'Available' },
+    { name: 'Team Raj', status: 'Available' },
+    { name: 'Team Faizan', status: 'Offline' }
   ];
 
   constructor(

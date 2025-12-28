@@ -16,7 +16,7 @@ export class AdminComponent {
   showPassword: boolean = false;
   inputType: string = 'password';
   serviceProviderName: string = '';
-  email: string = 'dev@gmail.com';
+  email: string = 'raj@gmail.com';
   password: string = 'r';
 
   constructor(private access: AccesspointService, private themeService: ThemeServiceService) { }

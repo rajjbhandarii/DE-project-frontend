@@ -1,130 +1,233 @@
-.dashboard-container {
-  display: flex;
-  flex-direction: column;
-  color: var(--color-white);
-  background: var(--color-black);
-  min-height: 100vh;
+/* --- THEME VARIABLES --- */
+/* Default (Light Mode) */
+:host {
+  --bg-primary: #f3f4f6; /* Light Grey BG */
+  --bg-card: #ffffff; /* White Card */
+  --text-primary: #1f2937; /* Dark Text */
+  --text-secondary: #6b7280; /* Grey Text */
+  --border-color: #e5e7eb; /* Light Border */
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --accent-color: #3b82f6; /* Blue */
+  --accent-hover: #2563eb;
+  --header-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 }
 
-body {
-  line-height: 1.6;
-  color: var(--text-color);
-  /* background-color: var(--background-color); */
+/* Dark Mode Overrides */
+.dark-mode {
+  --bg-primary: #111827; /* Dark Navy BG */
+  --bg-card: #1f2937; /* Darker Card */
+  --text-primary: #f9fafb; /* White Text */
+  --text-secondary: #9ca3af; /* Grey Text */
+  --border-color: #374151; /* Dark Border */
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --accent-color: #60a5fa; /* Lighter Blue for Dark Mode */
+  --accent-hover: #93c5fd;
+  --header-gradient: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
 }
 
+/* --- LAYOUT --- */
 .admin-body {
   font-family: "Inter", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-dark-bg-primary);
-  margin: 0;
-  padding: 16px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
-  padding-top: 60px;
+  padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Main container for the dashboard */
 .admin-dashboard-container {
   max-width: 1280px;
   margin: 0 auto;
 }
 
-/* Header section */
+/* --- HEADER --- */
 .admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  margin-top: 45px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--header-gradient);
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .admin-header h1 {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 800;
   margin: 0;
+  letter-spacing: -0.025em;
 }
 
-/* Grid layout for the cards */
+/* --- GRID --- */
 .admin-dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
 }
 
-/* Individual card styling */
+/* --- CARDS (The "Box" Look) --- */
 .admin-card {
-  /* background-color: var(--color-dark-card); */
-  border-radius: 12px;
-  border: 2px black solid;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 24px;
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Keeps children inside rounded corners */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .admin-card-header {
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 0;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  /* border-bottom: 1px solid var(--background-color); */
+  background-color: var(--bg-card);
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  margin: 0;
 }
 
-/* Spacing for items within cards */
-.admin-card-content > * + * {
-  margin-top: 12px;
+.admin-card-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Card decorative line */
+.card-accent-line {
+  height: 4px;
+  width: 100%;
+}
+.line-blue {
+  background-color: #3b82f6;
+}
+.line-green {
+  background-color: #10b981;
+}
+.line-purple {
+  background-color: #8b5cf6;
 }
 
 .admin-card-content {
-  background-color: var(--color-dark-card);
-  border-radius: 8px;
-  padding: 12px;
+  padding: 20px;
+  flex: 1;
 }
 
-/* Styling for a single request or job item */
+/* --- ITEMS & LISTS --- */
+.item-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .admin-item {
+  background-color: var(--bg-primary); /* Slightly different from card bg */
   padding: 16px;
-  border-radius: 8px;
-  /* border: 1px solid var(--color-black); */
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background-color 0.2s;
 }
 
 .admin-item-details h4 {
   margin: 0 0 4px 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .admin-item-details p {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
-/* Dispatch Button */
+.empty-state {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* --- BUTTONS --- */
 .admin-dispatch-button {
-  background-color: var(--color-blue-medium); /* blue-500 */
+  background-color: var(--accent-color);
+  color: white;
   border: none;
   padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.admin-dispatch-button:hover {
-  background-color: var(--color-blue-dark); /* blue-600 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
-/* Team Status Indicators */
-.admin-team-status {
+.admin-dispatch-button:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+/* --- STATUS INDICATORS --- */
+.status-pill {
   display: flex;
   align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.admin-status-dot {
-  width: 10px;
-  height: 10px;
+.status-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  margin-right: 8px;
+}
+
+/* Status Colors */
+.status-available .status-dot {
+  background-color: #10b981;
+} /* Green */
+.status-available {
+  color: #065f46;
+  background-color: #d1fae5;
+}
+.dark-mode .status-available {
+  color: #d1fae5;
+  background-color: #064e3b;
+}
+
+.status-on-job .status-dot {
+  background-color: #f59e0b;
+} /* Orange */
+.status-on-job {
+  color: #92400e;
+  background-color: #fef3c7;
+}
+.dark-mode .status-on-job {
+  color: #fef3c7;
+  background-color: #78350f;
+}
+
+.status-offline .status-dot {
+  background-color: #ef4444;
+} /* Red */
+.status-offline {
+  color: #991b1b;
+  background-color: #fee2e2;
+}
+.dark-mode .status-offline {
+  color: #fee2e2;
+  background-color: #7f1d1d;
 }

@@ -1,87 +1,81 @@
-<div class="main-container" [ngStyle]="{'background-color':!isDarkMode?'white':''}">
-    <header class="main-header" [ngStyle]="{'color':isDarkMode?'white':'black'}">
+<div class="main-container" [class.dark-mode]="isDarkMode">
+
+    <header class="main-header">
         <h1>Manage Your Services</h1>
     </header>
 
     <div class="content-grid">
-        <div class="card" [ngStyle]="{
-            'background-color': !isDarkMode ? 'white' : '',
-            'box-shadow':!isDarkMode?'0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);':'',
-             border:!isDarkMode?'1px solid black':''
-}">
-            <h2 class="card-header" [ngStyle]="{'color':!isDarkMode?'black':''}">Add a New Service</h2>
+
+        <div class="card">
+            <div class="card-accent-line line-blue"></div>
+            <h2 class="card-header">Add a New Service</h2>
+
             <div class="card-content">
-                <form (ngSubmit)="addService()" class="service-form"
-                    [ngStyle]="{'background-color':!isDarkMode?'white':''}">
+                <form (ngSubmit)="addService()" class="service-form">
+
                     <div class="form-group">
-                        <label for="serviceName" [ngStyle]="{'color':isDarkMode?'white':'black'}">Service Name</label>
+                        <label for="serviceName">Service Name</label>
                         <input id="serviceName" type="text" [(ngModel)]="newService.serviceName" name="serviceName"
-                            [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
-                            placeholder="e.g., Leaky Faucet Repair" required>
+                            placeholder="e.g., AC Repair" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="serviceCategory" [ngStyle]="{'color':isDarkMode?'white':'black'}">Category</label>
-                        <select id="serviceCategory" [(ngModel)]="newService.category" name="serviceCategory"
-                            [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}">
-                            <option [ngStyle]="{'background-color':!isDarkMode?'white':''}"
-                                *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                        <label for="serviceCategory">Category</label>
+                        <select id="serviceCategory" [(ngModel)]="newService.category" name="serviceCategory">
+                            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="servicePrice" [ngStyle]="{'color':isDarkMode?'white':'black'}">Base Price
-                            (₹)</label>
+                        <label for="servicePrice">Base Price (₹)</label>
                         <input id="servicePrice" type="number" [(ngModel)]="newService.price" name="servicePrice"
-                            [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
-                            placeholder="e.g., 99.99" required>
+                            placeholder="e.g., 499" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="serviceDescription"
-                            [ngStyle]="{'color':isDarkMode?'white':'black'}">Description</label>
-                        <textarea [ngStyle]="{'background-color':!isDarkMode?'white':'','color':!isDarkMode?'black':''}"
-                            id="serviceDescription" [(ngModel)]="newService.description" name="serviceDescription"
-                            rows="4" placeholder="Briefly describe what this service includes..."></textarea>
+                        <label for="serviceDescription">Description</label>
+                        <textarea id="serviceDescription" [(ngModel)]="newService.description" name="serviceDescription"
+                            rows="3" placeholder="Brief details about the service..."></textarea>
                     </div>
 
-                    <button type="submit" class="submit-button"
-                        [ngStyle]="{'background-color':!isDarkMode?'black':'','color':!isDarkMode?'white':''}">Add
-                        Service</button>
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-plus"></i> Add Service
+                    </button>
                 </form>
             </div>
         </div>
 
-        <div class="card" [ngStyle]="{'background-color':!isDarkMode?'white':'','box-shadow':!isDarkMode?'0 4px 6px -1px white, 0 2px 4px -1px white;':'',
-  
-            border:!isDarkMode?'1px solid black':''
-        }">
-            <h2 class="card-header " [ngStyle]="{'color':!isDarkMode?'black':''}">Current Services ({{
-                currentServices.length }})</h2>
+        <div class="card">
+            <div class="card-accent-line line-orange"></div>
+            <h2 class="card-header">Current Services ({{ currentServices.length }})</h2>
+
             <div class="card-content">
                 <div *ngIf="currentServices.length > 0; else noServices">
                     <div *ngFor="let service of currentServices" class="list-item">
-                        <div class="item-details">
-                            <p class="item-title" [ngStyle]="{'color':isDarkMode?'white':''}">{{ service.serviceName }}
-                                <span class="item-category">({{
-                                    service.category
-                                    }})</span>
-                            </p>
-                            <p class="item-subtitle" [ngStyle]="{'color':isDarkMode?'white':''}">{{ service.description
-                                }}</p>
-                            <div class="pricebox">
-                                <p class="item-price">₹{{ service.price }}</p>
+
+                        <div class="item-main">
+                            <div class="item-header-row">
+                                <h3 class="item-title">{{ service.serviceName }}</h3>
+                                <span class="category-tag">{{ service.category }}</span>
                             </div>
+                            <p class="item-desc">{{ service.description }}</p>
+                            <div class="price-tag">₹{{ service.price }}</div>
                         </div>
-                        <button (click)="deleteService(service.serviceId)" class="delete-button" title="Delete Service">
-                            <i class="fas fa-trash"></i>
+
+                        <button (click)="deleteService(service.serviceId)" class="delete-button" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
+
                     </div>
                 </div>
+
                 <ng-template #noServices>
-                    <p class="empty-state">You have not added any services yet.</p>
+                    <div class="empty-state">
+                        <p>No services added yet. Add one to get started!</p>
+                    </div>
                 </ng-template>
             </div>
         </div>
+
     </div>
 </div>
