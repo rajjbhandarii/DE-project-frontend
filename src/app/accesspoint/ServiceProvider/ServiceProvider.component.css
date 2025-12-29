@@ -1,17 +1,18 @@
-/* --- GLOBAL RESET & VARIABLES --- */
+/* --- THEME VARIABLES --- */
 :host {
-  --primary-color: #6366f1; /* Indigo */
-  --primary-hover: #4f46e5;
+  /* Admin Theme: Deep Purple & Violet */
+  --primary-color: #8b5cf6; /* Violet */
+  --primary-hover: #7c3aed;
   --bg-gradient: linear-gradient(
     135deg,
     #0f172a 0%,
-    #1e1b4b 100%
-  ); /* Deep Navy */
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+    #312e81 100%
+  ); /* Navy to Deep Purple */
+  --glass-bg: rgba(30, 41, 59, 0.75);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --input-bg: rgba(0, 0, 0, 0.3);
+  --input-bg: rgba(0, 0, 0, 0.4);
 }
 
 .main {
@@ -20,23 +21,23 @@
   align-items: center;
   min-height: 100vh;
   background: var(--bg-gradient);
-  padding: 20px; /* Padding for mobile edges */
+  padding: 20px;
   font-family: "Inter", sans-serif;
 }
 
-/* --- AUTH CARD (The Container) --- */
+/* --- CARD CONTAINER --- */
 .form-container {
   width: 100%;
-  max-width: 420px; /* Optimal reading width */
+  max-width: 420px;
   background-color: var(--glass-bg);
-  backdrop-filter: blur(12px); /* Glass blur effect */
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: var(--glass-border);
   border-radius: 24px;
   padding: 40px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
-  /* Animation when component loads or switches */
+  /* Smooth Entry Animation */
   animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -55,7 +56,7 @@
 .title {
   text-align: center;
   margin: 0 0 8px 0;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.5px;
@@ -75,10 +76,6 @@
   gap: 20px;
 }
 
-.input-group {
-  position: relative;
-}
-
 .input {
   width: 100%;
   box-sizing: border-box;
@@ -94,10 +91,11 @@
 .input:focus {
   outline: none;
   border-color: var(--primary-color);
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15); /* Purple Glow */
 }
 
+/* Password Eye Position */
 .password-container {
   position: relative;
   width: 100%;
@@ -118,7 +116,35 @@
   color: var(--text-primary);
 }
 
-/* --- LINKS & UTILS --- */
+/* --- BUTTONS --- */
+.form-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.3);
+}
+
+.form-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.4);
+}
+
+.form-btn:active {
+  transform: translateY(0);
+}
+
+/* --- LINKS --- */
 .forgot-password-link {
   font-size: 13px;
   color: var(--text-secondary);
@@ -130,36 +156,8 @@
 
 .forgot-password-link:hover {
   color: var(--primary-color);
-  text-decoration: underline;
 }
 
-/* --- BUTTONS --- */
-.form-btn {
-  width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  border: none;
-  background: var(--primary-color);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-top: 10px;
-  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
-}
-
-.form-btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
-}
-
-.form-btn:active {
-  transform: translateY(0);
-}
-
-/* --- SWITCH MODES --- */
 .toggle-text {
   text-align: center;
   margin-top: 24px;
@@ -175,23 +173,8 @@
   position: relative;
 }
 
-/* Underline animation for link */
-.toggle-link::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: -2px;
-  left: 0;
-  background-color: var(--primary-color);
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
-}
-
-.toggle-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+.toggle-link:hover {
+  text-decoration: underline;
 }
 
 /* --- SEPARATOR --- */
@@ -212,7 +195,6 @@
   flex: 1;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 .separator::before {
   margin-right: 15px;
 }
@@ -220,8 +202,8 @@
   margin-left: 15px;
 }
 
-/* --- PROVIDER BUTTON --- */
-.provider-btn {
+/* --- USER SWITCH BUTTON --- */
+.page-change-button {
   width: 100%;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -229,6 +211,7 @@
   padding: 14px;
   border-radius: 12px;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -237,17 +220,16 @@
   gap: 8px;
 }
 
-.provider-btn:hover {
+.page-change-button:hover {
   background: rgba(255, 255, 255, 0.05);
-  border-color: var(--text-secondary);
+  border-color: var(--text-primary);
   color: var(--text-primary);
 }
 
-/* --- MOBILE ADJUSTMENTS --- */
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 480px) {
   .form-container {
     padding: 30px 24px;
-    margin: 0;
     max-width: 100%;
   }
 

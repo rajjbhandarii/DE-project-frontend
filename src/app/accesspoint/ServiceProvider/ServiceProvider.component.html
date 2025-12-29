@@ -1,0 +1,80 @@
+<ng-container *ngIf="isLogin; else signuptemplete">
+	<div class="main">
+		<div class="form-container">
+			<p class="title">Provider Portal</p>
+			<p class="subtitle">Sign in to manage your services</p>
+
+			<form class="form" autocomplete="on">
+
+				<input type="email" class="input" [(ngModel)]="email" name="loginEmail" placeholder="Email Address"
+					required>
+
+				<div class="password-container">
+					<input [type]="inputType" name="loginPassword" [(ngModel)]="password" class="input password-input"
+						placeholder="Password" required>
+					<span class="show-password-icon" (click)="togglePasswordVisibility()">
+						<i [ngClass]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+					</span>
+				</div>
+
+				<div style="display: flex; justify-content: flex-end;">
+					<span class="forgot-password-link">Forgot Password?</span>
+				</div>
+
+				<button class="form-btn" (click)="loginserviceProvider()">Sign In</button>
+			</form>
+
+			<p class="toggle-text">
+				New Provider? <span class="toggle-link" (click)="isLogin=false">Register Business</span>
+			</p>
+
+			<div class="separator">Or</div>
+
+			<div routerLink="/userpage" class="page-change-container">
+				<button class="page-change-button">
+					<i class="fas fa-user"></i> Login as Customer
+				</button>
+			</div>
+		</div>
+	</div>
+</ng-container>
+
+<ng-template #signuptemplete>
+	<div class="main">
+		<div class="form-container">
+			<p class="title">Partner Registration</p>
+			<p class="subtitle">Join our network of service providers</p>
+
+			<form class="form" autocomplete="on">
+
+				<input type="text" class="input" [(ngModel)]="serviceProviderName" name="signupName"
+					placeholder="Business / Provider Name" required>
+
+				<input type="email" class="input" [(ngModel)]="email" name="signupEmail" placeholder="Email Address"
+					required>
+
+				<div class="password-container">
+					<input [type]="inputType" class="input" [(ngModel)]="password" name="signupPassword"
+						placeholder="Create Password" required>
+					<span class="show-password-icon" (click)="togglePasswordVisibility()">
+						<i [ngClass]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+					</span>
+				</div>
+
+				<button class="form-btn" (click)="signupServiceProvider()">Create Account</button>
+			</form>
+
+			<p class="toggle-text">
+				Already registered? <span class="toggle-link" (click)="isLogin=true">Sign In</span>
+			</p>
+
+			<div class="separator">Or</div>
+
+			<div routerLink="/userpage" class="page-change-container">
+				<button class="page-change-button">
+					<i class="fas fa-user"></i> Login as Customer
+				</button>
+			</div>
+		</div>
+	</div>
+</ng-template>

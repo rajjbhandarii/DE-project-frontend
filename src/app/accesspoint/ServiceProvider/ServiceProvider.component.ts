@@ -8,8 +8,8 @@ import { ThemeServiceService } from '../../theme-service.service';
 @Component({
   selector: 'app-admin',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css',]
+  templateUrl: './ServiceProvider.component.html',
+  styleUrls: ['./ServiceProvider.component.css',]
 })
 export class AdminComponent {
   isLogin: boolean = false;

@@ -1,177 +1,269 @@
-/* General Body Styles */
-body {
-  font-family: "Inter", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #000000;
-  margin: 0;
-  padding: 16px;
+/* --- THEME VARIABLES --- */
+:host {
+  --bg-primary: #f3f4f6;
+  --bg-card: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --accent-blue: #3b82f6;
+  --accent-hover: #2563eb;
 }
 
-/* Main container for the content */
+.dark-mode {
+  --bg-primary: #111827;
+  --bg-card: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --accent-blue: #60a5fa;
+  --accent-hover: #93c5fd;
+}
+
+/* --- BASE LAYOUT --- */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
+
 .container {
-  max-width: 896px;
-  height: fit-content;
-  margin: 0 auto;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 24px;
+  transition: background-color 0.3s ease;
 }
 
 .services-section {
-  padding: 1rem;
-  padding-top: 3.5rem;
-}
-/* The main white card holding all services */
-.services-card {
-  background-color: #000000;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 32px;
-  padding-top: 50px;
+  max-width: 900px;
+  margin: 0 auto;
+  margin-top: 3.5rem;
 }
 
-/* Main heading "Available Services" */
 .main-title {
   text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  color: #fcfdff;
-  margin-top: 0;
+  font-size: 2rem;
+  font-weight: 800;
   margin-bottom: 24px;
-  padding-top: 20px;
+  color: var(--text-primary);
 }
 
-/* --- NEW STYLES FOR LOCATION INPUT --- */
+/* --- LOCATION INPUT --- */
 .location-input-section {
-  margin-bottom: 32px;
-  text-align: left;
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+  border: 1px solid var(--border-color);
 }
 
 .location-label {
   display: block;
-  font-weight: 600;
-  color: #4a5568;
-  margin-bottom: 8px;
-  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .input-group {
   display: flex;
+  gap: 12px;
 }
 
 .location-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 6px 0 0 6px; /* Rounded on the left */
-  border: 1px solid #000000;
-  border-right: none;
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  /* Prevent zooming on iOS input focus */
   font-size: 16px;
-}
-.location-input:focus {
-  outline: none;
-  border-color: #3b82f6; /* blue-500 */
 }
 
 .location-button {
-  background-color: #3b82f6; /* blue-500 */
-  color: rgb(0, 0, 0);
+  background-color: var(--accent-blue);
+  color: white;
   border: none;
   padding: 0 24px;
-  border-radius: 0 6px 6px 0; /* Rounded on the right */
-  font-size: 16px;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.location-button:hover {
-  background-color: #2563eb; /* blue-600 */
-}
-/* --- END OF NEW STYLES --- */
-
-/* Spacing between service category blocks */
-.service-categories > * + * {
-  margin-top: 32px;
+  white-space: nowrap; /* Keeps text on one line */
 }
 
-/* A single service category block (e.g., Towing, Fuel) */
+/* --- SERVICE CARDS --- */
+.service-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .service-category {
-  border: 3px solid #000000;
-  border-radius: 8px;
-  padding: 24px;
-  background-color: #e3dbdb;
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
 }
-/* Header for a category (icon + title) */
+
+/* Accent Borders */
+.border-yellow {
+  border-left: 6px solid #f59e0b;
+}
+.border-red {
+  border-left: 6px solid #ef4444;
+}
+.border-green {
+  border-left: 6px solid #10b981;
+}
+
 .category-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  gap: 10px;
 }
 
-.category-header .icon {
-  margin-right: 12px;
+/* --- PROVIDER LIST --- */
+.providers-list {
+  padding: 0;
 }
 
-.category-header h2 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-}
-
-/* Spacing between provider items */
-.providers-list > * + * {
-  margin-top: 16px;
-}
-
-/* A single provider row */
 .provider-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
-  border: 1px solid var(--border-color, #000000);
-  border-radius: 6px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.provider-item:last-child {
+  border-bottom: none;
 }
 
 .provider-details {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.provider-name-row {
+  display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-wrap: wrap; /* Allows wrapping on tiny screens */
 }
 
 .provider-name {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1rem;
 }
 
-.provider-rating {
-  margin-left: 8px;
-  font-size: 14px;
-  display: inline-flex;
+.badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: #e0e7ff;
+  color: #4338ca;
+}
+.dark-mode .badge {
+  background: #312e81;
+  color: #c7d2fe;
+}
+
+.provider-meta {
+  display: flex;
   align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-.provider-rating svg {
-  width: 16px;
-  height: 16px;
-  color: #facc15; /* yellow-400 */
-  margin-right: 4px;
+.rating-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #f59e0b;
+  font-weight: 600;
 }
 
-.provider-price {
-  margin-left: 8px;
-  font-size: 14px;
-}
-
-/* The "Request" button */
-.request-button {
-  background-color: #f59e0b; /* yellow-500 */
-  color: #ffffff;
+.price-box {
+  color: #10b981;
   font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 6px;
+}
+
+.request-button {
+  background-color: var(--text-primary);
+  color: var(--bg-card);
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 20px;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.request-button:hover {
-  background-color: #d97706; /* yellow-600 */
+/* =========================================
+   MOBILE RESPONSIVENESS (Max Width 768px) 
+   ========================================= */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px; /* Less padding on mobile */
+  }
+
+  .main-title {
+    font-size: 1.5rem; /* Smaller title */
+    margin-bottom: 16px;
+  }
+
+  /* 1. Stack Location Input & Button */
+  .input-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .location-button {
+    width: 100%; /* Full width button */
+    padding: 12px;
+  }
+
+  /* 2. Stack Provider Item Details & Request Button */
+  .provider-item {
+    flex-direction: column;
+    align-items: flex-start; /* Align text to left */
+    gap: 16px; /* Space between details and button */
+  }
+
+  .provider-details {
+    width: 100%;
+  }
+
+  /* Make name and badge wrap nicely */
+  .provider-name-row {
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  /* 3. Full Width Request Button on Mobile */
+  .request-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    text-align: center;
+  }
 }

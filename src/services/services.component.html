@@ -1,93 +1,94 @@
-<div class="container" [ngClass]="{ 'dark-mode': isDarkMode }">
+<div class="container" [class.dark-mode]="isDarkMode">
     <div class="services-section">
+
         <h1 class="main-title">Available Services</h1>
 
         <div class="location-input-section">
             <label for="location-input" class="location-label">Your Current Location</label>
             <div class="input-group">
                 <input #locationInput type="text" id="location-input" class="location-input" [value]="userLocation"
-                    placeholder="e.g., Koramangala, Bangalore">
-                <button (click)="setLocation(locationInput.value)" class="location-button">Set</button>
+                    placeholder="e.g., Koramangala">
+                <button (click)="setLocation(locationInput.value)" class="location-button">
+                    Set Location
+                </button>
             </div>
         </div>
 
-        <div [ngStyle]="{'background-color': isDarkMode ? '#1a202c' : '#e3dbdb', 
-                                    'border': isDarkMode ? '3px solid #ffd3d3' : '3px solid #000000'}"
-            class="service-category">
-            <div class="category-header">Towing Services</div>
-            <div class="providers-list">
-                <div *ngFor="let service of TowingServices" class="provider-item"
-                    [ngStyle]="{'border': !isDarkMode ?'1px solid var(--border-color, #000000)' : '1px solid white'}">
-                    <div class="provider-details">
-                        <span class="provider-name">{{ service.providerName }} - {{ service.serviceName }}</span>
-                        <span class="provider-rating">
-                            <svg fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            {{ service.rating }}
-                        </span>
-                        <span class="provider-price">- ₹{{ service.price }}</span>
+        <div class="service-categories">
+
+            <div class="service-category border-yellow">
+                <div class="category-header">
+                    <span>🚜 Towing Services</span>
+                </div>
+                <div class="providers-list">
+                    <div *ngFor="let service of TowingServices" class="provider-item">
+                        <div class="provider-details">
+                            <div class="provider-name-row">
+                                <span class="provider-name">{{ service.providerName }}</span>
+                                <span class="badge">{{ service.serviceName }}</span>
+                            </div>
+                            <div class="provider-meta">
+                                <span class="rating-box">★ {{ service.rating }}</span>
+                                <span>•</span>
+                                <span class="price-box">₹{{ service.price }}</span>
+                            </div>
+                        </div>
+                        <button (click)="requestService(service.providerId,'Towing service')" class="request-button">
+                            Request
+                        </button>
                     </div>
-                    <button (click)="requestService(service.providerId,'Towing service')" class="request-button">
-                        Request
-                    </button>
                 </div>
             </div>
-        </div>
 
-        <div [ngStyle]="{'background-color': isDarkMode ? '#1a202c' : '#e3dbdb', 
-                                    'border': isDarkMode ? '3px solid #ffd3d3' : '3px solid #000000'}"
-            class="service-category">
-            <div class="category-header">Fuel Delivery</div>
-            <div class="providers-list">
-                <div *ngFor="let service of FuelServices" class="provider-item"
-                    [ngStyle]="{'border': !isDarkMode ?'1px solid var(--border-color, #000000)' : '1px solid white'}">
-                    <div class="provider-details">
-                        <span class="provider-name">{{ service.providerName }} - {{ service.serviceName }}</span>
-                        <span class="provider-rating">
-                            <svg fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            {{ service.rating }}
-                        </span>
-                        <span class="provider-price">- ₹{{ service.price }}</span>
+            <div class="service-category border-red">
+                <div class="category-header">
+                    <span>⛽ Fuel Delivery</span>
+                </div>
+                <div class="providers-list">
+                    <div *ngFor="let service of FuelServices" class="provider-item">
+                        <div class="provider-details">
+                            <div class="provider-name-row">
+                                <span class="provider-name">{{ service.providerName }}</span>
+                                <span class="badge">{{ service.serviceName }}</span>
+                            </div>
+                            <div class="provider-meta">
+                                <span class="rating-box">★ {{ service.rating }}</span>
+                                <span>•</span>
+                                <span class="price-box">₹{{ service.price }}</span>
+                            </div>
+                        </div>
+                        <button (click)="requestService(service.providerId,'Fuel Delivery')" class="request-button">
+                            Request
+                        </button>
                     </div>
-                    <button (click)="requestService(service.providerId,'Fuel Delivery')" class="request-button">
-                        Request
-                    </button>
                 </div>
             </div>
-        </div>
 
-        <div [ngStyle]="{'background-color': isDarkMode ? '#1a202c' : '#e3dbdb', 
-                                    'border': isDarkMode ? '3px solid #ffd3d3' : '3px solid #000000'}"
-            class="service-category">
-            <div class="category-header">Battery Assistance</div>
-            <div class="providers-list">
-                <div *ngFor="let service of BatteryServices" class="provider-item"
-                    [ngStyle]="{'border': !isDarkMode ?'1px solid var(--border-color, #000000)' : '1px solid white'}">
-                    <div class="provider-details">
-                        <span class="provider-name">{{ service.providerName }} - {{ service.serviceName }}</span>
-                        <span class="provider-rating">
-                            <svg fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            {{ service.rating }}
-                        </span>
-                        <span class="provider-price">- ₹{{ service.price }}</span>
+            <div class="service-category border-green">
+                <div class="category-header">
+                    <span>🔋 Battery Assistance</span>
+                </div>
+                <div class="providers-list">
+                    <div *ngFor="let service of BatteryServices" class="provider-item">
+                        <div class="provider-details">
+                            <div class="provider-name-row">
+                                <span class="provider-name">{{ service.providerName }}</span>
+                                <span class="badge">{{ service.serviceName }}</span>
+                            </div>
+                            <div class="provider-meta">
+                                <span class="rating-box">★ {{ service.rating }}</span>
+                                <span>•</span>
+                                <span class="price-box">₹{{ service.price }}</span>
+                            </div>
+                        </div>
+                        <button (click)="requestService(service.providerId,'Battery Assistance')"
+                            class="request-button">
+                            Request
+                        </button>
                     </div>
-                    <button (click)="requestService(service.providerId,'Battery Assistance')" class="request-button">
-                        Request
-                    </button>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
