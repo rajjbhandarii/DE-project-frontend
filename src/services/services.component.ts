@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { io, Socket } from "socket.io-client";
 import { ThemeServiceService } from '../app/theme-service.service';
+import { SocketService } from '../app/socket.service';
 
 /**
  * @interface DisplayService
@@ -32,7 +33,8 @@ interface ApiProvider {
   _id: string;
   serviceProviderName: string;
   services: {
-    _id: string;
+    serviceId?: string;
+    _id?: string;
     serviceName: string;
     price: number;
     category: string;
@@ -59,7 +61,7 @@ export class ServicesComponent implements OnInit {
   isDarkMode: boolean = false;
   userEmail: string = '';
 
-  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService) {
+  constructor(private accesspointService: AccesspointService, private socketService: SocketService, private http: HttpClient, private themeService: ThemeServiceService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(user => {
       if (user) {
@@ -69,13 +71,29 @@ export class ServicesComponent implements OnInit {
       }
     });
     this.fetchServicesProvider();
+
   }
 
   ngOnInit(): void {
-    this.socket.emit('registerProvider', this.userEmail, "service"); // register provider when email available
-    this.socket.on('services/updateServiceProviders', (data: ApiProvider[]) => {
-      this.assignServicesByCategory(data);
-      console.log('Connected to socket server with ID:', this.socket.id);
+    const email = this.userEmail;
+
+    this.socketService.joinRoom(
+      `provider:services:${email}`
+    );
+
+    this.socketService.onServiceUpdate((payload: any) => {
+      console.log('Received services update via socket:', payload);
+
+      // Server sends an array: [{ providerId, serviceProviderName, service: [...] }]
+      const dataArray = Array.isArray(payload) ? payload : [payload];
+
+      const transformedPayload: ApiProvider[] = dataArray.map(item => ({
+        _id: item.providerId,
+        serviceProviderName: item.serviceProviderName,
+        services: item.service || item.services || []
+      }));
+
+      this.assignServicesByCategory(transformedPayload);
     });
   }
 
@@ -88,6 +106,7 @@ export class ServicesComponent implements OnInit {
     this.http.get<ApiProvider[]>(environment.fetchServicesProvider).subscribe({
       next: (providers) => {
         this.assignServicesByCategory(providers);
+        console.log('Fetched service providers:', providers);
       },
       error: (error) => {
         console.error('Error fetching service providers:', error);
@@ -96,16 +115,14 @@ export class ServicesComponent implements OnInit {
   }
 
   assignServicesByCategory(providers: ApiProvider[]): void {
-
     // Loop through each provider returned from the API or socket
     providers.forEach(provider => {
-      // Loop through the services offered by that provider
       provider.services.forEach(service => {
         // Create a new, combined object with all the details
         const displayService: DisplayService = {
           providerId: provider._id,
           providerName: provider.serviceProviderName,
-          serviceId: service._id,
+          serviceId: service.serviceId || service._id,
           serviceName: service.serviceName,
           price: service.price,
           category: service.category,
@@ -115,11 +132,11 @@ export class ServicesComponent implements OnInit {
 
         // Add the combined object to the correct category array
         if (service.category === 'Towing service') {
-          this.TowingServices.push(displayService);
+          this.TowingServices.unshift(displayService);
         } else if (service.category === 'Fuel Delivery') {
-          this.FuelServices.push(displayService);
+          this.FuelServices.unshift(displayService);
         } else if (service.category === 'Battery Assistance') {
-          this.BatteryServices.push(displayService);
+          this.BatteryServices.unshift(displayService);
         }
       });
     });

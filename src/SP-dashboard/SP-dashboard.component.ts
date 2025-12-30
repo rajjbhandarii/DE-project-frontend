@@ -7,6 +7,7 @@ import { environment } from '../environments/environment';
 import { CommonModule } from '@angular/common';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
+import { SocketService } from '../app/socket.service';
 
 interface ActiveJob {
   name: string;
@@ -59,7 +60,8 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private accesspointService: AccesspointService,
     private http: HttpClient,
-    private themeService: ThemeServiceService
+    private themeService: ThemeServiceService,
+    private socketService: SocketService
   ) {
     this.State$ = this.accesspointService.currentState$;
   }
@@ -82,11 +84,14 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
       this.isDarkMode = isDark;
     });
 
-    this.socket.emit('registerProvider', this.userEmail, 'SP-dashboard'); // register provider
+    const email = this.userEmail;
 
-    this.socket.on('serviceRequestUpdated/providerDashboard', (data: ActiveRequest[]) => {
-      console.log('Received live service requests update:', data);
-      this.liveRequests.push(...data);
+    this.socketService.joinRoom(
+      `provider:dashboard:${email}`
+    );
+
+    this.socketService.onServiceRequestUpdate((request) => {
+      this.liveRequests.unshift(request);
     });
   }
 
