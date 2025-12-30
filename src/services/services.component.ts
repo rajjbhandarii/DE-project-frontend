@@ -78,7 +78,7 @@ export class ServicesComponent implements OnInit {
     const email = this.userEmail;
 
     this.socketService.joinRoom(
-      `provider:services:${email}`
+      `user:services:${email}`
     );
 
     this.socketService.onServiceUpdate((payload: any) => {
