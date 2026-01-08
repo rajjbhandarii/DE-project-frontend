@@ -24,6 +24,8 @@
                         <span>⛽ {{ category }}</span>
                         } @else if(category === 'Battery Assistance'){
                         <span>🔋 {{ category }}</span>
+                        }@else{
+                        <span>🛠️ {{ category }}</span>
                         }
                     </div>
                     <div class="providers-list">
@@ -42,7 +44,7 @@
                                     <span>||</span>
                                 </div>
                             </div>
-                            <button (click)="requestService(service.providerId,'Towing Service')"
+                            <button (click)="requestService(service.providerId, service.category)"
                                 class="request-button">
                                 Request
                             </button>

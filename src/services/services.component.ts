@@ -18,7 +18,7 @@ import { ProcessesService, DisplayService, ApiProvider } from '../app/processes.
 })
 export class ServicesComponent implements OnInit {
   currentState$: Observable<AppUser | null>;
-  userLocation: string = 'vapi';
+  userLocation: string = 'Nargol';
   userName: string = '';
   socket: Socket = io(environment.baseUrl);
   isDarkMode: boolean = false;
@@ -41,30 +41,34 @@ export class ServicesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const email = this.userEmail;
-
     this.fetchServicesProvider();
 
-    this.socketService.joinRoom(
-      `user:services:${email}`
-    );
+    // Listen for service updates via socket
+    this.socketService.onServiceUpdate((payload: ApiProvider[]) => {
+      const newDisplayServices = this.processesService.convertApiProviderToDisplayService(payload);
 
-    this.socketService.onServiceUpdate((payload: any) => {
-      console.log('Received services update via socket:', payload);
+      newDisplayServices.forEach(newService => {
+        const category = newService.category;
+        const existingServices = this.servicesMapByCategory.get(category) || [];
+        console.log(`📂 Category "${category}" has ${existingServices.length} existing services`);
 
-      // Server sends an array: [{ providerId, serviceProviderName, service: [...] }]
-      const dataArray = Array.isArray(payload) ? payload : [payload];
+        // Check if service already exists (by serviceId and providerId)
+        const serviceExists = existingServices.some(
+          s => s.serviceId === newService.serviceId && s.providerId === newService.providerId
+        );
 
-      const transformedPayload: ApiProvider[] = dataArray.map(item => ({
-        _id: item.providerId,
-        serviceProviderName: item.serviceProviderName,
-        services: item.service
-      }));
-
-      const updatedServicesByCategory = this.processesService.assignServicesByCategory(transformedPayload, this.userLocation);
-      // this.servicesMapByCategory =
+        if (!serviceExists) {
+          // Create new array to trigger change detection
+          const updatedServices = [...existingServices, newService];
+          this.servicesMapByCategory.set(category, updatedServices);
+          console.log(`✅ Added new service "${newService.serviceName}" to category "${category}"`);
+        } else {
+          console.log(`⏭️ Service "${newService.serviceName}" already exists, skipping`);
+        }
+      });
     });
-  }
+  };
+
 
   /**
    * @function fetchServicesProvider
@@ -72,7 +76,6 @@ export class ServicesComponent implements OnInit {
    * It then transforms this data to make it easy to display in the template.
    */
   fetchServicesProvider(): void {
-
     this.http.get<ApiProvider[]>(environment.fetchServicesProvider).subscribe({
       next: (providers) => {
         this.servicesMapByCategory = this.processesService.assignServicesByCategory(providers, this.userLocation);
