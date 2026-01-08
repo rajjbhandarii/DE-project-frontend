@@ -6,6 +6,7 @@ import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.serv
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../environments/environment';
 import { ThemeServiceService } from '../app/theme-service.service';
+import { ProcessesService } from '../app/processes.service';
 
 export interface Service {
   serviceId: any;
@@ -13,6 +14,7 @@ export interface Service {
   category: string;
   description: string;
   price: number;
+  location: string;
 }
 
 @Component({
@@ -28,8 +30,7 @@ export class ServiceManagementComponent implements OnInit {
   isDarkMode: boolean = false;
   private destroy$ = new Subject<void>();
   // Available categories for the dropdown
-  categories: string[] = ['Towing service', 'Fuel Delivery', 'Battery Assistance'];
-
+  // categories: string[] = ['Towing Service', 'Fuel Delivery', 'Battery Assistance'];
 
   // Array to hold the list of existing services
   currentServices: Service[] = [];
@@ -37,13 +38,14 @@ export class ServiceManagementComponent implements OnInit {
   // Object to bind to the form fields for a new service
   newService: Partial<Service> = {
     serviceId: new Date().getTime().toString(),
-    serviceName: 'test service',
-    category: 'Towing service',
-    description: 'this is test api',
-    price: 400
+    serviceName: 'testservice',
+    category: 'Towing Service',
+    description: 'this is the test api',
+    price: 560,
+    location: 'Nargol'
   };
 
-  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService) {
+  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService, protected processesService: ProcessesService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(Appuser => {
       if (Appuser) {
@@ -72,7 +74,8 @@ export class ServiceManagementComponent implements OnInit {
       serviceName: this.newService.serviceName!,
       category: this.newService.category!,
       description: this.newService.description!,
-      price: this.newService.price || 0
+      price: this.newService.price || 0,
+      location: this.newService.location || ''
     };
 
     // Add the new service to the beginning of the array
@@ -84,30 +87,26 @@ export class ServiceManagementComponent implements OnInit {
       serviceName: '',
       category: '',
       description: '',
-      price: undefined
+      price: undefined,
+      location: ''
     };
   }
 
   //to add a new service
   addService(): void {
-    if (!this.newService.serviceName && !this.newService.price && !this.categories && !this.newService.description) {
+    if (!this.newService && this.serviceProviderEmail) {
       this.themeService.displayNotification('Error', 'Please enter all required fields.', 'error');
       return;
     } else {
-      if (!this.serviceProviderEmail) {
-        this.themeService.displayNotification('Error', 'Service Provider email is missing.', 'error');
-        return;
-      } else {
-        this.http.post(environment.addNewServices, { ...this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
-          next: () => {
-            this.addToActiveServicesList();
-            this.themeService.displayNotification('Success', 'Service added successfully.', 'success');
-          }, error: (error) => {
-            console.log('Error adding service:', error);
-            this.themeService.displayNotification('Error', 'Error adding service. Please try again later.', 'error');
-          }
-        });
-      }
+      this.http.post(environment.addNewServices, { newService: this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
+        next: () => {
+          this.addToActiveServicesList();
+          this.themeService.displayNotification('Success', 'Service added successfully.', 'success');
+        }, error: (error) => {
+          console.log('Error adding service:', error);
+          this.themeService.displayNotification('Error', 'Error adding service. Please try again later.', 'error');
+        }
+      });
     }
   }
 
@@ -122,13 +121,22 @@ export class ServiceManagementComponent implements OnInit {
       }
     });
   }
+
   /**
    * Deletes a service from the list based on its ID.
    * @param serviceId The ID of the service to delete.
    */
   deleteService(serviceId: number): void {
-    this.currentServices = this.currentServices.filter(service => service.serviceId !== serviceId);
-    this.themeService.displayNotification('Success', 'Service deleted successfully.', 'success');
+    this.http.delete(environment.deleteService, {
+      body: { serviceId: serviceId.toString(), serviceProviderEmail: this.serviceProviderEmail }
+    }).subscribe({
+      next: (response: any) => {
+        this.currentServices = this.currentServices.filter(service => service.serviceId !== serviceId);
+        this.themeService.displayNotification('Success', response.message || 'Service deleted successfully.', 'success');
+      }, error: (error) => {
+        this.themeService.displayNotification('Error', error.error?.message || 'An error occurred', 'error');
+      }
+    });
   }
 
 }

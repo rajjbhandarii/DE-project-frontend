@@ -22,8 +22,14 @@
                     <div class="form-group">
                         <label for="serviceCategory">Category</label>
                         <select id="serviceCategory" [(ngModel)]="newService.category" name="serviceCategory">
-                            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                            <option *ngFor="let cat of processesService.categories" [value]="cat">{{ cat }}</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serviceLocation">Location</label>
+                        <input id="serviceLocation" type="text" [(ngModel)]="newService.location" name="serviceLocation"
+                            placeholder="e.g., Nargol" required>
                     </div>
 
                     <div class="form-group">

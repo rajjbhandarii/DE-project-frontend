@@ -10,6 +10,7 @@ export const environment = {
     fetchServicesProvider: 'https://road-rescue-backend.onrender.com/services/fetch-serviceProvider',
     addNewServices: 'https://road-rescue-backend.onrender.com/serviceManagement/addNewServices',
     getServicesCategory: 'https://road-rescue-backend.onrender.com/serviceManagement/getServicesCategory',
+    deleteService: 'https://road-rescue-backend.onrender.com/serviceManagement/deleteService',
     sendEmail: 'https://road-rescue-backend.onrender.com/dashboard/send-email',
     serviceID: 'service_vy31m7j',
     templateID: 'template_sqac51r',

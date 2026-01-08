@@ -8,40 +8,7 @@ import { environment } from '../environments/environment';
 import { io, Socket } from "socket.io-client";
 import { ThemeServiceService } from '../app/theme-service.service';
 import { SocketService } from '../app/socket.service';
-
-/**
- * @interface DisplayService
- * A new, combined interface to hold both provider and service details together.
- * This makes it much easier for the HTML template to display all the needed info.
- */
-interface DisplayService {
-  providerId: any;
-  providerName: string;
-  serviceId: any;
-  serviceName: string;
-  price: number;
-  category: string;
-  description: string;
-  rating: number;
-}
-
-/**
- * @interface ApiProvider
- * Represents the structure of a single provider object coming from the API.
- */
-interface ApiProvider {
-  _id: string;
-  serviceProviderName: string;
-  services: {
-    serviceId?: string;
-    _id?: string;
-    serviceName: string;
-    price: number;
-    category: string;
-    description: string;
-    rating: number;
-  }[]; // Note: services is an array of objects
-}
+import { ProcessesService, DisplayService, ApiProvider } from '../app/processes.service';
 
 @Component({
   selector: 'app-services',
@@ -51,17 +18,18 @@ interface ApiProvider {
 })
 export class ServicesComponent implements OnInit {
   currentState$: Observable<AppUser | null>;
-  userLocation: string = 'Vapi';
+  userLocation: string = 'vapi';
   userName: string = '';
-  // These arrays will now hold our new `DisplayService` objects.
-  TowingServices: DisplayService[] = [];
-  FuelServices: DisplayService[] = [];
-  BatteryServices: DisplayService[] = [];
   socket: Socket = io(environment.baseUrl);
   isDarkMode: boolean = false;
   userEmail: string = '';
+  servicesMapByCategory = new Map<string, DisplayService[]>();
 
-  constructor(private accesspointService: AccesspointService, private socketService: SocketService, private http: HttpClient, private themeService: ThemeServiceService) {
+  get categoryKeys(): string[] {
+    return Array.from(this.servicesMapByCategory.keys());
+  }
+
+  constructor(private accesspointService: AccesspointService, private socketService: SocketService, private http: HttpClient, private themeService: ThemeServiceService, protected processesService: ProcessesService) {
     this.currentState$ = this.accesspointService.currentState$;
     this.currentState$.subscribe(user => {
       if (user) {
@@ -70,12 +38,12 @@ export class ServicesComponent implements OnInit {
         this.userEmail = user.email;
       }
     });
-    this.fetchServicesProvider();
-
   }
 
   ngOnInit(): void {
     const email = this.userEmail;
+
+    this.fetchServicesProvider();
 
     this.socketService.joinRoom(
       `user:services:${email}`
@@ -90,10 +58,11 @@ export class ServicesComponent implements OnInit {
       const transformedPayload: ApiProvider[] = dataArray.map(item => ({
         _id: item.providerId,
         serviceProviderName: item.serviceProviderName,
-        services: item.service || item.services || []
+        services: item.service
       }));
 
-      this.assignServicesByCategory(transformedPayload);
+      const updatedServicesByCategory = this.processesService.assignServicesByCategory(transformedPayload, this.userLocation);
+      // this.servicesMapByCategory =
     });
   }
 
@@ -103,42 +72,15 @@ export class ServicesComponent implements OnInit {
    * It then transforms this data to make it easy to display in the template.
    */
   fetchServicesProvider(): void {
+
     this.http.get<ApiProvider[]>(environment.fetchServicesProvider).subscribe({
       next: (providers) => {
-        this.assignServicesByCategory(providers);
+        this.servicesMapByCategory = this.processesService.assignServicesByCategory(providers, this.userLocation);
         console.log('Fetched service providers:', providers);
       },
       error: (error) => {
         console.error('Error fetching service providers:', error);
       }
-    });
-  }
-
-  assignServicesByCategory(providers: ApiProvider[]): void {
-    // Loop through each provider returned from the API or socket
-    providers.forEach(provider => {
-      provider.services.forEach(service => {
-        // Create a new, combined object with all the details
-        const displayService: DisplayService = {
-          providerId: provider._id,
-          providerName: provider.serviceProviderName,
-          serviceId: service.serviceId || service._id,
-          serviceName: service.serviceName,
-          price: service.price,
-          category: service.category,
-          description: service.description,
-          rating: service.rating
-        };
-
-        // Add the combined object to the correct category array
-        if (service.category === 'Towing service') {
-          this.TowingServices.unshift(displayService);
-        } else if (service.category === 'Fuel Delivery') {
-          this.FuelServices.unshift(displayService);
-        } else if (service.category === 'Battery Assistance') {
-          this.BatteryServices.unshift(displayService);
-        }
-      });
     });
   }
 
@@ -149,7 +91,11 @@ export class ServicesComponent implements OnInit {
    */
   setLocation(newLocation: string): void {
     this.userLocation = newLocation;
-    console.log(`Location set to: ${this.userLocation}`);
+    const allServices: DisplayService[] = [];
+    this.servicesMapByCategory.forEach(services => {
+      allServices.push(...services);
+    });
+    this.servicesMapByCategory = this.processesService.assignServicesByCategory(allServices, this.userLocation);
   }
 
   /**

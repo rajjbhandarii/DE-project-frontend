@@ -15,80 +15,41 @@
         </div>
 
         <div class="service-categories">
-
-            <div class="service-category border-yellow">
-                <div class="category-header">
-                    <span>🚜 Towing Services</span>
-                </div>
-                <div class="providers-list">
-                    <div *ngFor="let service of TowingServices" class="provider-item">
-                        <div class="provider-details">
-                            <div class="provider-name-row">
-                                <span class="provider-name">{{ service.providerName }}</span>
-                                <span class="badge">{{ service.serviceName }}</span>
+            <div *ngFor="let category of categoryKeys">
+                <div class="service-category border-yellow">
+                    <div class="category-header">
+                        @if(category === 'Towing Service'){
+                        <span>🚜 {{ category }}</span>
+                        }@else if(category === 'Fuel Delivery'){
+                        <span>⛽ {{ category }}</span>
+                        } @else if(category === 'Battery Assistance'){
+                        <span>🔋 {{ category }}</span>
+                        }
+                    </div>
+                    <div class="providers-list">
+                        <div *ngFor="let service of servicesMapByCategory.get(category)" class="provider-item">
+                            <div class="provider-details">
+                                <div class="provider-name-row">
+                                    <span class="provider-name">{{ service.providerName }}</span>
+                                    <span class="badge">{{ service.serviceName }}</span>
+                                </div>
+                                <div class="provider-meta">
+                                    <span class="rating-box">★ {{ service.rating }}</span>
+                                    <span>||</span>
+                                    <span class="price-box">₹{{ service.price }}</span>
+                                    <span>||</span>
+                                    <span class="location-box">📍{{ service.location }}</span>
+                                    <span>||</span>
+                                </div>
                             </div>
-                            <div class="provider-meta">
-                                <span class="rating-box">★ {{ service.rating }}</span>
-                                <span>•</span>
-                                <span class="price-box">₹{{ service.price }}</span>
-                            </div>
+                            <button (click)="requestService(service.providerId,'Towing Service')"
+                                class="request-button">
+                                Request
+                            </button>
                         </div>
-                        <button (click)="requestService(service.providerId,'Towing service')" class="request-button">
-                            Request
-                        </button>
                     </div>
                 </div>
             </div>
-
-            <div class="service-category border-red">
-                <div class="category-header">
-                    <span>⛽ Fuel Delivery</span>
-                </div>
-                <div class="providers-list">
-                    <div *ngFor="let service of FuelServices" class="provider-item">
-                        <div class="provider-details">
-                            <div class="provider-name-row">
-                                <span class="provider-name">{{ service.providerName }}</span>
-                                <span class="badge">{{ service.serviceName }}</span>
-                            </div>
-                            <div class="provider-meta">
-                                <span class="rating-box">★ {{ service.rating }}</span>
-                                <span>•</span>
-                                <span class="price-box">₹{{ service.price }}</span>
-                            </div>
-                        </div>
-                        <button (click)="requestService(service.providerId,'Fuel Delivery')" class="request-button">
-                            Request
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="service-category border-green">
-                <div class="category-header">
-                    <span>🔋 Battery Assistance</span>
-                </div>
-                <div class="providers-list">
-                    <div *ngFor="let service of BatteryServices" class="provider-item">
-                        <div class="provider-details">
-                            <div class="provider-name-row">
-                                <span class="provider-name">{{ service.providerName }}</span>
-                                <span class="badge">{{ service.serviceName }}</span>
-                            </div>
-                            <div class="provider-meta">
-                                <span class="rating-box">★ {{ service.rating }}</span>
-                                <span>•</span>
-                                <span class="price-box">₹{{ service.price }}</span>
-                            </div>
-                        </div>
-                        <button (click)="requestService(service.providerId,'Battery Assistance')"
-                            class="request-button">
-                            Request
-                        </button>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>

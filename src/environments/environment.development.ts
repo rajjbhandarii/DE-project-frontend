@@ -10,6 +10,7 @@ export const environment = {
     fetchServicesRequests: 'http://localhost:3000/SP-dashboard/fetch-servicesRequests',
     addNewServices: 'http://localhost:3000/serviceManagement/addNewServices',
     getServicesCategory: 'http://localhost:3000/serviceManagement/getServicesCategory',
+    deleteService: 'http://localhost:3000/serviceManagement/deleteService',
     sendEmail: 'http://localhost:3000/dashboard/send-email',
     serviceID: 'service_vy31m7j',
     templateID: 'template_sqac51r',
