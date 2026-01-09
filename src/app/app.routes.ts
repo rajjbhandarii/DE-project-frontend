@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserComponent } from './accesspoint/User/user.component';
+import { UserComponent } from './AccessPoint/User/user.component';
 import { AuthGuard } from './auth.guard';
 import { NavbarComponent } from './Navbar/navbar.component';
 
 
 export const routes: Routes = [
-  { path: 'adminPage', loadComponent: () => import('./accesspoint/ServiceProvider/ServiceProvider.component').then(m => m.AdminComponent) },
+  { path: 'adminPage', loadComponent: () => import('./AccessPoint/ServiceProvider/ServiceProvider.component').then(m => m.AdminComponent) },
   { path: 'userpage', component: UserComponent },
   { path: '', redirectTo: 'userpage', pathMatch: 'full' },
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
@@ -19,7 +19,7 @@ export interface Service {
 
 @Component({
   selector: 'app-service-management',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './service-management.component.html',
   styleUrls: ['./service-management.component.css']
 })

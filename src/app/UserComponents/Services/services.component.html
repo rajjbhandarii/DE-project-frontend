@@ -1,57 +1,61 @@
 <div class="container" [class.dark-mode]="isDarkMode">
-    <div class="services-section">
+  <div class="services-section">
 
-        <h1 class="main-title">Available Services</h1>
+    <h1 class="main-title">Available Services</h1>
 
-        <div class="location-input-section">
-            <label for="location-input" class="location-label">Your Current Location</label>
-            <div class="input-group">
-                <input #locationInput type="text" id="location-input" class="location-input" [value]="userLocation"
-                    placeholder="e.g., Koramangala">
-                <button (click)="setLocation(locationInput.value)" class="location-button">
-                    Set Location
-                </button>
-            </div>
+    <div class="location-input-section">
+      <label for="location-input" class="location-label">Your Current Location</label>
+      <div class="input-group">
+        <input #locationInput type="text" id="location-input" class="location-input" [value]="userLocation"
+          placeholder="e.g., Koramangala">
+          <button (click)="setLocation(locationInput.value)" class="location-button">
+            Set Location
+          </button>
         </div>
+      </div>
 
-        <div class="service-categories">
-            <div *ngFor="let category of categoryKeys">
-                <div class="service-category border-yellow">
-                    <div class="category-header">
-                        @if(category === 'Towing Service'){
-                        <span>🚜 {{ category }}</span>
-                        }@else if(category === 'Fuel Delivery'){
-                        <span>⛽ {{ category }}</span>
-                        } @else if(category === 'Battery Assistance'){
-                        <span>🔋 {{ category }}</span>
-                        }@else{
-                        <span>🛠️ {{ category }}</span>
-                        }
+      <div class="service-categories">
+        @for (category of categoryKeys; track category) {
+          <div>
+            <div class="service-category border-yellow">
+              <div class="category-header">
+                @if(category === 'Towing Service'){
+                  <span>🚜 {{ category }}</span>
+                  }@else if(category === 'Fuel Delivery'){
+                  <span>⛽ {{ category }}</span>
+                } @else if(category === 'Battery Assistance'){
+                  <span>🔋 {{ category }}</span>
+                  }@else{
+                  <span>🛠️ {{ category }}</span>
+                }
+              </div>
+              <div class="providers-list">
+                @for (service of servicesMapByCategory.get(category); track service) {
+                  <div class="provider-item">
+                    <div class="provider-details">
+                      <div class="provider-name-row">
+                        <span class="provider-name">{{ service.providerName }}</span>
+                        <span class="badge">{{ service.serviceName }}</span>
+                      </div>
+                      <div class="provider-meta">
+                        <span class="rating-box">★ {{ service.rating }}</span>
+                        <span>||</span>
+                        <span class="price-box">₹{{ service.price }}</span>
+                        <span>||</span>
+                        <span class="location-box">📍{{ service.location }}</span>
+                        <span>||</span>
+                      </div>
                     </div>
-                    <div class="providers-list">
-                        <div *ngFor="let service of servicesMapByCategory.get(category)" class="provider-item">
-                            <div class="provider-details">
-                                <div class="provider-name-row">
-                                    <span class="provider-name">{{ service.providerName }}</span>
-                                    <span class="badge">{{ service.serviceName }}</span>
-                                </div>
-                                <div class="provider-meta">
-                                    <span class="rating-box">★ {{ service.rating }}</span>
-                                    <span>||</span>
-                                    <span class="price-box">₹{{ service.price }}</span>
-                                    <span>||</span>
-                                    <span class="location-box">📍{{ service.location }}</span>
-                                    <span>||</span>
-                                </div>
-                            </div>
-                            <button (click)="requestService(service.providerId, service.category)"
-                                class="request-button">
-                                Request
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                    <button (click)="requestService(service.providerId, service.category)"
+                      class="request-button">
+                      Request
+                    </button>
+                  </div>
+                }
+              </div>
             </div>
-        </div>
+          </div>
+        }
+      </div>
     </div>
-</div>
+  </div>

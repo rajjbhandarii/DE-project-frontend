@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
@@ -12,7 +11,7 @@ import { ProcessesService, DisplayService, ApiProvider } from '../../AppServices
 
 @Component({
   selector: 'app-services',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css']
 })
@@ -42,33 +41,39 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchServicesProvider();
-
     // Listen for service updates via socket
     this.socketService.onServiceUpdate((payload: ApiProvider[]) => {
-      const newDisplayServices = this.processesService.convertApiProviderToDisplayService(payload);
+      try {
+        const newDisplayServices = this.processesService.convertApiProviderToDisplayService(payload);
 
-      newDisplayServices.forEach(newService => {
-        const category = newService.category;
-        const existingServices = this.servicesMapByCategory.get(category) || [];
-        console.log(`📂 Category "${category}" has ${existingServices.length} existing services`);
+        newDisplayServices.forEach(newService => {
+          const category = newService.category;
+          const existingServices = this.servicesMapByCategory.get(category) || [];
+          // console.log(`📂 Category "${category}" has ${existingServices.length} existing services`);
 
-        // Check if service already exists (by serviceId and providerId)
-        const serviceExists = existingServices.some(
-          s => s.serviceId === newService.serviceId && s.providerId === newService.providerId
-        );
+          // Check if service already exists (by serviceId and providerId)
+          const serviceExists = existingServices.some(
+            s => s.serviceId === newService.serviceId && s.providerId === newService.providerId
+          );
 
-        if (!serviceExists) {
-          // Create new array to trigger change detection
-          const updatedServices = [...existingServices, newService];
-          this.servicesMapByCategory.set(category, updatedServices);
-          console.log(`✅ Added new service "${newService.serviceName}" to category "${category}"`);
-        } else {
-          console.log(`⏭️ Service "${newService.serviceName}" already exists, skipping`);
+          if (!serviceExists) {
+            // Create new array to trigger change detection
+            const updatedServices = [...existingServices, newService];
+            this.servicesMapByCategory.set(category, updatedServices);
+            // console.log(`✅ Added new service "${newService.serviceName}" to category "${category}"`);
+          } else {
+            // console.log(`⏭️ Service "${newService.serviceName}" already exists, skipping`);
+          }
+        });
+      } catch (error) {
+        try {
+          this.fetchServicesProvider();
+        } catch (error) {
+          this.themeService.displayNotification('Error', 'Failed to update services. Please refresh the page.', 'error');
         }
-      });
+      }
     });
-  };
-
+  }
 
   /**
    * @function fetchServicesProvider

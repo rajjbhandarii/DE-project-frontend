@@ -1,87 +1,89 @@
 <div class="main-container" [class.dark-mode]="isDarkMode">
 
-    <header class="main-header">
-        <h1>Manage Your Services</h1>
-    </header>
+  <header class="main-header">
+    <h1>Manage Your Services</h1>
+  </header>
 
-    <div class="content-grid">
+  <div class="content-grid">
 
-        <div class="card">
-            <div class="card-accent-line line-blue"></div>
-            <h2 class="card-header">Add a New Service</h2>
+    <div class="card">
+      <div class="card-accent-line line-blue"></div>
+      <h2 class="card-header">Add a New Service</h2>
 
-            <div class="card-content">
-                <form (ngSubmit)="addService()" class="service-form">
+      <div class="card-content">
+        <form (ngSubmit)="addService()" class="service-form">
 
-                    <div class="form-group">
-                        <label for="serviceName">Service Name</label>
-                        <input id="serviceName" type="text" [(ngModel)]="newService.serviceName" name="serviceName"
-                            placeholder="e.g., AC Repair" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="serviceCategory">Category</label>
-                        <select id="serviceCategory" [(ngModel)]="newService.category" name="serviceCategory">
-                            <option *ngFor="let cat of processesService.categories" [value]="cat">{{ cat }}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="serviceLocation">Location</label>
-                        <input id="serviceLocation" type="text" [(ngModel)]="newService.location" name="serviceLocation"
-                            placeholder="e.g., Nargol" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="servicePrice">Base Price (₹)</label>
-                        <input id="servicePrice" type="number" [(ngModel)]="newService.price" name="servicePrice"
-                            placeholder="e.g., 499" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="serviceDescription">Description</label>
-                        <textarea id="serviceDescription" [(ngModel)]="newService.description" name="serviceDescription"
-                            rows="3" placeholder="Brief details about the service..."></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-button">
-                        <i class="fas fa-plus"></i> Add Service
-                    </button>
-                </form>
+          <div class="form-group">
+            <label for="serviceName">Service Name</label>
+            <input id="serviceName" type="text" [(ngModel)]="newService.serviceName" name="serviceName"
+              placeholder="e.g., AC Repair" required>
             </div>
-        </div>
 
-        <div class="card">
+            <div class="form-group">
+              <label for="serviceCategory">Category</label>
+              <select id="serviceCategory" [(ngModel)]="newService.category" name="serviceCategory">
+                @for (cat of processesService.categories; track cat) {
+                  <option [value]="cat">{{ cat }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="serviceLocation">Location</label>
+              <input id="serviceLocation" type="text" [(ngModel)]="newService.location" name="serviceLocation"
+                placeholder="e.g., Nargol" required>
+              </div>
+
+              <div class="form-group">
+                <label for="servicePrice">Base Price (₹)</label>
+                <input id="servicePrice" type="number" [(ngModel)]="newService.price" name="servicePrice"
+                  placeholder="e.g., 499" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="serviceDescription">Description</label>
+                  <textarea id="serviceDescription" [(ngModel)]="newService.description" name="serviceDescription"
+                  rows="3" placeholder="Brief details about the service..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">
+                  <i class="fas fa-plus"></i> Add Service
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
             <div class="card-accent-line line-orange"></div>
             <h2 class="card-header">Current Services ({{ currentServices.length }})</h2>
 
             <div class="card-content">
-                <div *ngIf="currentServices.length > 0; else noServices">
-                    <div *ngFor="let service of currentServices" class="list-item">
-
-                        <div class="item-main">
-                            <div class="item-header-row">
-                                <h3 class="item-title">{{ service.serviceName }}</h3>
-                                <span class="category-tag">{{ service.category }}</span>
-                            </div>
-                            <p class="item-desc">{{ service.description }}</p>
-                            <div class="price-tag">₹{{ service.price }}</div>
+              @if (currentServices.length > 0) {
+                <div>
+                  @for (service of currentServices; track service) {
+                    <div class="list-item">
+                      <div class="item-main">
+                        <div class="item-header-row">
+                          <h3 class="item-title">{{ service.serviceName }}</h3>
+                          <span class="category-tag">{{ service.category }}</span>
                         </div>
-
-                        <button (click)="deleteService(service.serviceId)" class="delete-button" title="Delete">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-
+                        <p class="item-desc">{{ service.description }}</p>
+                        <div class="price-tag">₹{{ service.price }}</div>
+                      </div>
+                      <button (click)="deleteService(service.serviceId)" class="delete-button" title="Delete">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
                     </div>
+                  }
                 </div>
+              } @else {
+                <div class="empty-state">
+                  <p>No services added yet. Add one to get started!</p>
+                </div>
+              }
 
-                <ng-template #noServices>
-                    <div class="empty-state">
-                        <p>No services added yet. Add one to get started!</p>
-                    </div>
-                </ng-template>
             </div>
-        </div>
+          </div>
 
-    </div>
-</div>
+        </div>
+      </div>
