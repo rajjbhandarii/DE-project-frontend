@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AccesspointService } from '../accesspoint.service';
+import { AccesspointService } from '../../AppServices/AccessPoint.service';
 import { RouterLink } from '@angular/router';
-import { ThemeServiceService } from '../../theme-service.service';
+import { ThemeServiceService } from '../../AppServices/ThemeService.service';
 
 @Component({
   selector: 'app-user',

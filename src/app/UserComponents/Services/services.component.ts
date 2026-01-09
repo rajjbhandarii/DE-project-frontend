@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
+import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment';
+import { environment } from '../../Environments/environment';
 import { io, Socket } from "socket.io-client";
-import { ThemeServiceService } from '../app/theme-service.service';
-import { SocketService } from '../app/socket.service';
-import { ProcessesService, DisplayService, ApiProvider } from '../app/processes.service';
+import { ThemeServiceService } from '../../AppServices/ThemeService.service';
+import { SocketService } from '../../AppServices/Socket.service';
+import { ProcessesService, DisplayService, ApiProvider } from '../../AppServices/Processes.service';
 
 @Component({
   selector: 'app-services',

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
+import { environment } from '../Environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { ThemeServiceService } from '../theme-service.service';
+import { ThemeServiceService } from './ThemeService.service';
 
 export interface AppUser {
   name: string;

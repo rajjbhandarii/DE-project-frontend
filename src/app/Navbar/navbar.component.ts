@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterOutlet, Router } from '@angular/router'; // Added Router
-import { AccesspointService } from '../app/accesspoint/accesspoint.service';
+import { AccesspointService } from '../AppServices/AccessPoint.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ThemeServiceService } from '../app/theme-service.service';
+import { ThemeServiceService } from '../AppServices/ThemeService.service';
 
 @Component({
   selector: 'app-navbar',

@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { AccesspointService, AppUser } from '../app/accesspoint/accesspoint.service';
-import { environment } from '../environments/environment';
+import { from, Observable, Subject, takeUntil } from 'rxjs';
+import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
+import { environment } from '../../Environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ThemeServiceService } from '../app/theme-service.service';
+import { ThemeServiceService } from '../../AppServices/ThemeService.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

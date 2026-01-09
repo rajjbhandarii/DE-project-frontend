@@ -18,7 +18,7 @@
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": ["src/app/Assets"],
             "styles": ["src/styles.css"],
             "scripts": []
           },
@@ -44,8 +44,8 @@
               "sourceMap": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
+                  "replace": "src/app/Environments/environment.ts",
+                  "with": "src/app/Environments/environment.development.ts"
                 }
               ]
             }
@@ -72,7 +72,7 @@
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": ["src/favicon.ico", "src/app/Assets"],
             "styles": ["src/styles.css"],
             "scripts": []
           }
