@@ -1,246 +1,242 @@
-<body>
-
-  <section id="hero" class="hero-section">
-    <div class="hero-content-container">
-      <div class="hero-text-content">
-        <h1 [ngClass]="{'dark-mode-hero-title': isDarkMode, 'hero-title': !isDarkMode}">
-          Stuck on the Road? <br> We're Here to Help!
-        </h1>
-        <p class="hero-subtitle">
-          Fast, reliable, and professional roadside assistance available 24/7. Get back on track quickly and safely.
-        </p>
-        <a href="tel:+917567853633" class="hero-button">
-          Get Immediate Help
-        </a>
-      </div>
-      <div class="hero-image-container hidden-sm">
-        <img [src]="heroImage" alt="Road rescue image" class="hero-image" />
-      </div>
-    </div>
-  </section>
-
-  <section id="services" class="services-section">
-    <div class="section-container">
-      <h2 class="section-title">Our Comprehensive Services</h2>
-
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon-wrapper">
-            <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0 0v6m0-6h6m-6 0H6m6 0a2 2 0 100-4 2 2 0 000 4z">
-              </path>
-            </svg>
-          </div>
-          <h3 class="service-card-title">Flat Tire Change</h3>
-          <p class="service-card-description">Quick and safe tire replacement or repair to get you back on the road
-            without delay.</p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon-wrapper">
-            <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
-              </path>
-            </svg>
-          </div>
-          <h3 class="service-card-title">Battery Jump Start</h3>
-          <p class="service-card-description">Dead battery? We'll give you a quick jump start to power up your vehicle.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon-wrapper">
-            <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 19l-7 2 2-7m0 0l-2-2m2 2l7 2m0-2a2 2 0 100-4 2 2 0 000 4zM12 12l-2-2m2 2l2-2m-2 2l-2 2m2-2l2 2m-2-2a2 2 0 100-4 2 2 0 000 4z">
-              </path>
-            </svg>
-          </div>
-          <h3 class="service-card-title">Emergency Towing</h3>
-          <p class="service-card-description">Reliable towing services for breakdowns, accidents, or vehicle transport.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon-wrapper">
-            <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17 14v6m-3-3h6M6 10h.01M6 14h.01M6 18h.01M13 10h.01M13 14h.01M13 18h.01M17 10h.01M17 18h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-              </path>
-            </svg>
-          </div>
-          <h3 class="service-card-title">Fuel Delivery</h3>
-          <p class="service-card-description">Ran out of gas? We'll bring fuel directly to your location, fast.</p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon-wrapper">
-            <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M8 11V7a4 4 0 118 0v4m-8 0H5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2h-3m-7 0V7a4 4 0 10-8 0v4h8z">
-              </path>
-            </svg>
-          </div>
-          <h3 class="service-card-title">Vehicle Lockout</h3>
-          <p class="service-card-description">Locked your keys in your car? Our experts will get you back inside safely.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon-wrapper">
-            <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l-5 5m0 0l-5-5m5 5V3">
-              </path>
-            </svg>
-          </div>
-          <h3 class="service-card-title">Winching & Recovery</h3>
-          <p class="service-card-description">Stuck in a ditch or mud? We provide professional winching and recovery
-            services.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="about-section">
-    <div class="section-container about-content-container">
-      <div class="about-image-container hidden-sm">
-        <img [src]="aboutImage" loading="lazy" alt="About Us Image" class="about-image">
-      </div>
-      <div class="about-text-content">
-        <h2 class="section-title">About Road Rescue</h2>
-        <p class="about-description">
-          At Road Rescue, we understand that vehicle breakdowns can be stressful and inconvenient. That's why we are
-          dedicated to providing prompt, professional, and reliable roadside assistance services 24 hours a day, 7 days
-          a week.
-        </p>
-        <p class="about-description">
-          Our team of experienced and certified technicians is equipped with state-of-the-art tools to handle a wide
-          range of roadside emergencies, ensuring you get the help you need, when you need it most. Your safety and
-          satisfaction are our top priorities.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="features-section">
-    <div class="section-container">
-      <h2 class="section-title">Why Choose Road Rescue?</h2>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon-wrapper">
-            <svg class="feature-icon feature-icon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="feature-card-title">24/7 Availability</h3>
-          <p class="feature-card-description">We're available around the clock, every day of the year, to assist you
-            whenever you face a roadside emergency.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon-wrapper">
-            <svg class="feature-icon feature-icon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="feature-card-title">Experienced Professionals</h3>
-          <p class="feature-card-description">Our team consists of highly trained and certified technicians committed to
-            providing top-notch service.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon-wrapper">
-            <svg class="feature-icon feature-icon-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l-6 6h4v4l6-6h-4V7z"></path>
-            </svg>
-          </div>
-          <h3 class="feature-card-title">Fast Response Times</h3>
-          <p class="feature-card-description">We prioritize your call and dispatch help quickly to minimize your waiting
-            time.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="contact-section">
-    <div class="section-container">
-      <h2 class="contact-title">Need Immediate Assistance?</h2>
-      <p class="contact-subtitle">
-        Don't hesitate! Call us now for quick and reliable roadside help.
+<section id="hero" class="hero-section">
+  <div class="hero-content-container">
+    <div class="hero-text-content">
+      <h1 [ngClass]="{'dark-mode-hero-title': isDarkMode, 'hero-title': !isDarkMode}">
+        Stuck on the Road? <br> We're Here to Help!
+      </h1>
+      <p class="hero-subtitle">
+        Fast, reliable, and professional roadside assistance available 24/7. Get back on track quickly and safely.
       </p>
-
-      <a href="tel:+917567853633" class="call-button"
-        [ngStyle]="{'color': isDarkMode ? 'yellow' : 'black', 'border': isDarkMode ? '2px solid yellow' : '2px solid var(--color-black)'}">
-        <svg class="call-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-          </path>
-        </svg>
-        +{{contactNumber}}
+      <a href="tel:+917567853633" class="hero-button">
+        Get Immediate Help
       </a>
+    </div>
+    <div class="hero-image-container hidden-sm">
+      <img [src]="heroImage" alt="Road rescue image" class="hero-image" />
+    </div>
+  </div>
+</section>
 
-      <p class="contact-form-intro">Or fill out our quick contact form below :</p>
+<section id="services" class="services-section">
+  <div class="section-container">
+    <h2 class="section-title">Our Comprehensive Services</h2>
 
-      <div class="contact-form-wrapper">
-        <div class="contact-form-container"
-          [ngStyle]="{'background-color': isDarkMode ? 'var(--color-background-secondary)' : 'rgb(213, 200, 211)'}">
-
-          <form class="contact-form" autocomplete="on" name="contactForm">
-            <div class="form-group">
-              <label for="name" class="form-label" [ngStyle]="{'color': isDarkMode ? '' : 'black'}">Your Name</label>
-              <input type="text" autocomplete="on" id="name" name="name" [(ngModel)]="formData.name" class="form-input"
-                [ngStyle]="{'color': isDarkMode ? 'var(--color-white)' : '', 'border': isDarkMode ? '2px solid var(--color-white)' : ''}"
-                placeholder="John Doe" />
-            </div>
-
-            <div class="form-group">
-              <label for="email" class="form-label" [ngStyle]="{'color': isDarkMode ? '' : 'black'}">Your Email</label>
-              <input type="email" autocomplete="on" id="email" name="email" [(ngModel)]="formData.email"
-                class="form-input"
-                [ngStyle]="{'color': isDarkMode ? 'var(--color-white)' : '', 'border': isDarkMode ? '2px solid var(--color-white)' : ''}"
-                placeholder="john.doe@example.com" />
-            </div>
-
-            <div class="form-group">
-              <label for="message" class="form-label" [ngStyle]="{'color': isDarkMode ? '' : 'black'}">Message</label>
-              <textarea id="message" name="message" rows="5" [(ngModel)]="formData.message" class="form-textarea"
-                [ngStyle]="{'color': isDarkMode ? 'var(--color-white)' : 'black', 'border': isDarkMode ? '2px solid var(--color-white)' : '2px solid var(--color-black)'}"
-                placeholder="Describe your issue..."></textarea>
-            </div>
-
-            <button type="submit" class="submit-button" (click)="sendEmail()"
-              [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'var(--color-black)', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
-              Send Message
-            </button>
-          </form>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon-wrapper">
+          <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0 0v6m0-6h6m-6 0H6m6 0a2 2 0 100-4 2 2 0 000 4z">
+            </path>
+          </svg>
         </div>
+        <h3 class="service-card-title">Flat Tire Change</h3>
+        <p class="service-card-description">Quick and safe tire replacement or repair to get you back on the road
+          without delay.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrapper">
+          <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="service-card-title">Battery Jump Start</h3>
+        <p class="service-card-description">Dead battery? We'll give you a quick jump start to power up your vehicle.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrapper">
+          <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19l-7 2 2-7m0 0l-2-2m2 2l7 2m0-2a2 2 0 100-4 2 2 0 000 4zM12 12l-2-2m2 2l2-2m-2 2l-2 2m2-2l2 2m-2-2a2 2 0 100-4 2 2 0 000 4z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="service-card-title">Emergency Towing</h3>
+        <p class="service-card-description">Reliable towing services for breakdowns, accidents, or vehicle transport.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrapper">
+          <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 14v6m-3-3h6M6 10h.01M6 14h.01M6 18h.01M13 10h.01M13 14h.01M13 18h.01M17 10h.01M17 18h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="service-card-title">Fuel Delivery</h3>
+        <p class="service-card-description">Ran out of gas? We'll bring fuel directly to your location, fast.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrapper">
+          <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 11V7a4 4 0 118 0v4m-8 0H5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2h-3m-7 0V7a4 4 0 10-8 0v4h8z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="service-card-title">Vehicle Lockout</h3>
+        <p class="service-card-description">Locked your keys in your car? Our experts will get you back inside safely.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrapper">
+          <svg class="service-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l-5 5m0 0l-5-5m5 5V3">
+            </path>
+          </svg>
+        </div>
+        <h3 class="service-card-title">Winching & Recovery</h3>
+        <p class="service-card-description">Stuck in a ditch or mud? We provide professional winching and recovery
+          services.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="footer">
-    <div class="section-container footer-content">
-      <div class="footer-copyright">
-        <p>&copy; 2025 Road Rescue. All rights reserved.</p>
+<section id="about" class="about-section">
+  <div class="section-container about-content-container">
+    <div class="about-image-container hidden-sm">
+      <img [src]="aboutImage" loading="lazy" alt="About Us Image" class="about-image">
+    </div>
+    <div class="about-text-content">
+      <h2 class="section-title">About Road Rescue</h2>
+      <p class="about-description">
+        At Road Rescue, we understand that vehicle breakdowns can be stressful and inconvenient. That's why we are
+        dedicated to providing prompt, professional, and reliable roadside assistance services 24 hours a day, 7 days
+        a week.
+      </p>
+      <p class="about-description">
+        Our team of experienced and certified technicians is equipped with state-of-the-art tools to handle a wide
+        range of roadside emergencies, ensuring you get the help you need, when you need it most. Your safety and
+        satisfaction are our top priorities.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="features-section">
+  <div class="section-container">
+    <h2 class="section-title">Why Choose Road Rescue?</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg class="feature-icon feature-icon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="feature-card-title">24/7 Availability</h3>
+        <p class="feature-card-description">We're available around the clock, every day of the year, to assist you
+          whenever you face a roadside emergency.</p>
       </div>
-      <div class="footer-links">
-        <a class="footer-link">Privacy Policy</a>
-        <a class="footer-link">Terms of Service</a>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg class="feature-icon feature-icon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="feature-card-title">Experienced Professionals</h3>
+        <p class="feature-card-description">Our team consists of highly trained and certified technicians committed to
+          providing top-notch service.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg class="feature-icon feature-icon-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l-6 6h4v4l6-6h-4V7z"></path>
+          </svg>
+        </div>
+        <h3 class="feature-card-title">Fast Response Times</h3>
+        <p class="feature-card-description">We prioritize your call and dispatch help quickly to minimize your waiting
+          time.</p>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-</body>
+<section id="contact" class="contact-section">
+  <div class="section-container">
+    <h2 class="contact-title">Need Immediate Assistance?</h2>
+    <p class="contact-subtitle">
+      Don't hesitate! Call us now for quick and reliable roadside help.
+    </p>
+
+    <a href="tel:+917567853633" class="call-button"
+      [ngStyle]="{'color': isDarkMode ? 'yellow' : 'black', 'border': isDarkMode ? '2px solid yellow' : '2px solid var(--color-black)'}">
+      <svg class="call-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+        </path>
+      </svg>
+      +{{contactNumber}}
+    </a>
+
+    <p class="contact-form-intro">Or fill out our quick contact form below :</p>
+
+    <div class="contact-form-wrapper">
+      <div class="contact-form-container"
+        [ngStyle]="{'background-color': isDarkMode ? 'var(--color-background-secondary)' : 'rgb(213, 200, 211)'}">
+
+        <form class="contact-form" autocomplete="on" name="contactForm">
+          <div class="form-group">
+            <label for="name" class="form-label" [ngStyle]="{'color': isDarkMode ? '' : 'black'}">Your Name</label>
+            <input type="text" autocomplete="on" id="name" name="name" [(ngModel)]="formData.name" class="form-input"
+              [ngStyle]="{'color': isDarkMode ? 'var(--color-white)' : '', 'border': isDarkMode ? '2px solid var(--color-white)' : ''}"
+              placeholder="John Doe" />
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label" [ngStyle]="{'color': isDarkMode ? '' : 'black'}">Your Email</label>
+            <input type="email" autocomplete="on" id="email" name="email" [(ngModel)]="formData.email"
+              class="form-input"
+              [ngStyle]="{'color': isDarkMode ? 'var(--color-white)' : '', 'border': isDarkMode ? '2px solid var(--color-white)' : ''}"
+              placeholder="john.doe@example.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="form-label" [ngStyle]="{'color': isDarkMode ? '' : 'black'}">Message</label>
+            <textarea id="message" name="message" rows="5" [(ngModel)]="formData.message" class="form-textarea"
+              [ngStyle]="{'color': isDarkMode ? 'var(--color-white)' : 'black', 'border': isDarkMode ? '2px solid var(--color-white)' : '2px solid var(--color-black)'}"
+              placeholder="Describe your issue..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-button" (click)="sendEmail()"
+            [ngStyle]="{'color': isDarkMode ? 'var(--color-yellow)' : 'var(--color-black)', 'border': isDarkMode ? '2px solid var(--color-yellow)' : '2px solid var(--color-black)'}">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="section-container footer-content">
+    <div class="footer-copyright">
+      <p>&copy; 2025 Road Rescue. All rights reserved.</p>
+    </div>
+    <div class="footer-links">
+      <a class="footer-link">Privacy Policy</a>
+      <a class="footer-link">Terms of Service</a>
+    </div>
+  </div>
+</footer>

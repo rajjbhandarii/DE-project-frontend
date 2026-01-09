@@ -13,11 +13,6 @@
   background: var(--color-black);
 }
 
-body {
-  line-height: 1.6;
-  color: var(--text-color);
-}
-
 /* Container Utilities */
 .section-container {
   max-width: 1200px;
@@ -137,6 +132,7 @@ body {
 }
 
 .hero-image {
+  /* content: url("/src/assets/images/hero-white.png"); */
   width: 100%;
   max-width: 550px;
   height: auto;

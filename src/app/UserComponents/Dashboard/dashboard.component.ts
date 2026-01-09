@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
   currentUser = '';
   currentUserName = '';
   private destroy$ = new Subject<void>();
-  aboutImage = 'assets/about.png';
-  heroImage = 'assets/hero.png';
+  heroImage = '/images/hero-white.png';
+  aboutImage = '/images/about-white.png';
 
   formData: any = {
     name: '',
@@ -77,11 +77,11 @@ export class DashboardComponent implements OnInit {
 
   changeImage(): void {
     if (this.isDarkMode) {
-      this.aboutImage = 'assets/about.png';
-      this.heroImage = 'assets/hero.png';
+      this.heroImage = '/images/hero.png';
+      this.aboutImage = '/images/about.png';
     } else {
-      this.aboutImage = 'assets/about-white.png';
-      this.heroImage = 'assets/hero-white.png';
+      this.heroImage = '/images/hero-white.png';
+      this.aboutImage = '/images/about-white.png';
     }
   }
 
