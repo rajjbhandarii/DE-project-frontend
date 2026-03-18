@@ -8,6 +8,7 @@ export const environment = {
     requestServices: 'http://localhost:3000/services/request-services',
     fetchServicesProvider: 'http://localhost:3000/services/fetch-serviceProvider',
     fetchServicesRequests: 'http://localhost:3000/SP-dashboard/fetch-servicesRequests',
+    deleteServiceRequest: 'http://localhost:3000/SP-dashboard/delete-serviceRequest',
     addNewServices: 'http://localhost:3000/serviceManagement/addNewServices',
     getServicesCategory: 'http://localhost:3000/serviceManagement/getServicesCategory',
     deleteService: 'http://localhost:3000/serviceManagement/deleteService',

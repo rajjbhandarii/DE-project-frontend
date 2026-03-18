@@ -96,14 +96,13 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchServiceRequest(): void {
-
     this.http.post<ActiveRequest[]>(environment.fetchServicesRequests, { serviceProviderEmail: this.userEmail }).subscribe({
-      next: (data) => this.liveRequests = data || [],
+      next: (data) => { this.liveRequests = data; console.log(data); },
       error: (error) => console.error('Failed to fetch services request:', error)
     });
 
   }
-  dispatch(requestIndex: number): void {
+  dispatch(requestServiceId: string): void {
     // const availableTeam = this.teams.find(team => team.status === 'Available');
     // if (!availableTeam) {
     //   this.themeService.displayNotification('Error', 'No teams are currently available.', 'error');
@@ -119,6 +118,20 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
     // this.liveRequests.splice(requestIndex, 1);
     // availableTeam.status = 'On Job';
   }
+
+  deleteService(requestServiceId: string): void {
+    this.http.delete(environment.deleteServiceRequest, { body: { serviceProviderEmail: this.userEmail, requestServiceId } }).subscribe({
+      next: (response) => {
+        this.themeService.displayNotification('Success', 'Service deleted successfully', 'success');
+        this.liveRequests = this.liveRequests.filter(request => request.requestServiceId !== requestServiceId);
+      },
+      error: (error) => {
+        console.error('Failed to delete service:', error);
+        this.themeService.displayNotification('Error', 'Failed to delete service', 'error');
+      }
+    });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

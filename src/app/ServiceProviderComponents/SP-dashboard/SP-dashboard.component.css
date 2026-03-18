@@ -6,8 +6,8 @@
   --text-primary: #1f2937; /* Dark Text */
   --text-secondary: #6b7280; /* Grey Text */
   --border-color: #e5e7eb; /* Light Border */
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --card-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --accent-color: #3b82f6; /* Blue */
   --accent-hover: #2563eb;
   --header-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
@@ -33,7 +33,9 @@
   color: var(--text-primary);
   min-height: 100vh;
   padding: 20px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .admin-dashboard-container {
@@ -75,12 +77,15 @@
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Keeps children inside rounded corners */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .admin-card:hover {
   transform: translateY(-2px); /* Slight lift effect */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
@@ -175,6 +180,24 @@
 
 .admin-dispatch-button:hover {
   background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.admin-delete-button {
+  background-color: #ef4444; /* Red */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.admin-delete-button:hover {
+  background-color: #dc2626; /* Darker Red */
   transform: scale(1.05);
 }
 

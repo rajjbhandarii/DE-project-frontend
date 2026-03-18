@@ -4,7 +4,7 @@
     <header class="admin-header">
       <h1>Operations Dashboard</h1>
       <span style="opacity: 0.9; font-size:2.5rem;text-transform: capitalize;">Welcome, {{ currentUserName
-      }}</span>
+        }}</span>
     </header>
 
     <main class="admin-dashboard-grid">
@@ -17,19 +17,22 @@
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (req of liveRequests; track req; let i = $index) {
-              <div class="admin-item">
-                <div class="admin-item-details">
-                  <h4>{{ req.userName }}</h4>
-                  <p>{{ req.category }} • {{ req.userLocation }}</p>
-                </div>
-                <button (click)="dispatch(i)" class="admin-dispatch-button">
-                  Dispatch
-                </button>
+            <div class="admin-item">
+              <div class="admin-item-details">
+                <h4>{{ req.userName }}</h4>
+                <p>{{ req.category }} • {{ req.userLocation }}</p>
               </div>
+              <button (click)="dispatch(req.requestServiceId)" class="admin-dispatch-button">
+                Dispatch
+              </button>
+              <button (click)="deleteService(req.requestServiceId)" class="admin-delete-button">
+                Delete
+              </button>
+            </div>
             }
           </div>
           @if (liveRequests.length === 0) {
-            <p class="empty-state">No new requests pending.</p>
+          <p class="empty-state">No new requests pending.</p>
           }
         </div>
       </div>
@@ -42,20 +45,20 @@
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (job of activeJobs; track job) {
-              <div class="admin-item">
-                <div class="admin-item-details">
-                  <h4>{{ job.service }}</h4>
-                  <p>{{ job.name }}</p>
-                </div>
-                <div class="admin-item-details" style="text-align: right;">
-                  <p>Assigned to</p>
-                  <h4 style="color: var(--accent-color)">{{ job.team }}</h4>
-                </div>
+            <div class="admin-item">
+              <div class="admin-item-details">
+                <h4>{{ job.service }}</h4>
+                <p>{{ job.name }}</p>
               </div>
+              <div class="admin-item-details" style="text-align: right;">
+                <p>Assigned to</p>
+                <h4 style="color: var(--accent-color)">{{ job.team }}</h4>
+              </div>
+            </div>
             }
           </div>
           @if (activeJobs.length === 0) {
-            <p class="empty-state">No active jobs right now.</p>
+          <p class="empty-state">No active jobs right now.</p>
           }
         </div>
       </div>
@@ -68,19 +71,19 @@
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (team of teams; track team) {
-              <div class="admin-item">
-                <div class="admin-item-details">
-                  <h4>{{ team.name }}</h4>
-                </div>
-                            <div class="status-pill" [ngClass]="{
+            <div class="admin-item">
+              <div class="admin-item-details">
+                <h4>{{ team.name }}</h4>
+              </div>
+              <div class="status-pill" [ngClass]="{
                                 'status-available': team.status === 'Available',
                                 'status-on-job': team.status === 'On Job',
                                 'status-offline': team.status === 'Offline'
                             }">
-                  <div class="status-dot"></div>
-                  <span>{{ team.status }}</span>
-                </div>
+                <div class="status-dot"></div>
+                <span>{{ team.status }}</span>
               </div>
+            </div>
             }
           </div>
         </div>

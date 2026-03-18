@@ -7,6 +7,7 @@ export const environment = {
     serviceProviderLogin: 'https://road-rescue-backend.onrender.com/login-serviceProvider',
     requestServices: 'https://road-rescue-backend.onrender.com/services/request-services',
     fetchServicesRequests: 'https://road-rescue-backend.onrender.com/SP-dashboard/fetch-servicesRequests',
+    deleteServiceRequest: 'https://road-rescue-backend.onrender.com/SP-dashboard/delete-serviceRequest',
     fetchServicesProvider: 'https://road-rescue-backend.onrender.com/services/fetch-serviceProvider',
     addNewServices: 'https://road-rescue-backend.onrender.com/serviceManagement/addNewServices',
     getServicesCategory: 'https://road-rescue-backend.onrender.com/serviceManagement/getServicesCategory',
