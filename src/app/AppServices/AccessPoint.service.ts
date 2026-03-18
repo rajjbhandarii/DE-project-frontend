@@ -160,7 +160,7 @@ export class AccesspointService {
   logout() {
     localStorage.clear();
     this.currentUserSubject.next(null);
-    this.router.navigate(['serviceProviderpage']);
+    this.router.navigate(['/userpage']);
   }
 
 }

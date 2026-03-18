@@ -21,11 +21,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isDarkMode: boolean = false;
   private destroy$ = new Subject<void>();
 
-  // Injected Router
   constructor(
     public accesspointService: AccesspointService,
     private themeService: ThemeServiceService,
-    private router: Router
+    // private router: Router
   ) { };
 
   ngOnInit(): void {
@@ -36,16 +35,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
       });
 
     // Subscribe to user changes
-    this.accesspointService.currentState$.pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        if (user) {
-          this.userEmail = user.email;
-          this.currentUser = user.type;
-          this.currentUserName = user.name;
-          this.visualTheme = user.visual;
-          this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
-        }
-      });
+    this.accesspointService.currentState$.pipe(takeUntil(this.destroy$)).subscribe(user => {
+      if (user) {
+        this.userEmail = user.email;
+        this.currentUser = user.type;
+        this.currentUserName = user.name;
+        this.visualTheme = user.visual;
+        this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
+      }
+    });
   }
 
   changeTheme(theme: string) {
@@ -68,7 +66,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout() {
     this.accesspointService.logout();
-    this.router.navigate(['/userpage']); // Ensure redirection happens
+    // this.router.navigate(['/userpage']);s // Ensure redirection happens
   }
 
   ngOnDestroy(): void {

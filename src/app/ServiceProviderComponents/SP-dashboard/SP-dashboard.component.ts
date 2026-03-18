@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { SocketService } from '../../AppServices/Socket.service';
+import { Router } from '@angular/router';
 
 interface ActiveJob {
   name: string;
@@ -60,6 +61,7 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private accesspointService: AccesspointService,
     private http: HttpClient,
+    private router: Router,
     private themeService: ThemeServiceService,
     private socketService: SocketService
   ) {
@@ -76,7 +78,7 @@ export class SPDashboardComponent implements OnInit, OnDestroy {
         this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
         this.fetchServiceRequest();
       } else {
-        this.themeService.displayNotification('Error', 'User not found', 'error');
+        this.router.navigate(['/serviceproviderpage']);
       }
     });
 

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { from, Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
 import { environment } from '../../Environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,22 +42,18 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.State$.pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        if (user) {
-          this.userEmail = user.email;
-          this.currentUser = user.type;
-          this.currentUserName = user.name;
-          this.isDarkMode = user.visual === 'dark' ? true : false;
-          // Apply theme immediately
-          this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
-          this.changeImage();
-        } else {
-          this.themeService.displayNotification('Error', 'User not found', 'error');
-          this.router.navigate(['/userpage']);
-        }
-      });
+    this.State$.pipe(takeUntil(this.destroy$)).subscribe(user => {
+      if (user) {
+        this.userEmail = user.email;
+        this.currentUser = user.type;
+        this.currentUserName = user.name;
+        this.isDarkMode = user.visual === 'dark' ? true : false;
+        this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
+        this.changeImage();
+      } else {
+        this.router.navigate(['/userpage']);
+      }
+    });
 
     // Subscribe to theme service changes
     this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$))
