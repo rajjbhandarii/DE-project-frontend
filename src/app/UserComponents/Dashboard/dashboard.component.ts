@@ -5,11 +5,12 @@ import { environment } from '../../Environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeServiceService } from '../../AppServices/ThemeService.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

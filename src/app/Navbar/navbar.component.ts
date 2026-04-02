@@ -3,10 +3,11 @@ import { RouterLink, RouterOutlet, Router } from '@angular/router'; // Added Rou
 import { AccesspointService } from '../AppServices/AccessPoint.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ThemeServiceService } from '../AppServices/ThemeService.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterLink, RouterOutlet, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
