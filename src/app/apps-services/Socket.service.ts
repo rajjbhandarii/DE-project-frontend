@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { io } from 'socket.io-client';
+import { environment } from '../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class SocketService {
-  socket = io('http://localhost:3000');
+  socket = io(environment.socketUrl);
 
   joinRoom(room: string) {
     this.socket.emit('join-room', { room });

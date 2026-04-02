@@ -13,6 +13,7 @@ export const environment = {
     getServicesCategory: 'http://localhost:3000/serviceManagement/getServicesCategory',
     deleteService: 'http://localhost:3000/serviceManagement/deleteService',
     sendEmail: 'http://localhost:3000/dashboard/send-email',
+    socketUrl: 'http://localhost:3000',
     serviceID: 'service_vy31m7j',
     templateID: 'template_sqac51r',
     publicKey: 'qhFAUQ3zY8uh-2Lsz'

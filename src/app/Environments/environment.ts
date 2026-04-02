@@ -13,6 +13,7 @@ export const environment = {
     getServicesCategory: 'https://road-rescue-backend.onrender.com/serviceManagement/getServicesCategory',
     deleteService: 'https://road-rescue-backend.onrender.com/serviceManagement/deleteService',
     sendEmail: 'https://road-rescue-backend.onrender.com/dashboard/send-email',
+    socketUrl: 'https://road-rescue-backend.onrender.com',
     serviceID: 'service_vy31m7j',
     templateID: 'template_sqac51r',
     publicKey: 'qhFAUQ3zY8uh-2Lsz'
