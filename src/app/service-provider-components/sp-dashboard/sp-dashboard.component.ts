@@ -30,14 +30,14 @@ interface TeamMember {
 }
 
 @Component({
-  selector: 'app-SP-dashboard',
+  selector: 'app-sp-dashboard',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './SP-dashboard.component.html',
-  styleUrl: './SP-dashboard.component.css'
+  templateUrl: './sp-dashboard.component.html',
+  styleUrl: './sp-dashboard.component.css'
 })
 
-export class SPDashboardComponent implements OnInit, OnDestroy {
+export class SpDashboardComponent implements OnInit, OnDestroy {
   isDarkMode: boolean = false; // Default to light mode
   liveRequests: ActiveRequest[] = [];
   State$: Observable<AppUser | null>;
