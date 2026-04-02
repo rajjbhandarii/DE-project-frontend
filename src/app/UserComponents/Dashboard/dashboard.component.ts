@@ -4,11 +4,12 @@ import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.servi
 import { environment } from '../../Environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeServiceService } from '../../AppServices/ThemeService.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
