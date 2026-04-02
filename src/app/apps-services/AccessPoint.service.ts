@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../Environments/environment';
+import { environment } from '../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { ThemeServiceService } from './ThemeService.service';
 

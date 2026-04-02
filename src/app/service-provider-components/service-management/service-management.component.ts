@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
+import { AccesspointService, AppUser } from '../../apps-services/AccessPoint.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { environment } from '../../Environments/environment';
-import { ThemeServiceService } from '../../AppServices/ThemeService.service';
-import { ProcessesService } from '../../AppServices/Processes.service';
+import { environment } from '../../environments/environment';
+import { ThemeServiceService } from '../../apps-services/ThemeService.service';
+import { ProcessesService } from '../../apps-services/Processes.service';
 
 export interface Service {
   serviceId: any;

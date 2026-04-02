@@ -3,7 +3,7 @@ import {
   CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router
 } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { ThemeServiceService } from './AppServices/ThemeService.service';
+import { ThemeServiceService } from './apps-services/ThemeService.service';
 
 @Injectable({
   providedIn: 'root'

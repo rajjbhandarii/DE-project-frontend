@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ThemeServiceService } from '../../AppServices/ThemeService.service';
+import { ThemeServiceService } from '../../apps-services/ThemeService.service';
 import { HttpClient } from '@angular/common/http';
-import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
+import { AccesspointService, AppUser } from '../../apps-services/AccessPoint.service';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../Environments/environment';
+import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import { SocketService } from '../../AppServices/Socket.service';
+import { SocketService } from '../../apps-services/Socket.service';
 import { Router } from '@angular/router';
 
 interface ActiveJob {
