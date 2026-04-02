@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './accesspoint/user/user.component';
 import { AuthGuard } from './auth.guard';
-import { NavbarComponent } from './environments/navbar/navbar.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 export const routes: Routes = [
