@@ -6,7 +6,7 @@ import { NavbarComponent } from './Navbar/navbar.component';
 
 
 export const routes: Routes = [
-  { path: 'adminPage', loadComponent: () => import('./AccessPoint/ServiceProvider/ServiceProvider.component').then(m => m.AdminComponent) },
+  { path: 'adminPage', loadComponent: () => import('./AccessPoint/ServiceProvider/service-provider.component').then(m => m.AdminComponent) },
   { path: 'userpage', component: UserComponent },
   { path: '', redirectTo: 'userpage', pathMatch: 'full' },
 
