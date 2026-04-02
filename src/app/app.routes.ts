@@ -18,7 +18,7 @@ export const routes: Routes = [
     children: [
       //lazy loaded components for better performance
       { path: 'dashboard', loadComponent: () => import('./user-components/dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'hero' } },
-      { path: 'SPDashboard', loadComponent: () => import('./service-provider-components/sp-dashboard/sp-dashboard.component').then(m => m.SPDashboardComponent) },
+      { path: 'SPDashboard', loadComponent: () => import('./service-provider-components/sp-dashboard/sp-dashboard.component').then(m => m.SpDashboardComponent) },
       { path: 'services', loadComponent: () => import('./user-components/services/services.component').then(m => m.ServicesComponent) },
       { path: 'about', loadComponent: () => import('./user-components/dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'about' } },
       { path: 'contact', loadComponent: () => import('./user-components/dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'contact' } },
