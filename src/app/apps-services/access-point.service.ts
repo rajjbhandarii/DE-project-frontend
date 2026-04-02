@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { ThemeServiceService } from './ThemeService.service';
+import { ThemeServiceService } from './theme-service.service';
 
 export interface AppUser {
   name: string;
