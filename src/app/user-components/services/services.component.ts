@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 import { io, Socket } from "socket.io-client";
 import { ThemeServiceService } from '../../apps-services/theme-service.service';
 import { SocketService } from '../../apps-services/socket.service';
-import { ProcessesService, DisplayService, ApiProvider } from '../../apps-services/processes.service'
+import { ProcessesService, DisplayService, ApiProvider } from '../../apps-services/processes.service';
 
 @Component({
   selector: 'app-services',
