@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterOutlet, Router } from '@angular/router'; // Added Router
 import { AccesspointService } from '../AppServices/AccessPoint.service';
@@ -7,7 +6,7 @@ import { ThemeServiceService } from '../AppServices/ThemeService.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, CommonModule, RouterOutlet],
+  imports: [RouterLink, RouterOutlet],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })

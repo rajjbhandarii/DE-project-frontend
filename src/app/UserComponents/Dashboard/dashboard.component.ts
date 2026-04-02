@@ -1,16 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccesspointService, AppUser } from '../../AppServices/AccessPoint.service';
 import { environment } from '../../Environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeServiceService } from '../../AppServices/ThemeService.service';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -94,7 +92,7 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    const emailjs = (await import('emailjs-com')).default ?? await import('emailjs-com');
+    const emailjs = (await import('@emailjs/browser')).default;
     try {
       await emailjs.send(environment.serviceID, environment.templateID, this.formData, environment.publicKey);
       this.themeService.displayNotification('Success', 'Your message has been sent successfully!', 'success');
