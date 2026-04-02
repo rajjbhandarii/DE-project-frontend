@@ -1,0 +1,20 @@
+export const environment = {
+    production: true,
+    baseUrl: 'http://localhost:3000',
+    userSignup: 'http://localhost:3000/signup-user',
+    userLogin: 'http://localhost:3000/login-user',
+    serviceProviderSignup: 'http://localhost:3000/signup-serviceProvider',
+    serviceProviderLogin: 'http://localhost:3000/login-serviceProvider',
+    requestServices: 'http://localhost:3000/services/request-services',
+    fetchServicesRequests: 'http://localhost:3000/SP-dashboard/fetch-servicesRequests',
+    deleteServiceRequest: 'http://localhost:3000/SP-dashboard/delete-serviceRequest',
+    fetchServicesProvider: 'http://localhost:3000/services/fetch-serviceProvider',
+    addNewServices: 'http://localhost:3000/serviceManagement/addNewServices',
+    getServicesCategory: 'http://localhost:3000/serviceManagement/getServicesCategory',
+    deleteService: 'http://localhost:3000/serviceManagement/deleteService',
+    sendEmail: 'http://localhost:3000/dashboard/send-email',
+    socketUrl: 'http://localhost:3000',
+    serviceID: 'service_vy31m7j',
+    templateID: 'template_sqac51r',
+    publicKey: 'qhFAUQ3zY8uh-2Lsz'
+};
