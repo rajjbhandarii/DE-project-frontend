@@ -80,14 +80,14 @@
 </header>
 } @else {
 <header class="navbar" [class.dark-mode]="isDarkMode">
-  <h1 routerLink="/SPDashboard">Road Rescue <span style="font-size: 12px; opacity: 0.7">Partner</span></h1>
+  <h1 routerLink="/sp-dashboard">Road Rescue <span style="font-size: 12px; opacity: 0.7">Partner</span></h1>
   <button class="menu-toggle" (click)="toggleMenu()">
     <span style="font-size: 24px;">☰</span>
   </button>
   <nav [class.show]="menuActive">
     <button class="close-menu" (click)="toggleMenu()">✖</button>
-    <a class="nav-link" (click)="toggleMenu()" routerLink="/SPDashboard">Dashboard</a>
-    <a class="nav-link" (click)="toggleMenu()" routerLink="/serviceManagement">Manage Services</a>
+    <a class="nav-link" (click)="toggleMenu()" routerLink="/sp-dashboard">Dashboard</a>
+    <a class="nav-link" (click)="toggleMenu()" routerLink="/service-management">Manage Services</a>
     <a class="nav-link logout-btn" (click)="toggleMenu(); logout()">Logout</a>
     <label class="switch">
       <input id="input" type="checkbox" [checked]="isDarkMode" (change)="changeTheme(isDarkMode ? 'light' : 'dark')" />

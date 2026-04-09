@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ThemeServiceService } from '../../apps-services/theme-service.service';
-import { HttpClient } from '@angular/common/http';
+import { ThemeServiceService } from '../../apps-services/theme.service';
 import { AccesspointService, AppUser } from '../../apps-services/access-point.service';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -9,19 +8,13 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { SocketService } from '../../apps-services/socket.service';
 import { Router } from '@angular/router';
+import { ServiceApiService, ActiveRequest } from '../../apps-services/service-api.service';
 
 interface ActiveJob {
   name: string;
   service: string;
   location: string;
   team: string;
-}
-interface ActiveRequest {
-  requestServiceId: string;
-  userName: string;
-  userLocation: string;
-  category: string;
-  createdAt: number;
 }
 
 interface TeamMember {
@@ -60,7 +53,7 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private accesspointService: AccesspointService,
-    private http: HttpClient,
+    private serviceApi: ServiceApiService,
     private router: Router,
     private themeService: ThemeServiceService,
     private socketService: SocketService
@@ -78,7 +71,7 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
         this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
         this.fetchServiceRequest();
       } else {
-        this.router.navigate(['/serviceproviderpage']);
+        this.router.navigate(['/service-provider-login']);
       }
     });
 
@@ -98,12 +91,12 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchServiceRequest(): void {
-    this.http.post<ActiveRequest[]>(environment.fetchServicesRequests, { serviceProviderEmail: this.userEmail }).subscribe({
+    this.serviceApi.fetchServiceRequests(this.userEmail).subscribe({
       next: (data) => { this.liveRequests = data; console.log(data); },
       error: (error) => console.error('Failed to fetch services request:', error)
     });
-
   }
+
   dispatch(requestServiceId: string): void {
     // const availableTeam = this.teams.find(team => team.status === 'Available');
     // if (!availableTeam) {
@@ -122,7 +115,7 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   }
 
   deleteService(requestServiceId: string): void {
-    this.http.delete(environment.deleteServiceRequest, { body: { serviceProviderEmail: this.userEmail, requestServiceId } }).subscribe({
+    this.serviceApi.deleteServiceRequest(this.userEmail, requestServiceId).subscribe({
       next: (response) => {
         this.themeService.displayNotification('Success', 'Service deleted successfully', 'success');
         this.liveRequests = this.liveRequests.filter(request => request.requestServiceId !== requestServiceId);

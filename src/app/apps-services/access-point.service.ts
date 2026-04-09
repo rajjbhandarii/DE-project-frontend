@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { ThemeServiceService } from './theme-service.service';
+import { ThemeServiceService } from './theme.service';
 
 export interface AppUser {
   name: string;
@@ -78,7 +78,7 @@ export class AccesspointService {
 
             if (roleType === 'serviceProvider') {
               await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
-              await this.router.navigate(['/SPDashboard']);
+              await this.router.navigate(['/sp-dashboard']);
             } else {
               await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} registered & logged in`, 'success');
               await this.router.navigate(['/dashboard']);
@@ -134,7 +134,7 @@ export class AccesspointService {
             // Redirect after login
             if (roleType === 'serviceProvider') {
               await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} logged in`, 'success');
-              await this.router.navigate(['/SPDashboard']);
+              await this.router.navigate(['/sp-dashboard']);
             } else {
               await this.themeService.displayNotification('Success', `${roleType.charAt(0).toUpperCase() + roleType.slice(1)} logged in`, 'success');
               await this.router.navigate(['/dashboard']);
@@ -160,7 +160,7 @@ export class AccesspointService {
   logout() {
     localStorage.clear();
     this.currentUserSubject.next(null);
-    this.router.navigate(['/userpage']);
+    this.router.navigate(['/user-login']);
   }
 
 }

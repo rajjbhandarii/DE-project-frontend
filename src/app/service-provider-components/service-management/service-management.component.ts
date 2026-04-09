@@ -1,20 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { AccesspointService, AppUser } from '../../apps-services/access-point.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { ThemeServiceService } from '../../apps-services/theme-service.service';
+import { ThemeServiceService } from '../../apps-services/theme.service';
 import { ProcessesService } from '../../apps-services/processes.service';
-
-export interface Service {
-  serviceId: any;
-  serviceName: string;
-  category: string;
-  description: string;
-  price: number;
-  location: string;
-}
+import { ServiceApiService, Service } from '../../apps-services/service-api.service';
 
 @Component({
   selector: 'app-service-management',
@@ -22,14 +12,12 @@ export interface Service {
   templateUrl: './service-management.component.html',
   styleUrls: ['./service-management.component.css']
 })
-export class ServiceManagementComponent implements OnInit {
+export class ServiceManagementComponent implements OnInit, OnDestroy {
 
   currentState$: Observable<AppUser | null>;
   serviceProviderEmail!: string;
   isDarkMode: boolean = false;
   private destroy$ = new Subject<void>();
-  // Available categories for the dropdown
-  // categories: string[] = ['Towing Service', 'Fuel Delivery', 'Battery Assistance'];
 
   // Array to hold the list of existing services
   currentServices: Service[] = [];
@@ -44,9 +32,14 @@ export class ServiceManagementComponent implements OnInit {
     location: 'Nargol'
   };
 
-  constructor(private accesspointService: AccesspointService, private http: HttpClient, private themeService: ThemeServiceService, protected processesService: ProcessesService) {
+  constructor(
+    private accesspointService: AccesspointService,
+    private serviceApi: ServiceApiService,
+    private themeService: ThemeServiceService,
+    protected processesService: ProcessesService
+  ) {
     this.currentState$ = this.accesspointService.currentState$;
-    this.currentState$.subscribe(Appuser => {
+    this.currentState$.pipe(takeUntil(this.destroy$)).subscribe(Appuser => {
       if (Appuser) {
         console.log('User Data:', Appuser.type, Appuser.email, Appuser.name);
         if (Appuser.type === 'serviceProvider') {
@@ -56,7 +49,7 @@ export class ServiceManagementComponent implements OnInit {
         this.serviceProviderEmail = '';
       }
     });
-    this.getAvaliableServices();
+    this.getAvailableServices();
   }
 
   ngOnInit(): void {
@@ -97,7 +90,7 @@ export class ServiceManagementComponent implements OnInit {
       this.themeService.displayNotification('Error', 'Please enter all required fields.', 'error');
       return;
     } else {
-      this.http.post(environment.addNewServices, { newService: this.newService, serviceProviderEmail: this.serviceProviderEmail }).subscribe({
+      this.serviceApi.addService(this.newService, this.serviceProviderEmail).subscribe({
         next: () => {
           this.addToActiveServicesList();
           this.themeService.displayNotification('Success', 'Service added successfully.', 'success');
@@ -110,8 +103,8 @@ export class ServiceManagementComponent implements OnInit {
   }
 
   // Retrieve available services for the service provider
-  getAvaliableServices(): void {
-    this.http.get<Service[]>(environment.getServicesCategory, { params: { serviceProviderEmail: this.serviceProviderEmail } }).subscribe({
+  getAvailableServices(): void {
+    this.serviceApi.getServicesByProvider(this.serviceProviderEmail).subscribe({
       next: (services) => {
         services.forEach(n => this.currentServices.push(n))
       }, error: (error) => {
@@ -126,9 +119,7 @@ export class ServiceManagementComponent implements OnInit {
    * @param serviceId The ID of the service to delete.
    */
   deleteService(serviceId: number): void {
-    this.http.delete(environment.deleteService, {
-      body: { serviceId: serviceId.toString(), serviceProviderEmail: this.serviceProviderEmail }
-    }).subscribe({
+    this.serviceApi.deleteService(serviceId.toString(), this.serviceProviderEmail).subscribe({
       next: (response: any) => {
         this.currentServices = this.currentServices.filter(service => service.serviceId !== serviceId);
         this.themeService.displayNotification('Success', response.message || 'Service deleted successfully.', 'success');
@@ -136,6 +127,11 @@ export class ServiceManagementComponent implements OnInit {
         this.themeService.displayNotification('Error', error.error?.message || 'An error occurred', 'error');
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

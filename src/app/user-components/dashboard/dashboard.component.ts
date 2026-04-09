@@ -3,7 +3,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccesspointService, AppUser } from '../../apps-services/access-point.service';
 import { environment } from '../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ThemeServiceService } from '../../apps-services/theme-service.service';
+import { ThemeServiceService } from '../../apps-services/theme.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
         this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
         this.changeImage();
       } else {
-        this.router.navigate(['/userpage']);
+        this.router.navigate(['/user-login']);
       }
     });
 

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AccesspointService } from '../../apps-services/access-point.service';
 import { RouterLink } from '@angular/router';
-import { ThemeServiceService } from '../../apps-services/theme-service.service';
+import { ThemeServiceService } from '../../apps-services/theme.service';
 
 @Component({
   selector: 'app-admin',

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterOutlet, Router } from '@angular/router'; // Added Router
 import { AccesspointService } from '../apps-services/access-point.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ThemeServiceService } from '../apps-services/theme-service.service';
+import { ThemeServiceService } from '../apps-services/theme.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
