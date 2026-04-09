@@ -9,7 +9,7 @@ import { ThemeServiceService } from '../../apps-services/theme.service';
   selector: 'app-admin',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './service-provider.component.html',
-  styleUrls: ['./service-provider.component.css',]
+  styleUrls: ['./service-provider.component.css'],
 })
 export class AdminComponent {
   isLogin: boolean = true;
@@ -19,7 +19,10 @@ export class AdminComponent {
   email: string = 'raj@gmail.com';
   password: string = 'r';
 
-  constructor(private access: AccesspointService, private themeService: ThemeServiceService) { }
+  constructor(
+    private access: AccesspointService,
+    private themeService: ThemeServiceService,
+  ) {}
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -29,12 +32,24 @@ export class AdminComponent {
   verifyUserInput() {
     if (this.isLogin) {
       if (this.email === '' || this.password === '') {
-        this.themeService.displayNotification('Error', 'Please fill in all fields', 'error');
+        this.themeService.displayNotification(
+          'Error',
+          'Please fill in all fields',
+          'error',
+        );
         return false;
       }
     } else {
-      if (this.serviceProviderName === '' || this.email === '' || this.password === '') {
-        this.themeService.displayNotification('Error', 'Please fill in all fields', 'error');
+      if (
+        this.serviceProviderName === '' ||
+        this.email === '' ||
+        this.password === ''
+      ) {
+        this.themeService.displayNotification(
+          'Error',
+          'Please fill in all fields',
+          'error',
+        );
         return false;
       }
     }
@@ -45,14 +60,18 @@ export class AdminComponent {
     if (!this.verifyUserInput()) {
       return; // Exit if validation fails
     } else {
-      this.access.signup(this.serviceProviderName, this.email, this.password, 'serviceProvider');
+      this.access.signup(
+        this.serviceProviderName,
+        this.email,
+        this.password,
+        'serviceProvider',
+      );
       this.serviceProviderName = '';
       this.email = '';
       this.password = '';
       this.isLogin = false;
     }
   }
-
 
   loginserviceProvider() {
     if (!this.verifyUserInput()) {
@@ -64,5 +83,4 @@ export class AdminComponent {
       this.isLogin = true;
     }
   }
-
 }

@@ -6,8 +6,8 @@
   --text-secondary: #6b7280;
   --border-color: #e5e7eb;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --accent-blue: #3b82f6;
   --accent-hover: #2563eb;
 }
@@ -24,6 +24,12 @@
 }
 
 /* --- BASE LAYOUT --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -33,12 +39,13 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
-  padding: 24px;
+  padding: 32px 24px;
   transition: background-color 0.3s ease;
 }
 
 .services-section {
-  max-width: 900px;
+  max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
   margin-top: 3.5rem;
 }
@@ -78,13 +85,13 @@ body {
 
 .location-input {
   flex: 1;
+  min-width: 0; /* Prevent flex item overflow */
   padding: 12px 16px;
   border-radius: 8px;
   border: 2px solid var(--border-color);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-size: 1rem;
-  /* Prevent zooming on iOS input focus */
+  /* 16px prevents iOS zoom on focus */
   font-size: 16px;
 }
 
@@ -92,17 +99,18 @@ body {
   background-color: var(--accent-blue);
   color: white;
   border: none;
-  padding: 0 24px;
+  padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap; /* Keeps text on one line */
+  white-space: nowrap;
+  min-height: 44px; /* Accessible touch target */
 }
 
 /* --- SERVICE CARDS --- */
 .service-categories {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
   gap: 24px;
 }
 
@@ -147,6 +155,7 @@ body {
   justify-content: space-between;
   padding: 16px 20px;
   border-bottom: 1px solid var(--border-color);
+  gap: 12px;
 }
 
 .provider-item:last-child {
@@ -157,13 +166,15 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0; /* Prevent flex overflow */
+  flex: 1;
 }
 
 .provider-name-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap; /* Allows wrapping on tiny screens */
+  flex-wrap: wrap;
 }
 
 .provider-name {
@@ -189,9 +200,10 @@ body {
 .provider-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
   font-size: 0.9rem;
   color: var(--text-secondary);
+  flex-wrap: wrap;
 }
 
 .rating-box {
@@ -215,6 +227,22 @@ body {
   border-radius: 20px;
   border: none;
   cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px; /* Accessible touch target */
+  flex-shrink: 0;
+}
+
+/* =========================================
+   TABLET RESPONSIVENESS (Max Width 1024px)
+   ========================================= */
+@media (max-width: 1024px) {
+  .container {
+    padding: 24px 16px;
+  }
+
+  .services-section {
+    margin-top: 2.5rem;
+  }
 }
 
 /* =========================================
@@ -222,11 +250,15 @@ body {
    ========================================= */
 @media (max-width: 768px) {
   .container {
-    padding: 16px; /* Less padding on mobile */
+    padding: 16px;
+  }
+
+  .services-section {
+    margin-top: 2rem;
   }
 
   .main-title {
-    font-size: 1.5rem; /* Smaller title */
+    font-size: 1.5rem;
     margin-bottom: 16px;
   }
 
@@ -237,22 +269,21 @@ body {
   }
 
   .location-button {
-    width: 100%; /* Full width button */
+    width: 100%;
     padding: 12px;
   }
 
   /* 2. Stack Provider Item Details & Request Button */
   .provider-item {
     flex-direction: column;
-    align-items: flex-start; /* Align text to left */
-    gap: 16px; /* Space between details and button */
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .provider-details {
     width: 100%;
   }
 
-  /* Make name and badge wrap nicely */
   .provider-name-row {
     justify-content: space-between;
     width: 100%;
@@ -265,5 +296,49 @@ body {
     padding: 12px;
     font-size: 1rem;
     text-align: center;
+  }
+
+  /* Hide separators on mobile — they clutter narrow layout */
+  .provider-meta span:not(.rating-box):not(.price-box):not(.location-box) {
+    display: none;
+  }
+
+  .provider-meta {
+    gap: 8px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE (Max Width 480px)
+   ========================================= */
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  .main-title {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+
+  .location-input-section {
+    padding: 16px;
+  }
+
+  .category-header {
+    padding: 14px 16px;
+    font-size: 1.1rem;
+  }
+
+  .provider-item {
+    padding: 14px 16px;
+  }
+
+  .provider-name {
+    font-size: 0.95rem;
+  }
+
+  .provider-meta {
+    font-size: 0.8rem;
   }
 }
