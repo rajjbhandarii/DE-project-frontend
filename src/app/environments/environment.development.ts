@@ -1,5 +1,5 @@
 export const environment = {
-    production: true,
+    production: false,
     baseUrl: 'http://localhost:3000',
     userSignup: 'http://localhost:3000/signup-user',
     userLogin: 'http://localhost:3000/login-user',
