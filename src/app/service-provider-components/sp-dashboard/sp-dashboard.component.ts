@@ -1,14 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ThemeServiceService } from '../../apps-services/theme.service';
-import { AccesspointService, AppUser } from '../../apps-services/access-point.service';
+import {
+  AccesspointService,
+  AppUser,
+} from '../../apps-services/access-point.service';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { last, Observable, Subject, takeUntil } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { SocketService } from '../../apps-services/socket.service';
 import { Router } from '@angular/router';
-import { ServiceApiService, ActiveRequest } from '../../apps-services/service-api.service';
+import {
+  ServiceApiService,
+  ActiveRequest,
+} from '../../apps-services/service-api.service';
 
 interface ActiveJob {
   name: string;
@@ -27,9 +33,8 @@ interface TeamMember {
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './sp-dashboard.component.html',
-  styleUrl: './sp-dashboard.component.css'
+  styleUrl: './sp-dashboard.component.css',
 })
-
 export class SpDashboardComponent implements OnInit, OnDestroy {
   isDarkMode: boolean = false; // Default to light mode
   liveRequests: ActiveRequest[] = [];
@@ -41,14 +46,24 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   // init socket for provider real-time updates
   socket: Socket = io(environment.baseUrl);
   activeJobs: ActiveJob[] = [
-    { name: 'Rohan Singh', service: 'Towing', location: 'HSR Layout, Bangalore', team: 'Team Jash' },
-    { name: 'Anita Desai', service: 'Flat Tire Repair', location: 'MG Road, Bangalore', team: 'Team Sahli' }
+    {
+      name: 'Rohan Singh',
+      service: 'Towing',
+      location: 'HSR Layout, Bangalore',
+      team: 'Team Jash',
+    },
+    {
+      name: 'Anita Desai',
+      service: 'Flat Tire Repair',
+      location: 'MG Road, Bangalore',
+      team: 'Team Sahli',
+    },
   ];
   teams: TeamMember[] = [
     { name: 'Team Jash', status: 'On Job' },
     { name: 'Team Sahli', status: 'Available' },
     { name: 'Team Raj', status: 'Available' },
-    { name: 'Team Faizan', status: 'Offline' }
+    { name: 'Team Faizan', status: 'Offline' },
   ];
 
   constructor(
@@ -56,34 +71,36 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     private serviceApi: ServiceApiService,
     private router: Router,
     private themeService: ThemeServiceService,
-    private socketService: SocketService
+    private socketService: SocketService,
   ) {
     this.State$ = this.accesspointService.currentState$;
   }
 
   ngOnInit(): void {
-    this.State$.pipe(takeUntil(this.destroy$)).subscribe(user => {
+    this.State$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       if (user) {
         this.userEmail = user.email;
         this.currentUser = user.type;
         this.currentUserName = user.name;
         this.isDarkMode = user.visual === 'dark' ? true : false;
-        this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
+        this.themeService.updateUserThemePreference(
+          user.visual as 'light' | 'dark',
+        );
         this.fetchServiceRequest();
       } else {
         this.router.navigate(['/service-provider-login']);
       }
     });
 
-    this.themeService.isDarkMode$.pipe(takeUntil(this.destroy$)).subscribe((isDark: boolean) => {
-      this.isDarkMode = isDark;
-    });
+    this.themeService.isDarkMode$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isDark: boolean) => {
+        this.isDarkMode = isDark;
+      });
 
     const email = this.userEmail;
 
-    this.socketService.joinRoom(
-      `provider:dashboard:${email}`
-    );
+    this.socketService.joinRoom(`provider:dashboard:${email}`);
 
     this.socketService.onServiceRequestUpdate((request) => {
       this.liveRequests.unshift(request);
@@ -92,8 +109,11 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
 
   fetchServiceRequest(): void {
     this.serviceApi.fetchServiceRequests(this.userEmail).subscribe({
-      next: (data) => { this.liveRequests = data; console.log(data); },
-      error: (error) => console.error('Failed to fetch services request:', error)
+      next: (data) => {
+        this.liveRequests = data;
+      },
+      error: (error) =>
+        console.error('Failed to fetch services request:', error),
     });
   }
 
@@ -115,21 +135,35 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   }
 
   deleteService(requestServiceId: string): void {
-    this.serviceApi.deleteServiceRequest(this.userEmail, requestServiceId).subscribe({
-      next: (response) => {
-        this.themeService.displayNotification('Success', 'Service deleted successfully', 'success');
-        this.liveRequests = this.liveRequests.filter(request => request.requestServiceId !== requestServiceId);
-      },
-      error: (error) => {
-        console.error('Failed to delete service:', error);
-        this.themeService.displayNotification('Error', 'Failed to delete service', 'error');
-      }
-    });
+    this.serviceApi
+      .deleteServiceRequest(this.userEmail, requestServiceId)
+      .subscribe({
+        next: (response) => {
+          this.themeService.displayNotification(
+            'Success',
+            'Service deleted successfully',
+            'success',
+          );
+          this.liveRequests = this.liveRequests.filter(
+            (request) => request.requestServiceId !== requestServiceId,
+          );
+        },
+        error: (error) => {
+          console.error('Failed to delete service:', error);
+          this.themeService.displayNotification(
+            'Error',
+            'Failed to delete service',
+            'error',
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    try { this.socket?.disconnect?.(); } catch { }
+    try {
+      this.socket?.disconnect?.();
+    } catch {}
   }
 }
