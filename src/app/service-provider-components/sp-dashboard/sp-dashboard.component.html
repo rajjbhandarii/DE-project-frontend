@@ -17,17 +17,32 @@
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (req of liveRequests; track req; let i = $index) {
-            <div class="admin-item">
+            <div class="admin-item" [class.tracking-active]="isTracking(req.requestServiceId)">
               <div class="admin-item-details">
                 <h4>{{ req.userName }}</h4>
                 <p>{{ req.category }} • {{ req.userLocation }}</p>
+                @if (isTracking(req.requestServiceId)) {
+                <div class="tracking-badge">
+                  <span class="tracking-pulse"></span>
+                  <span>Sharing Live Location</span>
+                </div>
+                }
               </div>
-              <button (click)="dispatch(req.userEmail, req.requestServiceId)" class="admin-dispatch-button">
-                Dispatch
-              </button>
-              <button (click)="deleteService(req.userEmail,req.requestServiceId)" class="admin-delete-button">
-                Delete
-              </button>
+              <div class="admin-item-actions">
+                @if (!isTracking(req.requestServiceId)) {
+                <button (click)="dispatch(req.userEmail, req.requestServiceId)" class="admin-dispatch-button">
+                  <i class="fa-solid fa-location-arrow"></i> Dispatch
+                </button>
+                } @else {
+                <button (click)="stopLocationTracking(req.userEmail, req.requestServiceId)"
+                  class="admin-stop-tracking-button">
+                  <i class="fa-solid fa-stop"></i> Stop Tracking
+                </button>
+                }
+                <button (click)="deleteService(req.userEmail,req.requestServiceId)" class="admin-delete-button">
+                  <i class="fa-solid fa-trash"></i> Delete
+                </button>
+              </div>
             </div>
             }
           </div>

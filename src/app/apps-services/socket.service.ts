@@ -33,4 +33,26 @@ export class SocketService {
   receiveNotificationFromProvider(cb: (data: any) => void) {
     this.socket.on('navbarComponent/notificationFromProvider', cb); //to receive notification in user dashboard when SP accepts/rejects service request
   }
+
+  // --- Real-time location tracking ---
+
+  /** SP emits their GPS coordinates to the user */
+  emitLocationUpdate(userEmail: string, lat: number, lng: number, providerName: string, requestServiceId: string) {
+    this.socket.emit('tracking/updateLocation', { userEmail, lat, lng, providerName, requestServiceId });
+  }
+
+  /** SP signals that they've stopped sharing location */
+  stopTracking(userEmail: string, requestServiceId: string, providerName: string) {
+    this.socket.emit('tracking/stopTracking', { userEmail, requestServiceId, providerName });
+  }
+
+  /** User listens for real-time location updates from the SP */
+  onProviderLocationUpdate(cb: (data: { lat: number; lng: number; providerName: string; requestServiceId: string }) => void) {
+    this.socket.on('tracking/providerLocation', cb);
+  }
+
+  /** User listens for when the SP stops tracking */
+  onProviderStopped(cb: (data: { requestServiceId: string; providerName: string }) => void) {
+    this.socket.on('tracking/providerStopped', cb);
+  }
 }

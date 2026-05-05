@@ -63,6 +63,9 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     { name: 'Team Faizan', status: 'Offline' },
   ];
 
+  /** Tracks active geolocation watches keyed by requestServiceId */
+  trackingMap = new Map<string, number>();
+
   constructor(
     private accesspointService: AccesspointService,
     private serviceApi: ServiceApiService,
@@ -119,25 +122,9 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     const message = 'Your service request is being accepted';
     console.log('Dispatching service request:', { userEmail, requestServiceId });
     this.sendNotificationToUser(userEmail, requestServiceId, message, this.currentUserName);
-    // this.serviceApi
-    //   .dispatchServiceRequest(this.userEmail, requestServiceId)
-    //   .subscribe({
-    //     next: (response) => {
-    //       this.themeService.displayNotification(
-    //         'Success', 
-    //         'Service dispatched successfully',
-    //         'success',
-    //       );
-    //     },
-    //     error: (error) => {
-    //       console.error('Failed to dispatch service:', error);
-    //       this.themeService.displayNotification(
-    //         'Error',
-    //         'Failed to dispatch service',
-    //         'error',
-    //       );
-    //     },
-    //   });
+
+    // Start real-time location tracking for this request
+    this.startLocationTracking(userEmail, requestServiceId);
   }
 
   sendNotificationToUser(userEmail: string, requestServiceId: string, message: string, userName: string): void {
@@ -148,9 +135,89 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Starts the browser's Geolocation watchPosition API to continuously
+   * send the SP's GPS coordinates to the user via Socket.IO.
+   */
+  startLocationTracking(userEmail: string, requestServiceId: string): void {
+    if (!navigator.geolocation) {
+      this.themeService.displayNotification('Error', 'Geolocation is not supported by your browser.', 'error');
+      return;
+    }
+
+    // Avoid duplicate watchers for the same request
+    if (this.trackingMap.has(requestServiceId)) {
+      return;
+    }
+
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        this.socketService.emitLocationUpdate(
+          userEmail,
+          latitude,
+          longitude,
+          this.currentUserName,
+          requestServiceId,
+        );
+        console.log(`📍 Sent location [${latitude}, ${longitude}] to ${userEmail}`);
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        this.themeService.displayNotification(
+          'Warning',
+          'Unable to get your location. Please enable GPS.',
+          'error',
+        );
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 3000,
+        timeout: 10000,
+      },
+    );
+
+    this.trackingMap.set(requestServiceId, watchId);
+    this.themeService.displayNotification(
+      'Tracking',
+      `Location sharing started for this request.`,
+      'success',
+    );
+  }
+
+  /**
+   * Stops tracking for a specific dispatched request.
+   */
+  stopLocationTracking(userEmail: string, requestServiceId: string): void {
+    const watchId = this.trackingMap.get(requestServiceId);
+    if (watchId !== undefined) {
+      navigator.geolocation.clearWatch(watchId);
+      this.trackingMap.delete(requestServiceId);
+    }
+
+    this.socketService.stopTracking(userEmail, requestServiceId, this.currentUserName);
+
+    this.themeService.displayNotification(
+      'Tracking Stopped',
+      'Location sharing has been stopped.',
+      'success',
+    );
+  }
+
+  /** Returns true if a request is currently being tracked */
+  isTracking(requestServiceId: string): boolean {
+    return this.trackingMap.has(requestServiceId);
+  }
+
   deleteService(userEmail: string, requestServiceId: string): void {
     const message = 'Your service request is being rejected';
     this.sendNotificationToUser(userEmail, requestServiceId, message, this.currentUserName);
+
+    // Stop tracking if active before deleting
+    if (this.trackingMap.has(requestServiceId)) {
+      this.stopLocationTracking(userEmail, requestServiceId);
+    }
+
     this.serviceApi
       .deleteServiceRequest(userEmail, requestServiceId)
       .subscribe({
@@ -176,6 +243,12 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Clear all active geolocation watchers
+    this.trackingMap.forEach((watchId, requestServiceId) => {
+      navigator.geolocation.clearWatch(watchId);
+    });
+    this.trackingMap.clear();
+
     this.destroy$.next();
     this.destroy$.complete();
   }

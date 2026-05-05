@@ -1,6 +1,42 @@
 <div class="container" [class.dark-mode]="isDarkMode">
   <div class="services-section">
 
+    <!-- ===== TRACKING PANEL (shown when provider is en route) ===== -->
+    @if (isTrackingActive && trackingInfo) {
+    <div class="tracking-panel" id="tracking-panel">
+      <div class="tracking-panel-header">
+        <div class="tracking-header-left">
+          <div class="tracking-pulse-dot"></div>
+          <h2>Live Tracking</h2>
+        </div>
+        <button class="tracking-close-btn" (click)="closeTrackingPanel()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="tracking-info-bar">
+        <div class="tracking-provider-info">
+          <div class="tracking-avatar">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div class="tracking-provider-text">
+            <span class="tracking-provider-name">{{ trackingInfo.providerName }}</span>
+            <span class="tracking-provider-status">
+              <span class="live-dot"></span> En route to your location
+            </span>
+          </div>
+        </div>
+        <div class="tracking-coords">
+          <span>{{ trackingInfo.lat.toFixed(4) }}°, {{ trackingInfo.lng.toFixed(4) }}°</span>
+        </div>
+      </div>
+
+      <div class="tracking-map-wrapper">
+        <div id="tracking-map-container" #trackingMap class="tracking-map"></div>
+      </div>
+    </div>
+    }
+
     <h1 class="main-title">Available Services</h1>
 
     <div class="location-input-section">

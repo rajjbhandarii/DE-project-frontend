@@ -254,3 +254,90 @@
   color: #fee2e2;
   background-color: #7f1d1d;
 }
+
+/* --- TRACKING STATE --- */
+.admin-item.tracking-active {
+  border: 2px solid #10b981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.02));
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.dark-mode .admin-item.tracking-active {
+  border-color: #059669;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.03));
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
+}
+
+.tracking-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #065f46;
+  background-color: #d1fae5;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dark-mode .tracking-badge {
+  color: #a7f3d0;
+  background-color: #064e3b;
+}
+
+.tracking-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    opacity: 0.7;
+  }
+}
+
+.admin-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.admin-stop-tracking-button {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-stop-tracking-button:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: scale(1.05);
+}
+
+.admin-dispatch-button,
+.admin-delete-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
