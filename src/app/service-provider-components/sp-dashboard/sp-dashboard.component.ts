@@ -100,7 +100,7 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     this.socketService.joinRoom(email);
 
     this.socketService.onServiceRequestUpdate((request) => {
-      this.liveRequests.unshift(request);
+      this.liveRequests = [request, ...this.liveRequests];
     });
   }
 
