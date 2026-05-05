@@ -46,8 +46,8 @@
                   <span>||</span>
                 </div>
               </div>
-              <button (click)="requestService(service.providerId, service.category)" class="request-button"
-                [disabled]="service.isRequested===true">
+              <button (click)="requestService(service.providerId, service.email, service.category)"
+                class="request-button" [disabled]="service.isRequested===true">
                 Request
               </button>
             </div>

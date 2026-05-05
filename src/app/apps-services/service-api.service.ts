@@ -6,6 +6,7 @@ import { ApiProvider } from './processes.service';
 
 // Interfaces for service request data
 export interface ActiveRequest {
+  userEmail: string;
   requestServiceId: string;
   userName: string;
   userLocation: string;

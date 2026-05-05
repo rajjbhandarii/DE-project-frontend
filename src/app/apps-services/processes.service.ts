@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
  */
 export interface DisplayService {
   providerId: any;
+  email: string;
   providerName: string;
   serviceId: any;
   serviceName: string;
@@ -25,6 +26,7 @@ export interface DisplayService {
 export interface ApiProvider {
   _id: string;
   serviceProviderName: string;
+  email: string;
   services: {
     serviceId: string;
     serviceName: string;
@@ -50,6 +52,7 @@ export class ProcessesService {
       (provider.services ?? []).map(service => ({
         providerId: provider._id,
         providerName: provider.serviceProviderName,
+        email: provider.email,
         serviceId: service.serviceId,
         serviceName: service.serviceName,
         price: service.price,

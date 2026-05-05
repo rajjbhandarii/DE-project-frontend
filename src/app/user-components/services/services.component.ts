@@ -2,8 +2,6 @@ import { FormsModule } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AccesspointService, AppUser } from '../../apps-services/access-point.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { io, Socket } from "socket.io-client";
 import { ThemeServiceService } from '../../apps-services/theme.service';
 import { SocketService } from '../../apps-services/socket.service';
 import { ProcessesService, DisplayService, ApiProvider } from '../../apps-services/processes.service';
@@ -19,7 +17,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
   currentState$: Observable<AppUser | null>;
   userLocation: string = 'Nargol';
   userName: string = '';
-  socket: Socket = io(environment.baseUrl);
   isDarkMode: boolean = false;
   userEmail: string = '';
   servicesMapByCategory = new Map<string, DisplayService[]>();
@@ -111,8 +108,10 @@ export class ServicesComponent implements OnInit, OnDestroy {
   /**
    * Sends a service request to the backend.
    * @param providerId The ID of the provider being requested.
+   * @param providerEmail The email of the provider being requested.
+   * @param category The category of the service being requested.
    */
-  requestService(providerId: string, category: string): void {
+  requestService(providerId: string, providerEmail: string, category: string): void {
     const requestServiceId: string = new Date().getTime().toString();
     this.serviceApi.requestService({
       email: this.userEmail,
@@ -124,7 +123,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
       isRequested: true
     }).subscribe({
       next: () => {
-        this.sendNotificationToProvider(this.userEmail, this.userLocation, requestServiceId, this.userName);
+        this.sendNotificationToProvider(providerEmail, this.userLocation, requestServiceId, this.userName);
         this.themeService.displayNotification('Success', 'Your service request has been sent successfully!', 'success');
       },
       error: (error) => {
@@ -134,11 +133,11 @@ export class ServicesComponent implements OnInit, OnDestroy {
     });
   }
 
-  sendNotificationToProvider(userEmail: string, userLocation: string, serviceId: string, name: string): void {
-    this.socketService.sendNotificationToProvider(userEmail, {
+  sendNotificationToProvider(providerEmail: string, userLocation: string, serviceId: string, name: string): void {
+    this.socketService.sendNotificationToProvider(providerEmail, {
       message: `New service request from ${name} located at ${userLocation}`,
       requestServiceId: serviceId,
-      userLocation: userLocation,
+      userLocation,
       userName: name
     });
   }
@@ -146,6 +145,5 @@ export class ServicesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.socket.disconnect();
   }
 }

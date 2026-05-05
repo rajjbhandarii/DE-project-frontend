@@ -5,10 +5,8 @@ import {
   AppUser,
 } from '../../apps-services/access-point.service';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
-import { last, Observable, Subject, takeUntil } from 'rxjs';
-import { io, Socket } from 'socket.io-client';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { SocketService } from '../../apps-services/socket.service';
 import { Router } from '@angular/router';
 import {
@@ -44,7 +42,6 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   currentUserName = '';
   private destroy$ = new Subject<void>();
   // init socket for provider real-time updates
-  socket: Socket = io(environment.baseUrl);
   activeJobs: ActiveJob[] = [
     {
       name: 'Rohan Singh',
@@ -100,7 +97,7 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
 
     const email = this.userEmail;
 
-    this.socketService.joinRoom(`provider:dashboard:${email}`);
+    this.socketService.joinRoom(email);
 
     this.socketService.onServiceRequestUpdate((request) => {
       this.liveRequests.unshift(request);
@@ -111,16 +108,17 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     this.serviceApi.fetchServiceRequests(this.userEmail).subscribe({
       next: (data) => {
         this.liveRequests = data;
+        console.log('Fetched service requests:', data);
       },
       error: (error) =>
         console.error('Failed to fetch services request:', error),
     });
   }
 
-  dispatch(requestServiceId: string): void {
+  dispatch(userEmail: string, requestServiceId: string): void {
     const message = 'Your service request is being accepted';
-
-    this.sendNotificationToUser(this.userEmail, requestServiceId, message, this.currentUserName);
+    console.log('Dispatching service request:', { userEmail, requestServiceId });
+    this.sendNotificationToUser(userEmail, requestServiceId, message, this.currentUserName);
     // this.serviceApi
     //   .dispatchServiceRequest(this.userEmail, requestServiceId)
     //   .subscribe({
@@ -150,11 +148,11 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteService(requestServiceId: string): void {
+  deleteService(userEmail: string, requestServiceId: string): void {
     const message = 'Your service request is being rejected';
-    this.sendNotificationToUser(this.userEmail, requestServiceId, message, this.currentUserName);
+    this.sendNotificationToUser(userEmail, requestServiceId, message, this.currentUserName);
     this.serviceApi
-      .deleteServiceRequest(this.userEmail, requestServiceId)
+      .deleteServiceRequest(userEmail, requestServiceId)
       .subscribe({
         next: (response) => {
           this.themeService.displayNotification(
@@ -180,8 +178,5 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    try {
-      this.socket?.disconnect?.();
-    } catch { }
   }
 }
