@@ -1,0 +1,111 @@
+<div class="track-page" [class.dark-mode]="isDarkMode">
+
+  <!-- ===== TOP BAR ===== -->
+  <div class="track-topbar">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Back</span>
+    </button>
+    <div class="topbar-center">
+      <div class="topbar-pulse"></div>
+      <span class="topbar-title">Live Tracking</span>
+    </div>
+    <div class="topbar-timer">
+      <i class="fa-regular fa-clock"></i>
+      <span>{{ elapsedTime }}</span>
+    </div>
+  </div>
+
+  <!-- ===== MAP (Hero) ===== -->
+  <div class="map-container">
+    <div id="track-map" class="track-map"></div>
+
+    <!-- Floating action buttons on the map -->
+    <div class="map-fab-group">
+      <button class="map-fab" title="Re-center map" (click)="recenterMap()">
+        <i class="fa-solid fa-crosshairs"></i>
+      </button>
+    </div>
+
+    <!-- No tracking fallback -->
+    @if (!isActive && !trackingInfo) {
+    <div class="map-overlay-message">
+      <div class="overlay-icon">
+        <i class="fa-solid fa-satellite-dish"></i>
+      </div>
+      <h3>Waiting for Provider</h3>
+      <p>The service provider hasn't started sharing their location yet.</p>
+      <button class="overlay-back-btn" (click)="goBack()">
+        <i class="fa-solid fa-arrow-left"></i> Back to Services
+      </button>
+    </div>
+    }
+  </div>
+
+  <!-- ===== BOTTOM INFO PANEL ===== -->
+  <div class="info-panel">
+
+    <!-- Provider Info Card -->
+    <div class="provider-card">
+      <div class="provider-card-left">
+        <div class="provider-avatar">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div class="provider-text">
+          @if (trackingInfo) {
+          <span class="provider-name">{{ trackingInfo.providerName }}</span>
+          <span class="provider-status">
+            @if (isActive) {
+            <span class="status-live"><span class="live-pulse"></span> En route</span>
+            } @else {
+            <span class="status-arrived"><i class="fa-solid fa-check-circle"></i> Arrived</span>
+            }
+          </span>
+          } @else {
+          <span class="provider-name">Waiting…</span>
+          <span class="provider-status">Connecting to provider</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-blue">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="stat-text">
+          <span class="stat-value">{{ elapsedTime }}</span>
+          <span class="stat-label">Elapsed</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-green">
+          <i class="fa-solid fa-location-dot"></i>
+        </div>
+        <div class="stat-text">
+          <span class="stat-value">{{ updateCount }}</span>
+          <span class="stat-label">Updates</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-purple">
+          <i class="fa-solid fa-map-pin"></i>
+        </div>
+        <div class="stat-text">
+          @if (trackingInfo) {
+          <span class="stat-value coord-val">{{ trackingInfo.lat.toFixed(4) }}°</span>
+          <span class="stat-label">{{ trackingInfo.lng.toFixed(4) }}°</span>
+          } @else {
+          <span class="stat-value">—</span>
+          <span class="stat-label">Coords</span>
+          }
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

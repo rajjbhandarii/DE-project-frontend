@@ -18,6 +18,7 @@ export const routes: Routes = [
       { path: 'dashboard', loadComponent: () => import('./user-components/dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'hero' } },
       { path: 'sp-dashboard', loadComponent: () => import('./service-provider-components/sp-dashboard/sp-dashboard.component').then(m => m.SpDashboardComponent) },
       { path: 'services', loadComponent: () => import('./user-components/services/services.component').then(m => m.ServicesComponent) },
+      { path: 'track-provider', loadComponent: () => import('./user-components/track-provider/track-provider.component').then(m => m.TrackProviderComponent) },
       { path: 'about', loadComponent: () => import('./user-components/dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'about' } },
       { path: 'contact', loadComponent: () => import('./user-components/dashboard/dashboard.component').then(m => m.DashboardComponent), data: { scrollToSection: 'contact' } },
       { path: 'service-management', loadComponent: () => import('./service-provider-components/service-management/service-management.component').then(m => m.ServiceManagementComponent) }
