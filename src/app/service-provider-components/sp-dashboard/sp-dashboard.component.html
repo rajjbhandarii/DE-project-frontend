@@ -1,105 +1,190 @@
 <div class="admin-body" [class.dark-mode]="isDarkMode">
   <div class="admin-dashboard-container">
 
+    <!-- ===== HEADER ===== -->
     <header class="admin-header">
-      <h1>Operations Dashboard</h1>
-      <span style="opacity: 0.9; font-size:2.5rem;text-transform: capitalize;">Welcome, {{ currentUserName
-        }}</span>
+      <div class="header-top">
+        <div>
+          <h1>Operations Dashboard</h1>
+          <span class="header-welcome">Welcome, {{ currentUserName }}</span>
+        </div>
+        <div class="header-stats">
+          <div class="header-stat">
+            <span class="header-stat-value">{{ liveRequests.length }}</span>
+            <span class="header-stat-label">Pending</span>
+          </div>
+          <div class="header-stat">
+            <span class="header-stat-value">{{ activeJobs.length }}</span>
+            <span class="header-stat-label">Active</span>
+          </div>
+          <div class="header-stat">
+            <span class="header-stat-value">{{ availableCount }}</span>
+            <span class="header-stat-label">Teams Free</span>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main class="admin-dashboard-grid">
 
-      <div class="admin-card">
+      <!-- ===== LIVE REQUESTS CARD ===== -->
+      <div class="admin-card card-span-full">
         <div class="card-accent-line line-blue"></div>
         <div class="admin-card-header">
-          <h2>Live Requests</h2>
+          <h2><i class="fa-solid fa-bell"></i> Live Requests</h2>
+          <span class="card-badge badge-blue">{{ liveRequests.length }}</span>
         </div>
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (req of liveRequests; track req; let i = $index) {
-            <div class="admin-item" [class.tracking-active]="isTracking(req.requestServiceId)">
-              <div class="admin-item-details">
-                <h4>{{ req.userName }}</h4>
-                <p>{{ req.category }} • {{ req.userLocation }}</p>
-                @if (isTracking(req.requestServiceId)) {
-                <div class="tracking-badge">
-                  <span class="tracking-pulse"></span>
-                  <span>Sharing Live Location</span>
+            <div class="admin-item request-item"
+              [class.picker-open]="showTeamPickerFor === req.requestServiceId">
+              <div class="request-main-row">
+                <div class="admin-item-details">
+                  <div class="request-row">
+                    <div class="request-avatar">
+                      <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                      <h4>{{ req.userName }}</h4>
+                      <p>{{ req.category }} • {{ req.userLocation }}</p>
+                    </div>
+                  </div>
                 </div>
-                }
+                <div class="admin-item-actions">
+                  @if (showTeamPickerFor !== req.requestServiceId) {
+                  <button (click)="openTeamPicker(req.requestServiceId)" class="admin-dispatch-button">
+                    <i class="fa-solid fa-location-arrow"></i> Dispatch
+                  </button>
+                  } @else {
+                  <button (click)="closeTeamPicker()" class="admin-cancel-button">
+                    <i class="fa-solid fa-xmark"></i> Cancel
+                  </button>
+                  }
+                  <button (click)="deleteService(req.userEmail, req.requestServiceId)" class="admin-delete-button">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
               </div>
-              <div class="admin-item-actions">
-                @if (!isTracking(req.requestServiceId)) {
-                <button (click)="dispatch(req.userEmail, req.requestServiceId)" class="admin-dispatch-button">
-                  <i class="fa-solid fa-location-arrow"></i> Dispatch
-                </button>
-                } @else {
-                <button (click)="stopLocationTracking(req.userEmail, req.requestServiceId)"
-                  class="admin-stop-tracking-button">
-                  <i class="fa-solid fa-stop"></i> Stop Tracking
-                </button>
-                }
-                <button (click)="deleteService(req.userEmail,req.requestServiceId)" class="admin-delete-button">
-                  <i class="fa-solid fa-trash"></i> Delete
-                </button>
+              <!-- Inline team picker — expands below the request -->
+              @if (showTeamPickerFor === req.requestServiceId) {
+              <div class="team-picker-inline">
+                <span class="picker-label">Assign team:</span>
+                <div class="picker-options">
+                  @for (team of availableTeams; track team) {
+                  <button class="team-pill" (click)="dispatchWithTeam(req, team)">
+                    <i class="fa-solid fa-users"></i> {{ team.name }}
+                  </button>
+                  }
+                  @if (availableTeams.length === 0) {
+                  <span class="picker-empty-text">No teams available</span>
+                  }
+                </div>
               </div>
+              }
             </div>
             }
           </div>
           @if (liveRequests.length === 0) {
-          <p class="empty-state">No new requests pending.</p>
+          <div class="empty-state-card">
+            <i class="fa-solid fa-inbox empty-icon"></i>
+            <p>No new requests pending.</p>
+          </div>
           }
         </div>
       </div>
 
+      <!-- ===== ACTIVE JOBS CARD ===== -->
       <div class="admin-card">
         <div class="card-accent-line line-purple"></div>
         <div class="admin-card-header">
-          <h2>Active Jobs</h2>
+          <h2><i class="fa-solid fa-road"></i> Active Jobs</h2>
+          <span class="card-badge badge-purple">{{ activeJobs.length }}</span>
         </div>
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (job of activeJobs; track job) {
-            <div class="admin-item">
+            <div class="admin-item job-item">
               <div class="admin-item-details">
-                <h4>{{ job.service }}</h4>
-                <p>{{ job.name }}</p>
+                <div class="job-header-row">
+                  <h4>{{ job.category }}</h4>
+                  <span class="job-time">{{ getJobElapsed(job) }}</span>
+                </div>
+                <p>{{ job.userName }} • {{ job.location }}</p>
+                <div class="job-team-badge">
+                  <i class="fa-solid fa-users"></i>
+                  <span>{{ job.team }}</span>
+                </div>
+                @if (isTracking(job.requestServiceId)) {
+                <div class="tracking-badge">
+                  <span class="tracking-pulse"></span>
+                  <span>Live Tracking</span>
+                </div>
+                }
               </div>
-              <div class="admin-item-details" style="text-align: right;">
-                <p>Assigned to</p>
-                <h4 style="color: var(--accent-color)">{{ job.team }}</h4>
-              </div>
+              <button class="admin-complete-button" (click)="completeJob(job)">
+                <i class="fa-solid fa-check"></i> Complete
+              </button>
             </div>
             }
           </div>
           @if (activeJobs.length === 0) {
-          <p class="empty-state">No active jobs right now.</p>
+          <div class="empty-state-card">
+            <i class="fa-solid fa-route empty-icon"></i>
+            <p>No active jobs right now.</p>
+          </div>
           }
         </div>
       </div>
 
+      <!-- ===== TEAM STATUS CARD ===== -->
       <div class="admin-card">
         <div class="card-accent-line line-green"></div>
         <div class="admin-card-header">
-          <h2>Team Status</h2>
+          <h2><i class="fa-solid fa-people-group"></i> Team Status</h2>
+          <span class="card-badge badge-green">{{ teams.length }}</span>
         </div>
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (team of teams; track team) {
-            <div class="admin-item">
+            <div class="admin-item team-item">
               <div class="admin-item-details">
                 <h4>{{ team.name }}</h4>
+                @if (team.currentJob) {
+                <p class="team-job-info">
+                  <i class="fa-solid fa-briefcase"></i>
+                  On active job
+                </p>
+                }
               </div>
-              <div class="status-pill" [ngClass]="{
-                                'status-available': team.status === 'Available',
-                                'status-on-job': team.status === 'On Job',
-                                'status-offline': team.status === 'Offline'
-                            }">
-                <div class="status-dot"></div>
-                <span>{{ team.status }}</span>
+              <div class="team-actions">
+                <div class="status-pill" [ngClass]="{
+                  'status-available': team.status === 'Available',
+                  'status-on-job': team.status === 'On Job',
+                  'status-offline': team.status === 'Offline'
+                }">
+                  <div class="status-dot"></div>
+                  <span>{{ team.status }}</span>
+                </div>
+                @if (team.status !== 'On Job') {
+                <button class="toggle-btn" (click)="toggleTeamOnline(team)"
+                  [title]="team.status === 'Available' ? 'Set Offline' : 'Set Available'">
+                  <i class="fa-solid" [ngClass]="team.status === 'Available' ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+                </button>
+                }
               </div>
             </div>
             }
+          </div>
+
+          <!-- Team summary -->
+          <div class="team-summary">
+            <div class="summary-dot dot-green"></div>
+            <span>{{ availableCount }} Available</span>
+            <div class="summary-dot dot-orange"></div>
+            <span>{{ onJobCount }} On Job</span>
+            <div class="summary-dot dot-red"></div>
+            <span>{{ offlineCount }} Offline</span>
           </div>
         </div>
       </div>
