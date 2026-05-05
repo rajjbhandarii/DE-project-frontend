@@ -23,11 +23,13 @@ export interface Service {
 }
 
 export interface ServiceRequestPayload {
+  email: string;
   _id: string;
   userName: string;
   userLocation: string;
   category: string;
   requestServiceId: string;
+  isRequested: boolean;
 }
 
 @Injectable({
@@ -61,6 +63,10 @@ export class ServiceApiService {
     return this.http.delete(environment.deleteServiceRequest, {
       body: { serviceProviderEmail, requestServiceId }
     });
+  }
+
+  dispatchServiceRequest(userEmail: string, requestServiceId: string) {
+    return this.http.post(environment.dispatchServiceRequest, { userEmail, requestServiceId });
   }
 
   // ─── Service Provider: Service Management ───

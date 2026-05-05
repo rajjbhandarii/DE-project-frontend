@@ -118,23 +118,41 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   }
 
   dispatch(requestServiceId: string): void {
-    // const availableTeam = this.teams.find(team => team.status === 'Available');
-    // if (!availableTeam) {
-    //   this.themeService.displayNotification('Error', 'No teams are currently available.', 'error');
-    //   return;
-    // }
-    // const requestToDispatch = this.liveRequests[requestIndex];
-    // this.activeJobs.unshift({
-    //   name: requestToDispatch?.userName || '',
-    //   service: requestToDispatch?.category || '',
-    //   location: requestToDispatch?.userLocation || '',
-    //   team: availableTeam.name
-    // });
-    // this.liveRequests.splice(requestIndex, 1);
-    // availableTeam.status = 'On Job';
+    const message = 'Your service request is being accepted';
+
+    this.sendNotificationToUser(this.userEmail, requestServiceId, message, this.currentUserName);
+    // this.serviceApi
+    //   .dispatchServiceRequest(this.userEmail, requestServiceId)
+    //   .subscribe({
+    //     next: (response) => {
+    //       this.themeService.displayNotification(
+    //         'Success', 
+    //         'Service dispatched successfully',
+    //         'success',
+    //       );
+    //     },
+    //     error: (error) => {
+    //       console.error('Failed to dispatch service:', error);
+    //       this.themeService.displayNotification(
+    //         'Error',
+    //         'Failed to dispatch service',
+    //         'error',
+    //       );
+    //     },
+    //   });
+  }
+
+  sendNotificationToUser(userEmail: string, requestServiceId: string, message: string, userName: string): void {
+    this.socketService.sendNotificationToUser(userEmail, {
+      message: message,
+      requestServiceId,
+      providerName: userName
+    });
   }
 
   deleteService(requestServiceId: string): void {
+    const message = 'Your service request is being rejected';
+    this.sendNotificationToUser(this.userEmail, requestServiceId, message, this.currentUserName);
     this.serviceApi
       .deleteServiceRequest(this.userEmail, requestServiceId)
       .subscribe({
@@ -164,6 +182,6 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
     try {
       this.socket?.disconnect?.();
-    } catch {}
+    } catch { }
   }
 }

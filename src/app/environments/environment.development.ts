@@ -12,6 +12,7 @@ export const environment = {
     addNewServices: 'http://localhost:3000/serviceManagement/addNewServices',
     getServicesCategory: 'http://localhost:3000/serviceManagement/getServicesCategory',
     deleteService: 'http://localhost:3000/serviceManagement/deleteService',
+    dispatchServiceRequest: 'http://localhost:3000/SP-dashboard/dispatch-serviceRequest',
     sendEmail: 'http://localhost:3000/dashboard/send-email',
     socketUrl: 'http://localhost:3000',
     serviceID: 'service_vy31m7j',

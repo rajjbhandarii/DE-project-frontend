@@ -15,6 +15,7 @@ export interface DisplayService {
   description: string;
   rating: number;
   location: string;
+  isRequested: boolean;
 }
 
 /**
@@ -55,7 +56,8 @@ export class ProcessesService {
         category: service.category,
         description: service.description,
         rating: service.rating,
-        location: service.location
+        location: service.location,
+        isRequested: false
       }))
     );
   }

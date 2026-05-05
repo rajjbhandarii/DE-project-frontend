@@ -4,6 +4,7 @@ import { AccesspointService } from '../apps-services/access-point.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ThemeServiceService } from '../apps-services/theme.service';
 import { CommonModule } from '@angular/common';
+import { SocketService } from '../apps-services/socket.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,12 +19,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   currentUser = '';
   currentUserName = '';
   visualTheme = '';
+  NotificationMessage: string = '';
   isDarkMode: boolean = false;
+  showNotificationPopup = false;
+  notificationsOfUser: Array<{ message: string; requestServiceId: string; timestamp: Date }> = [];
+  notificationsOfProvider: Array<{ message: string; userLocation: string; requestServiceId: string; timestamp: Date }> = [];
   private destroy$ = new Subject<void>();
 
   constructor(
     public accesspointService: AccesspointService,
     private themeService: ThemeServiceService,
+    private socketService: SocketService,
     // private router: Router
   ) { };
 
@@ -42,8 +48,37 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.currentUserName = user.name;
         this.visualTheme = user.visual;
         this.themeService.updateUserThemePreference(user.visual as 'light' | 'dark');
+        this.socketService.joinRoom(user.email);
       }
     });
+
+    this.socketService.receiveNotificationFromProvider((data: { message: string; requestServiceId: string; name: string }) => {
+      console.log('Received notification from provider:', data);
+      this.notificationsOfUser.unshift({
+        message: data.message,
+        requestServiceId: data.requestServiceId,
+        timestamp: new Date()
+      });
+    });
+
+    this.socketService.receiveNotificationFromUser((data: { message: string; userLocation: string; requestServiceId: string; name: string }) => {
+      console.log('Received notification from user:', data);
+      this.notificationsOfProvider.unshift({
+        message: data.message,
+        userLocation: data.userLocation,
+        requestServiceId: data.requestServiceId,
+        timestamp: new Date()
+      });
+    });
+
+  }
+
+  toggleNotificationPopup() {
+    this.showNotificationPopup = !this.showNotificationPopup;
+  }
+
+  closeNotificationPopup() {
+    this.showNotificationPopup = false;
   }
 
   changeTheme(theme: string) {

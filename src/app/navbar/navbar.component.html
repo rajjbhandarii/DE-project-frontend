@@ -1,6 +1,36 @@
 @if ((this.accesspointService.currentState$ | async)?.type === 'user') {
 <header class="navbar" [class.dark-mode]="isDarkMode">
   <h1 routerLink="/dashboard">Road Rescue</h1>
+
+  <div class="notification-container" (click)="toggleNotificationPopup()"
+    style="margin-left: auto; margin-right: 20px; cursor: pointer; font-size: 24px; position: relative;">
+    🔔
+    @if ( notificationsOfUser.length > 0) {
+    <span class="notification-badge">{{ notificationsOfUser.length }}</span>
+    }
+
+    @if (showNotificationPopup) {
+    <div class="notification-popup" (click)="$event.stopPropagation()">
+      <div class="popup-header">
+        <h3>Notifications</h3>
+        <button class="close-btn" (click)="closeNotificationPopup()">✖</button>
+      </div>
+      <div class="popup-content">
+        @if (notificationsOfUser.length > 0) {
+        @for (notif of notificationsOfUser; track notif.timestamp) {
+        <div class="notification-item">
+          <p class="notification-text">{{ notif.message }}</p>
+          <span class="notification-time">{{ notif.timestamp | date:'short' }}</span>
+        </div>
+        }
+        } @else {
+        <p class="no-notifications">No notifications</p>
+        }
+      </div>
+    </div>
+    }
+  </div>
+
   <button class="menu-toggle" (click)="toggleMenu()">
     <span style="font-size: 24px;">☰</span>
   </button>
@@ -81,6 +111,35 @@
 } @else {
 <header class="navbar" [class.dark-mode]="isDarkMode">
   <h1 routerLink="/sp-dashboard">Road Rescue <span style="font-size: 12px; opacity: 0.7">Partner</span></h1>
+  <div class="notification-container" (click)="toggleNotificationPopup()"
+    style="margin-left: auto; margin-right: 20px; cursor: pointer; font-size: 24px; position: relative;">
+    🔔
+    @if (notificationsOfProvider.length > 0) {
+    <span class="notification-badge">{{ notificationsOfProvider.length }}</span>
+    }
+
+    @if (showNotificationPopup) {
+    <div class="notification-popup" (click)="$event.stopPropagation()">
+      <div class="popup-header">
+        <h3>Notifications</h3>
+        <button class="close-btn" (click)="closeNotificationPopup()">✖</button>
+      </div>
+      <div class="popup-content">
+        @if (notificationsOfProvider.length > 0) {
+        @for (notif of notificationsOfProvider; track notif.timestamp) {
+        <div class="notification-item">
+          <p class="notification-text">{{ notif.message }}</p>
+          <span class="notification-time">{{ notif.timestamp | date:'short' }}</span>
+        </div>
+        }
+        } @else {
+        <p class="no-notifications">No notifications</p>
+        }
+      </div>
+    </div>
+    }
+  </div>
+
   <button class="menu-toggle" (click)="toggleMenu()">
     <span style="font-size: 24px;">☰</span>
   </button>

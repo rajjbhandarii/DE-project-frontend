@@ -12,6 +12,7 @@ export const environment = {
     addNewServices: 'https://road-rescue-backend.onrender.com/serviceManagement/addNewServices',
     getServicesCategory: 'https://road-rescue-backend.onrender.com/serviceManagement/getServicesCategory',
     deleteService: 'https://road-rescue-backend.onrender.com/serviceManagement/deleteService',
+    dispatchServiceRequest: 'https://road-rescue-backend.onrender.com/SP-dashboard/dispatch-serviceRequest',
     sendEmail: 'https://road-rescue-backend.onrender.com/dashboard/send-email',
     socketUrl: 'https://road-rescue-backend.onrender.com',
     serviceID: 'service_vy31m7j',

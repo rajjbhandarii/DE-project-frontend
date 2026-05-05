@@ -24,6 +24,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
   userEmail: string = '';
   servicesMapByCategory = new Map<string, DisplayService[]>();
   private destroy$ = new Subject<void>();
+  isRequested: boolean = false;
 
   get categoryKeys(): string[] {
     return Array.from(this.servicesMapByCategory.keys());
@@ -112,20 +113,33 @@ export class ServicesComponent implements OnInit, OnDestroy {
    * @param providerId The ID of the provider being requested.
    */
   requestService(providerId: string, category: string): void {
+    const requestServiceId: string = new Date().getTime().toString();
     this.serviceApi.requestService({
+      email: this.userEmail,
       _id: providerId,
       userName: this.userName,
       userLocation: this.userLocation,
       category: category,
-      requestServiceId: new Date().getTime().toString()
+      requestServiceId,
+      isRequested: true
     }).subscribe({
       next: () => {
+        this.sendNotificationToProvider(this.userEmail, this.userLocation, requestServiceId, this.userName);
         this.themeService.displayNotification('Success', 'Your service request has been sent successfully!', 'success');
       },
       error: (error) => {
         console.error('Error sending service request:', error);
         this.themeService.displayNotification('Error', 'Failed to send service request. Please try again later.', 'error');
       }
+    });
+  }
+
+  sendNotificationToProvider(userEmail: string, userLocation: string, serviceId: string, name: string): void {
+    this.socketService.sendNotificationToProvider(userEmail, {
+      message: `New service request from ${name} located at ${userLocation}`,
+      requestServiceId: serviceId,
+      userLocation: userLocation,
+      userName: name
     });
   }
 
