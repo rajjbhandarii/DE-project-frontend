@@ -181,39 +181,58 @@ export class ServicesComponent implements OnInit, OnDestroy {
     category: string,
   ): void {
     const requestServiceId: string = new Date().getTime().toString();
-    this.serviceApi
-      .requestService({
-        email: this.userEmail,
-        _id: providerId,
-        userName: this.userName,
-        userLocation: this.userLocation,
-        category: category,
-        requestServiceId,
-        isRequested: true,
-      })
-      .subscribe({
-        next: () => {
-          this.sendNotificationToProvider(
-            providerEmail,
-            this.userLocation,
-            requestServiceId,
-            this.userName,
-          );
-          this.themeService.displayNotification(
-            'Success',
-            'Your service request has been sent successfully!',
-            'success',
-          );
-        },
-        error: (error) => {
-          console.error('Error sending service request:', error);
-          this.themeService.displayNotification(
-            'Error',
-            'Failed to send service request. Please try again later.',
-            'error',
-          );
-        },
-      });
+
+    // Try to get the user's GPS coordinates before sending
+    const sendRequest = (lat?: number, lng?: number) => {
+      this.serviceApi
+        .requestService({
+          email: this.userEmail,
+          _id: providerId,
+          userName: this.userName,
+          userLocation: this.userLocation,
+          category: category,
+          requestServiceId,
+          isRequested: true,
+          userLat: lat,
+          userLng: lng,
+        })
+        .subscribe({
+          next: () => {
+            this.sendNotificationToProvider(
+              providerEmail,
+              this.userLocation,
+              requestServiceId,
+              this.userName,
+              lat,
+              lng,
+            );
+            this.themeService.displayNotification(
+              'Success',
+              'Your service request has been sent successfully!',
+              'success',
+            );
+          },
+          error: (error) => {
+            console.error('Error sending service request:', error);
+            this.themeService.displayNotification(
+              'Error',
+              'Failed to send service request. Please try again later.',
+              'error',
+            );
+          },
+        });
+    };
+
+    // Capture GPS if available, otherwise send without it
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => sendRequest(pos.coords.latitude, pos.coords.longitude),
+        () => sendRequest(), // GPS denied — send without coords
+        { timeout: 5000 }
+      );
+    } else {
+      sendRequest();
+    }
   }
 
   sendNotificationToProvider(
@@ -221,12 +240,16 @@ export class ServicesComponent implements OnInit, OnDestroy {
     userLocation: string,
     serviceId: string,
     name: string,
+    userLat?: number,
+    userLng?: number,
   ): void {
     this.socketService.sendNotificationToProvider(providerEmail, {
       message: `New service request from ${name} located at ${userLocation}`,
       requestServiceId: serviceId,
       userLocation,
       userName: name,
+      userLat,
+      userLng,
     });
   }
 

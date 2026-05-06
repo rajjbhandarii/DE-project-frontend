@@ -12,6 +12,8 @@ export interface ActiveRequest {
   userLocation: string;
   category: string;
   createdAt: number;
+  userLat?: number;
+  userLng?: number;
 }
 
 export interface Service {
@@ -31,6 +33,8 @@ export interface ServiceRequestPayload {
   category: string;
   requestServiceId: string;
   isRequested: boolean;
+  userLat?: number;
+  userLng?: number;
 }
 
 @Injectable({

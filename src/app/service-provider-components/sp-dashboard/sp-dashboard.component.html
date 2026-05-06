@@ -27,6 +27,24 @@
 
     <main class="admin-dashboard-grid">
 
+      <!-- ===== SP LIVE MAP (visible when tracking) ===== -->
+      @if (hasActiveTracking) {
+      <div class="admin-card card-span-full sp-map-card">
+        <div class="card-accent-line line-blue"></div>
+        <div class="admin-card-header">
+          <h2>
+            <i class="fa-solid fa-map-location-dot"></i> Live Map
+            <span class="live-dot-inline"></span>
+          </h2>
+          <button class="recenter-btn" (click)="recenterSpMap()">
+            <i class="fa-solid fa-crosshairs"></i> Fit All
+          </button>
+        </div>
+        <div class="sp-map-wrapper">
+          <div id="sp-live-map" class="sp-live-map"></div>
+        </div>
+      </div>
+      }
       <!-- ===== LIVE REQUESTS CARD ===== -->
       <div class="admin-card card-span-full">
         <div class="card-accent-line line-blue"></div>
@@ -104,27 +122,53 @@
         <div class="admin-card-content">
           <div class="item-wrapper">
             @for (job of activeJobs; track job) {
-            <div class="admin-item job-item">
-              <div class="admin-item-details">
-                <div class="job-header-row">
-                  <h4>{{ job.category }}</h4>
-                  <span class="job-time">{{ getJobElapsed(job) }}</span>
+            <div class="admin-item job-item job-item-col">
+              <!-- Top row: job info + complete button -->
+              <div class="job-main-row">
+                <div class="admin-item-details">
+                  <div class="job-header-row">
+                    <h4>{{ job.category }}</h4>
+                    <span class="job-time">{{ getJobElapsed(job) }}</span>
+                  </div>
+                  <p>{{ job.userName }}</p>
+                  <div class="job-badges">
+                    <div class="job-team-badge">
+                      <i class="fa-solid fa-users"></i>
+                      <span>{{ job.team }}</span>
+                    </div>
+                    @if (isTracking(job.requestServiceId)) {
+                    <div class="tracking-badge">
+                      <span class="tracking-pulse"></span>
+                      <span>Live Tracking</span>
+                    </div>
+                    }
+                  </div>
                 </div>
-                <p>{{ job.userName }} • {{ job.location }}</p>
-                <div class="job-team-badge">
-                  <i class="fa-solid fa-users"></i>
-                  <span>{{ job.team }}</span>
-                </div>
-                @if (isTracking(job.requestServiceId)) {
-                <div class="tracking-badge">
-                  <span class="tracking-pulse"></span>
-                  <span>Live Tracking</span>
-                </div>
-                }
+                <button class="admin-complete-button" (click)="completeJob(job)">
+                  <i class="fa-solid fa-check"></i> Complete
+                </button>
               </div>
-              <button class="admin-complete-button" (click)="completeJob(job)">
-                <i class="fa-solid fa-check"></i> Complete
-              </button>
+
+              <!-- User location row -->
+              <div class="job-location-row">
+                <div class="location-icon-box">
+                  <i class="fa-solid fa-map-pin"></i>
+                </div>
+                <div class="location-text">
+                  <span class="location-label">User Location</span>
+                  <span class="location-value">{{ job.location }}</span>
+                  @if (job.userLat && job.userLng) {
+                  <span class="location-coords">
+                    {{ job.userLat.toFixed(4) }}°, {{ job.userLng.toFixed(4) }}°
+                  </span>
+                  }
+                </div>
+              </div>
+
+              <!-- Mini map -->
+              @if (job.userLat && job.userLng) {
+              <div class="job-map-container" [id]="'job-map-' + job.requestServiceId"></div>
+              }
             </div>
             }
           </div>

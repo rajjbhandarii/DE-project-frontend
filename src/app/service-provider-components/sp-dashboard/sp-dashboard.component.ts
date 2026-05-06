@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, AfterViewInit } from '@angular/core';
 import { ThemeServiceService } from '../../apps-services/theme.service';
 import {
   AccesspointService,
@@ -22,7 +22,11 @@ export interface ActiveJob {
   location: string;
   team: string;
   startedAt: number;
+  userLat?: number;
+  userLng?: number;
 }
+
+declare const L: any;
 
 export interface TeamMember {
   name: string;
@@ -60,8 +64,23 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   /** Tracks active geolocation watches keyed by requestServiceId */
   trackingMap = new Map<string, number>();
 
+  /** Leaflet mini-maps for active jobs keyed by requestServiceId */
+  jobMaps = new Map<string, any>();
+
   /** Show the team picker dropdown for a specific request */
   showTeamPickerFor: string | null = null;
+
+  /** SP Live Map state */
+  spMap: any = null;
+  spMarker: any = null;
+  spMapInitialized = false;
+  spUserMarkers = new Map<string, any>();
+  spLatestCoords: { lat: number; lng: number } | null = null;
+
+  /** Whether any tracking is active (shows map card) */
+  get hasActiveTracking(): boolean {
+    return this.trackingMap.size > 0;
+  }
 
   constructor(
     private accesspointService: AccesspointService,
@@ -179,8 +198,15 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
       location: req.userLocation,
       team: team.name,
       startedAt: Date.now(),
+      userLat: req.userLat,
+      userLng: req.userLng,
     };
     this.activeJobs.push(job);
+
+    // Init mini-map after DOM renders
+    if (job.userLat && job.userLng) {
+      setTimeout(() => this.initJobMap(job), 200);
+    }
 
     // Remove from live requests
     this.liveRequests = this.liveRequests.filter(
@@ -212,6 +238,9 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
   completeJob(job: ActiveJob): void {
     // Stop tracking
     this.stopLocationTracking(job.userEmail, job.requestServiceId);
+
+    // Destroy the mini-map
+    this.destroyJobMap(job.requestServiceId);
 
     // Free the team
     const team = this.teams.find((t) => t.name === job.team);
@@ -278,6 +307,9 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
           this.currentUserName,
           requestServiceId,
         );
+        // Update the SP live map
+        this.spLatestCoords = { lat: latitude, lng: longitude };
+        this.updateSpMap(latitude, longitude);
       },
       (error) => {
         console.error('Geolocation error:', error);
@@ -291,6 +323,17 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     );
 
     this.trackingMap.set(requestServiceId, watchId);
+
+    // Initialize SP map if this is the first active tracking
+    if (!this.spMapInitialized) {
+      setTimeout(() => this.initSpMap(), 300);
+    } else {
+      // Add user marker for this job
+      const job = this.activeJobs.find(j => j.requestServiceId === requestServiceId);
+      if (job?.userLat && job?.userLng) {
+        this.addUserMarkerToSpMap(job);
+      }
+    }
   }
 
   stopLocationTracking(userEmail: string, requestServiceId: string): void {
@@ -304,6 +347,14 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
       requestServiceId,
       this.currentUserName,
     );
+
+    // Remove user marker from SP map
+    this.removeUserMarkerFromSpMap(requestServiceId);
+
+    // Destroy SP map if no more active tracking
+    if (this.trackingMap.size === 0) {
+      this.destroySpMap();
+    }
   }
 
   isTracking(requestServiceId: string): boolean {
@@ -349,9 +400,185 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
       });
   }
 
+  // ===================== MAP =====================
+
+  /** Initialize a mini Leaflet map for an active job showing user location */
+  initJobMap(job: ActiveJob): void {
+    if (!job.userLat || !job.userLng) return;
+    const containerId = 'job-map-' + job.requestServiceId;
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const tileUrl = this.isDarkMode
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    const map = L.map(containerId, {
+      zoomControl: false,
+      attributionControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      touchZoom: false,
+    }).setView([job.userLat, job.userLng], 15);
+
+    L.tileLayer(tileUrl, { maxZoom: 18 }).addTo(map);
+
+    const userIcon = L.divIcon({
+      html: '<div style="background:#10b981;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.3)"><i class="fa-solid fa-user"></i></div>',
+      className: 'custom-div-icon',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+
+    L.marker([job.userLat, job.userLng], { icon: userIcon })
+      .addTo(map)
+      .bindPopup(`<strong>${job.userName}</strong><br>${job.location}`);
+
+    this.jobMaps.set(job.requestServiceId, map);
+    setTimeout(() => map.invalidateSize(), 300);
+  }
+
+  /** Destroy a mini-map */
+  destroyJobMap(requestServiceId: string): void {
+    const map = this.jobMaps.get(requestServiceId);
+    if (map) {
+      map.remove();
+      this.jobMaps.delete(requestServiceId);
+    }
+  }
+
+  // ===================== SP LIVE MAP =====================
+
+  /** Initialize the SP's own live map showing their position + all user pins */
+  initSpMap(): void {
+    const container = document.getElementById('sp-live-map');
+    if (!container || this.spMapInitialized) return;
+
+    const tileUrl = this.isDarkMode
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    // Default center — will be replaced by first GPS update
+    const defaultCenter = this.spLatestCoords || { lat: 20.5937, lng: 78.9629 };
+
+    this.spMap = L.map('sp-live-map', {
+      zoomControl: true,
+      attributionControl: false,
+    }).setView([defaultCenter.lat, defaultCenter.lng], 14);
+
+    L.tileLayer(tileUrl, { maxZoom: 19 }).addTo(this.spMap);
+
+    // SP marker (blue truck)
+    const spIcon = L.divIcon({
+      html: '<div style="background:#3b82f6;color:white;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 8px rgba(59,130,246,.4);border:2px solid white"><i class="fa-solid fa-truck-fast"></i></div>',
+      className: 'custom-div-icon',
+      iconSize: [36, 36],
+      iconAnchor: [18, 18],
+    });
+
+    if (this.spLatestCoords) {
+      this.spMarker = L.marker([this.spLatestCoords.lat, this.spLatestCoords.lng], { icon: spIcon })
+        .addTo(this.spMap)
+        .bindPopup('<strong>You</strong><br>Your live location');
+    }
+
+    // Add user markers for all active jobs with GPS
+    this.activeJobs.forEach(job => {
+      if (job.userLat && job.userLng) {
+        this.addUserMarkerToSpMap(job);
+      }
+    });
+
+    this.spMapInitialized = true;
+    setTimeout(() => this.spMap?.invalidateSize(), 300);
+  }
+
+  /** Update SP marker position on the live map */
+  updateSpMap(lat: number, lng: number): void {
+    if (!this.spMap) return;
+
+    const newLatLng = L.latLng(lat, lng);
+
+    if (this.spMarker) {
+      this.spMarker.setLatLng(newLatLng);
+    } else {
+      const spIcon = L.divIcon({
+        html: '<div style="background:#3b82f6;color:white;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 8px rgba(59,130,246,.4);border:2px solid white"><i class="fa-solid fa-truck-fast"></i></div>',
+        className: 'custom-div-icon',
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+      });
+      this.spMarker = L.marker(newLatLng, { icon: spIcon })
+        .addTo(this.spMap)
+        .bindPopup('<strong>You</strong><br>Your live location');
+    }
+
+    // Pan if out of view
+    if (!this.spMap.getBounds().contains(newLatLng)) {
+      this.spMap.panTo(newLatLng, { animate: true, duration: 0.5 });
+    }
+  }
+
+  /** Add a user pin to the SP live map */
+  addUserMarkerToSpMap(job: ActiveJob): void {
+    if (!this.spMap || !job.userLat || !job.userLng) return;
+    if (this.spUserMarkers.has(job.requestServiceId)) return;
+
+    const userIcon = L.divIcon({
+      html: '<div style="background:#10b981;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.3)"><i class="fa-solid fa-user"></i></div>',
+      className: 'custom-div-icon',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+
+    const marker = L.marker([job.userLat, job.userLng], { icon: userIcon })
+      .addTo(this.spMap)
+      .bindPopup(`<strong>${job.userName}</strong><br>${job.location}`);
+
+    this.spUserMarkers.set(job.requestServiceId, marker);
+  }
+
+  /** Remove a user marker from the SP live map */
+  removeUserMarkerFromSpMap(requestServiceId: string): void {
+    const marker = this.spUserMarkers.get(requestServiceId);
+    if (marker && this.spMap) {
+      this.spMap.removeLayer(marker);
+      this.spUserMarkers.delete(requestServiceId);
+    }
+  }
+
+  /** Recenter SP map to fit all markers */
+  recenterSpMap(): void {
+    if (!this.spMap) return;
+    const markers: any[] = [];
+    if (this.spMarker) markers.push(this.spMarker);
+    this.spUserMarkers.forEach(m => markers.push(m));
+    if (markers.length > 0) {
+      const group = L.featureGroup(markers);
+      this.spMap.fitBounds(group.getBounds().pad(0.3), { animate: true });
+    }
+  }
+
+  /** Destroy the SP live map */
+  destroySpMap(): void {
+    if (this.spMap) {
+      this.spMap.remove();
+      this.spMap = null;
+      this.spMarker = null;
+      this.spUserMarkers.clear();
+      this.spMapInitialized = false;
+    }
+  }
+
   // ===================== CLEANUP =====================
 
   ngOnDestroy(): void {
+    this.destroySpMap();
+
+    this.jobMaps.forEach((map) => map.remove());
+    this.jobMaps.clear();
+
     this.trackingMap.forEach((watchId) => {
       navigator.geolocation.clearWatch(watchId);
     });

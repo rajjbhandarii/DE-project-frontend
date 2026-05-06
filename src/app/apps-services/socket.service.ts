@@ -22,7 +22,7 @@ export class SocketService {
     this.socket.emit('SP-Dashboard/sendNotificationToUser', { userEmail, ...arg1 }); //to send notification to user when SP accepts/rejects service request
   }
 
-  sendNotificationToProvider(providerEmail: string, arg1: { message: string; userLocation: string; requestServiceId: string; userName: string; }) {
+  sendNotificationToProvider(providerEmail: string, arg1: { message: string; userLocation: string; requestServiceId: string; userName: string; userLat?: number; userLng?: number; }) {
     this.socket.emit('serviceComponent/sendNotificationToProvider', { providerEmail, ...arg1 }); //to send notification to provider when user requests for a service
   }
 
