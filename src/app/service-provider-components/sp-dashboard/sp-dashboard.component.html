@@ -66,6 +66,12 @@
                     <div>
                       <h4>{{ req.userName }}</h4>
                       <p>{{ req.category }} • {{ req.userLocation }}</p>
+                      @if (req.userLat && req.userLng) {
+                      <p class="request-coords">
+                        <i class="fa-solid fa-map-pin"></i>
+                        {{ req.userLat.toFixed(4) }}°, {{ req.userLng.toFixed(4) }}°
+                      </p>
+                      }
                     </div>
                   </div>
                 </div>

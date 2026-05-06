@@ -326,12 +326,14 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
 
     // Initialize SP map if this is the first active tracking
     if (!this.spMapInitialized) {
-      setTimeout(() => this.initSpMap(), 300);
+      // Give Angular time to render the map container via @if
+      setTimeout(() => this.initSpMap(), 500);
     } else {
       // Add user marker for this job
       const job = this.activeJobs.find(j => j.requestServiceId === requestServiceId);
       if (job?.userLat && job?.userLng) {
         this.addUserMarkerToSpMap(job);
+        this.recenterSpMap();
       }
     }
   }
@@ -459,8 +461,16 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
       ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
       : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-    // Default center — will be replaced by first GPS update
-    const defaultCenter = this.spLatestCoords || { lat: 20.5937, lng: 78.9629 };
+    // Pick best center: SP coords > first active job's user coords > India center
+    let defaultCenter = this.spLatestCoords;
+    if (!defaultCenter) {
+      const jobWithGps = this.activeJobs.find(j => j.userLat && j.userLng);
+      if (jobWithGps) {
+        defaultCenter = { lat: jobWithGps.userLat!, lng: jobWithGps.userLng! };
+      } else {
+        defaultCenter = { lat: 20.5937, lng: 78.9629 };
+      }
+    }
 
     this.spMap = L.map('sp-live-map', {
       zoomControl: true,
@@ -483,7 +493,7 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
         .bindPopup('<strong>You</strong><br>Your live location');
     }
 
-    // Add user markers for all active jobs with GPS
+    // Add user markers for ALL active jobs with GPS
     this.activeJobs.forEach(job => {
       if (job.userLat && job.userLng) {
         this.addUserMarkerToSpMap(job);
@@ -491,7 +501,12 @@ export class SpDashboardComponent implements OnInit, OnDestroy {
     });
 
     this.spMapInitialized = true;
-    setTimeout(() => this.spMap?.invalidateSize(), 300);
+
+    // Fit bounds to show all markers after a short delay
+    setTimeout(() => {
+      this.spMap?.invalidateSize();
+      this.recenterSpMap();
+    }, 400);
   }
 
   /** Update SP marker position on the live map */

@@ -265,6 +265,18 @@
   color: #c7d2fe;
 }
 
+.request-coords {
+  margin: 2px 0 0 0;
+  font-size: 11px;
+  color: #d97706;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.request-coords i {
+  font-size: 10px;
+  margin-right: 3px;
+}
+
 /* ===== BUTTONS ===== */
 .admin-item-actions {
   display: flex;
