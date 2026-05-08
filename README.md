@@ -1,4 +1,4 @@
-# RodeRescue Frontend
+# RodeRescue
 
 Frontend application for **RodeRescue**, a two-sided roadside assistance platform built with Angular.
 
