@@ -1,59 +1,105 @@
 # RodeRescue
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.4.
+Frontend application for **RodeRescue**, a two-sided roadside assistance platform built with Angular.
 
-## Development server
+## What this app does
 
-To start a local development server, run:
+- User and service-provider login/signup flows
+- Protected app routes with JWT-based route guarding
+- User dashboard and contact form (EmailJS integration)
+- Service discovery grouped by category and prioritized by location
+- Service request lifecycle (request, dispatch, reject, complete)
+- Real-time notifications and provider tracking via Socket.IO
+- Service-provider dashboard, team assignment, and live map tracking
+- Service management (add/list/delete provider services)
+- Light/dark theme persistence
 
-```bash
-ng serve
+## Tech stack
+
+- Angular 21 (standalone components, lazy loading)
+- TypeScript + RxJS
+- Socket.IO client
+- Leaflet maps
+- EmailJS browser SDK
+- Docker + Nginx (production serving)
+
+## Repository structure
+
+```text
+src/
+  app/
+    accesspoint/                 # login/signup views
+    user-components/             # user dashboard, services, tracking page
+    service-provider-components/ # provider dashboard and service management
+    apps-services/               # API, socket, tracking, theme, data transforms
+    environments/                # production + development endpoint configs
+    app.routes.ts                # route definitions and lazy-loaded pages
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Prerequisites
 
-## Code scaffolding
+- Node.js 20+
+- npm 10+
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Local setup
 
 ```bash
-ng generate --help
+npm ci
+npm start
 ```
 
-## Building
+Open `http://localhost:4200`.
 
-To build the project run:
+> Development mode uses `src/app/environments/environment.development.ts` (`http://localhost:3000` backend by default).
+
+## Available scripts
 
 ```bash
-ng build
+npm start   # ng serve (development)
+npm run build
+npm run watch
+npm test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Notes on tests
 
-## Running unit tests
+`npm test` currently fails if no `*.spec.ts` files exist (TypeScript error TS18003). Add tests under `src/**/*.spec.ts` to enable Karma test execution.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Environment configuration
+
+Main config files:
+
+- `src/app/environments/environment.ts` (production)
+- `src/app/environments/environment.development.ts` (local/dev)
+
+These define:
+
+- REST API endpoints
+- Socket.IO URL
+- EmailJS identifiers (`serviceID`, `templateID`, `publicKey`)
+
+## Routing overview
+
+Public routes:
+
+- `/user-login`
+- `/service-provider-login`
+
+Protected routes (wrapped by `NavbarComponent` + `authGuard`):
+
+- `/dashboard`
+- `/services`
+- `/track-provider`
+- `/sp-dashboard`
+- `/service-management`
+- `/about`, `/contact` (scroll sections on dashboard)
+
+## Docker deployment
+
+Build and run with Docker Compose:
 
 ```bash
-ng test
+docker compose up --build
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The app is served by Nginx on `http://localhost:4200` with SPA fallback (`try_files ... /index.html`).
