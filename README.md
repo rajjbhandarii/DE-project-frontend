@@ -1,4 +1,4 @@
-# Road Rescue Frontend
+# RodeRescue Frontend
 
 Frontend application for **Road Rescue**, a two-sided roadside assistance platform built with Angular.
 
